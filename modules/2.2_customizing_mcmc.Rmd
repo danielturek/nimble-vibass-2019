@@ -1,0 +1,205 @@
+---
+title: "Customizing an MCMC"
+subtitle: "BYU Summer Institute on Applied Statistics workshop"
+author: "NIMBLE Development Team"
+output:
+  html_document:
+    code_folding: show
+---
+
+```{r chunksetup, include=FALSE} 
+# include any code here you don't want to show up in the document,
+# e.g. package and dataset loading
+library(methods)  # otherwise new() not being found - weird
+library(nimble)
+read_chunk('chunks_litters.R')
+```
+
+# The litters model
+
+Here's the graph of the litters model.
+
+<center><img src="littersDAG.jpg"></center>
+
+Here we set up the litters model.
+
+```{r, litters-code}
+```
+```{r, litters-model}
+```
+```{r, litters-compile}
+```
+```{r makePlot, echo=FALSE}
+```
+
+# NIMBLE's default MCMC
+
+Here are the results from running NIMBLE's default MCMC:
+
+```{r, prep, echo=FALSE}
+# so attendees can run code below this without using code from other modules
+if(FALSE) 
+  if(!exists('littersModel') || !exists('cLittersModel')) source('chunks_litters.R')
+```                   
+
+```{r, litters-default, fig.height=6, fig.width=12, fig.cap=''}
+littersConf <- configureMCMC(littersModel, monitors = c('a', 'b', 'p'))
+littersMCMC <- buildMCMC(littersConf)
+cLittersMCMC <- compileNimble(littersMCMC, project = littersModel)
+niter <- 5000
+nburn <- 1000
+set.seed(1)
+samples <- runMCMC(cLittersMCMC, niter = niter, nburnin = nburn,
+        inits = littersInits, nchains = 1, samplesAsCodaMCMC = TRUE)
+
+makePlot(samples)
+```
+
+# Customizing samplers: examining the defaults
+
+One of NIMBLE's most important features is that users can easily modify the MCMC algorithm used for their model. The easiest thing to do is to start with NIMBLE's default MCMC and then make modifications. 
+
+```{r default-config}
+littersConf$printSamplers()
+```
+
+# Customizing samplers: modifying the samplers
+
+```{r customize-mcmc}
+hypers <- c('a[1]', 'b[1]', 'a[2]', 'b[2]')
+for(h in hypers) {
+      littersConf$removeSamplers(h)
+      littersConf$addSampler(target = h, type = 'slice')
+}
+littersConf$printSamplers()
+
+littersMCMC <- buildMCMC(littersConf)
+## we need 'resetFunctions' because we are rebuilding the MCMC for an existing model for
+## which we've already done some compilation
+cLittersMCMC <- compileNimble(littersMCMC, project = littersModel, resetFunctions = TRUE)
+
+set.seed(1)
+samplesSlice <- runMCMC(cLittersMCMC, niter = niter, nburnin = nburn,
+             inits = littersInits, nchains = 1, samplesAsCodaMCMC = TRUE)
+```
+
+# Customizing samplers: Initial results
+
+We can look at diagnostics and see if the change in samplers had an effect. Interestingly, despite the posterior correlation between ```a[i]``` and ```b[i]```, a simple change just to the univariate samplers for the four hyperparameters has had some effect on MCMC performance.
+
+Caveat: the real question is the effective sample size per unit of computation time (each slice sampler iteration is slower than each Metropolis iteration), but we don't assess that at the moment.
+
+
+```{r output-slice, fig.height=6, fig.width=12, fig.cap=''}
+library(coda, warn.conflicts = FALSE)
+effectiveSize(samplesSlice)
+makePlot(samplesSlice)
+```
+
+# Using JAGS
+
+We'll briefly demonstrate using JAGS. A few things to keep in mind:
+
+   - JAGS requires a text file with the BUGS code.
+   - In general, we've found that JAGS choice of default samplers are well-chosen.
+       - In some cases, that means that the default JAGS MCMC outperforms the default NIMBLE MCMC.
+   - JAGS run-time computational speed sometimes beats NIMBLE's, particularly with conjugate samplers.
+
+```{r, jags-example, fig.cap='', fig.width=10, fig.height=7}
+library(rjags)
+
+cat("model {
+  for (i in 1:G) {
+     for (j in 1:N) {
+        # likelihood (data model)
+        r[i,j] ~ dbin(p[i,j], n[i,j])
+        # latent process (random effects)
+        p[i,j] ~ dbeta(a[i], b[i]) 
+     }
+     # prior for hyperparameters
+     a[i] ~ dgamma(1, .001)
+     b[i] ~ dgamma(1, .001)
+   }
+}", file = file.path(tempdir(), "tmp.bug"))
+
+set.seed(2)  ## note: some other seeds result in slice sampler being stuck
+inits <- littersInits
+inits$p <- matrix(0.5, G, N)
+model <- jags.model(file = file.path(tempdir(), 'tmp.bug'),
+      data = list(G = G, N = N, n = n, r = r),
+      n.adapt = nburn, n.chains = 1, inits = inits)
+      
+samples <- jags.samples(model, variable.names = c('a','b'), n.iter = niter)
+
+par(mfrow = c(2, 2), mai = c(.6, .5, .4, .1), mgp = c(1.8, 0.7, 0))
+ts.plot(samples[[1]][1, , 1], xlab = 'iteration',
+        ylab = expression(a[1]), main = expression(a[1]))
+ts.plot(samples[[2]][1, , 1], xlab = 'iteration',
+        ylab = expression(b[1]), main = expression(b[1]))
+ts.plot(samples[[1]][2, , 1], xlab = 'iteration',
+        ylab = expression(a[2]), main = expression(a[2]))
+ts.plot(samples[[2]][2, , 1], xlab = 'iteration',
+        ylab = expression(b[2]), main = expression(b[2]))
+```
+
+# Using Stan
+
+We'll briefly demonstrate using Stan. A few things to keep in mind:
+
+   - Stan uses Hamiltonian Monte Carlo, which is in general quite a bit slower per raw MCMC iteration but often more effective relative to the effective sample size.
+        - Whether it is more effective relative to computational time likely depends on the problem. 
+   - Stan's model declaration language is somewhat different from BUGS.
+        - It's much more flexible than WinBUGS/JAGS and comparably flexible to NIMBLE.
+
+```{r, stan-example, fig.cap='', fig.width=10, fig.height=7}
+library(rstan)
+code <- "
+data {
+  int G; int N;
+  int r[G, N];
+  int n[G, N];
+}
+parameters {
+  real a[G];
+  real b[G];
+  real p[G, N];
+}
+model {
+    for (i in 1:G) {
+     for (j in 1:N) {
+        // likelihood (data model)
+        r[i,j] ~ binomial(n[i,j], p[i,j]);
+        // latent process (random effects)
+        p[i,j] ~ beta(a[i], b[i]);
+     }
+     // prior for hyperparameters
+     a[i] ~ gamma(1, .001);
+     b[i] ~ gamma(1, .001);
+   }
+}
+"
+
+verbose <- FALSE
+init = littersInits
+init$p <- matrix(0.5, G, N)
+fit1 <- stan(model_code = code, iter = 250, warmup = 100, chains = 1,
+     data = littersData, init = list(init), verbose = verbose) 
+fit2 <- stan(model_code = code, iter = 250, warmup = 100, chains = 1,
+     data = littersData, init = list(init), control = list(adapt_delta = 0.95),
+     verbose = verbose) 
+
+out <- extract(fit1)
+
+par(mfrow = c(2, 2), mai = c(.6, .5, .4, .1), mgp = c(1.8, 0.7, 0))
+ts.plot(out[['a']][ , 1], xlab = 'iteration',
+        ylab = expression(a[1]), main = expression(a[1]))
+ts.plot(out[['b']][ , 1], xlab = 'iteration',
+        ylab = expression(b[1]), main = expression(b[1]))
+ts.plot(out[['a']][ , 2], xlab = 'iteration',
+        ylab = expression(a[2]), main = expression(a[2]))
+ts.plot(out[['b']][ , 2], xlab = 'iteration',
+        ylab = expression(b[2]), main = expression(b[2]))
+```
+
+Hmmm, that's not working but in a different fashion than for NIMBLE's default MCMC or for JAGS... We'll try again with Stan on a marginalized version of the model later.
+

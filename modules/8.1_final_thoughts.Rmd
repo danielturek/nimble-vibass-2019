@@ -1,0 +1,45 @@
+---
+title: "Final thoughts"
+subtitle: "BYU Summer Institute on Applied Statistics workshop"
+author: "NIMBLE Development Team"
+output:
+  html_document:
+    code_folding: show
+---
+
+# Getting help with and contributing to NIMBLE
+
+**We have post-doc funding!**
+
+**We have funding to bring selected users to Berkeley for intensive collaboration.**
+
+ - Announcements: [nimble-announce Google site](https://groups.google.com/forum/#!forum/nimble-announce)
+ - User	support/discussion: [nimble-users Google site](https://groups.google.com/forum/#!forum/nimble-users)
+ - Write an algorithm using NIMBLE!	
+ - Help	with development of NIMBLE: email nimble.stats@gmail.com or see [github.com/nimble-dev](https://github.com/nimble-dev/nimble)
+
+We try to be responsive on the the user support/discussion list, and heartily welcome others to contribute answers as well. 
+
+# Future and ongoing work in NIMBLE
+
+  - Continued development of Bayesian nonparametrics (Claudia Wehrhahn and Abel Rodriguez @ UC Santa Cruz)
+  - Automatic derivatives (coming very soon):
+    - Better samplers
+    - Hamiltonian Monte Carlo
+    - Laplace approximation and quadrature
+    - Maximum likelihood
+  - Improved scalability (in progress)
+    - Faster model and algorithm building and compilation
+    - Particularly for models with many exchangeable nodes
+    - Parallelization in the DSL
+    - Improved linear algebra (including sparse matrices)
+  - Improved workflow (in progress)
+    - Saving and re-loading work
+    - More flexible DSL syntax
+    - Better DSL error trapping/messages
+
+# Big-picture goals
+
+  - enhancing methodological "tech transfer"
+  - improving reproducibility of research that uses hierarchical models and of methods research for hierarchical models
+  - enabling easier comparison of methods
