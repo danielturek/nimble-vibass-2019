@@ -1,5 +1,5 @@
-# nimble-byu-2018
-Repository for 2018 BYU Summer Institute on Applied Statistics workshop on NIMBLE
+# nimble-vibass-2019
+Repository for 2019 Valencia International Bayesian Analysis Summer School NIMBLE Workshop
 
 Flexible programming of MCMC and other methods for hierarchical and Bayesian
 statistical models using NIMBLE.
