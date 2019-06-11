@@ -1,10 +1,7 @@
 ---
 title: "Bayesian nonparametrics"
-subtitle: "BYU Summer Institute on Applied Statistics workshop"
-author: "NIMBLE Development Team"
-output:
-  html_document:
-    code_folding: show
+subtitle: "Valencia International Bayesian Analysis Summer School Workshop"
+output: html_document
 ---
 
 ```{r chunksetup, include=FALSE} 

@@ -1,10 +1,8 @@
 ---
 title: "Automated MCMC comparison"
-subtitle: "BYU Summer Institute on Applied Statistics workshop"
-author: "NIMBLE Development Team"
+subtitle: "Valencia International Bayesian Analysis Summer School Workshop"
 output:
   html_document:
-    code_folding: show
     toc: yes
     mathjax: default
 ---

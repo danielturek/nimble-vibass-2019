@@ -1,10 +1,7 @@
 ---
 title: "How NIMBLE's model language differs from BUGS and JAGS"
-subtitle: "BYU Summer Institute on Applied Statistics workshop"
-author: "NIMBLE Development Team"
-output:
+subtitle: "Valencia International Bayesian Analysis Summer School Workshop"
   html_document:
-    code_folding: show
     toc: yes
 ---
 
