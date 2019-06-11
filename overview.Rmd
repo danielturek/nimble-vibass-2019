@@ -1,17 +1,15 @@
 ---
-title: "Programming with Hierarchical Statistical Models: An Intro to the BUGS-compatible NIMBLE system"
-subtitle: "BYU Summer Institute on Applied Statistics workshop"
-author: "Chris Paciorek, Department of Statistics, UC Berkeley"
-output:
-  html_document:
-    code_folding: show
+title: "VIBASS NIMBLE Workshop: Logistics"
+subtitle: "Applied Bayesian Computation: The NIMBLE Platform for Hierarchical Modeling and MCMC"
+author: "Daniel Turek, Department of Mathematics & Statistics, Williams College"
+output: html_document
 ---
 
-# Organization of workshop and materials
+## Organization of workshop and materials
 
 Please see the [logistics document](logistics_slides.html) for information about the organization of files, installing NIMBLE, and how we'll run the workshop.
 
-# Workshop content: sessions
+## Workshop content: sessions
 
  - Session 1: Introduction to NIMBLE
  - Session 2: MCMC in NIMBLE
@@ -22,7 +20,7 @@ Please see the [logistics document](logistics_slides.html) for information about
  - Session 7: Bayesian nonparametrics (BNP)
  - Session 8: Additional topics
 
-# (Session 1) Introduction to NIMBLE
+### (Session 1) Introduction to NIMBLE
 
  - [Overview of NIMBLE](modules/1.1_nimble_background_slides.html)
  - [The BUGS language](modules/1.2_bugs_language_slides.html)
@@ -30,7 +28,7 @@ Please see the [logistics document](logistics_slides.html) for information about
  - [Running an MCMC](modules/1.4_run_mcmc_slides.html) 
  - [Goals and key ideas of NIMBLE](modules/1.5_nimble_principles_slides.html)
 
-# (Session 2) MCMC in NIMBLE
+### (Session 2) MCMC in NIMBLE
 
  - [MCMC principles](modules/2.1_mcmc_principles_slides.html)
  - [Customizing an MCMC](modules/2.2_customizing_mcmc_slides.html)
@@ -38,14 +36,14 @@ Please see the [logistics document](logistics_slides.html) for information about
  - [Extended example: the litters model](modules/2.4_customizing_mcmc_extended_slides.html)
  - [Exercise: customizing an MCMC](modules/2.5_mcmc_exercises_slides.html)
 
-# (Session 3) Writing models in NIMBLE
+### (Session 3) Writing models in NIMBLE
 
  - [NIMBLE's dialect of BUGS](modules/3.1_nimble_bugs_slides.html)
  - [Some example models](modules/3.2_example_models_slides.html)
  - [User-defined distributions](modules/3.3_user_dist_slides.html) 
  - [Exercise: writing your own distribution](modules/3.4_user_dist_exercises_slides.html) 
 
-# (Session 4) Introduction to programming in NIMBLE with nimbleFunctions
+### (Session 4) Introduction to programming in NIMBLE with nimbleFunctions
 
  - [A basic nimbleFunction for compiling R code](modules/4.1_compile_R_slides.html)
  - [nimbleFunction example: maximum (marginal) likelihood](modules/4.2_basic_nimbleFunction_slides.html) 
@@ -55,20 +53,20 @@ Please see the [logistics document](logistics_slides.html) for information about
  - [Posterior predictive sampling using nimbleFunctions](modules/4.6_full_nimbleFunction_slides.html)
  - [Exercise: writing a nimbleFunction](modules/4.7_writing_nimbleFunctions_exercises_slides.html)
 
-# (Session 5) Programming MCMC samplers
+### (Session 5) Programming MCMC samplers
 
  - [A basic Metropolis-Hastings sampler](modules/5.1_nimbleFunction_samplers_slides.html)
  - [Writing your own MCMC sampler](modules/5.2_user_sampler_slides.html)
  - [Exercise: writing your own MCMC sampler](modules/5.3_user_sampler_exercises_slides.html)
 
-# (Session 6) Writing algorithms with Sequential Monte Carlo as an example
+### (Session 6) Writing algorithms with Sequential Monte Carlo as an example
 
  - [Introduction to sequential Monte Carlo](modules/6.1_smc_intro_slides.html)
  - [NIMBLE's SMC algorithms](modules/6.2_smc_nimble_slides.html)
  - [Particle MCMC](modules/6.3_particle_mcmc_slides.html)
  - [Revisiting reproducible methods](modules/6.4_reproducibility_revisited_slides.html)
 
-# (Session 7) Bayesian nonparametrics (BNP)
+### (Session 7) Bayesian nonparametrics (BNP)
 
  - [Introduction to Dirichlet process models and nonparametric density estimation](modules/7.1_bnp_intro_slides.html)
  - [Case study: Meta-analysis with nonparametric random effects](modules/7.2_meta_analysis_slides.html)
@@ -76,11 +74,11 @@ Please see the [logistics document](logistics_slides.html) for information about
  - [MCMC samplers revisited: reversible jump for variable selection in the AFT model](modules/7.4_reversible_jump_AFT_slides.html)
  - [Exercise: writing a BNP model](modules/7.5_bnp_exercises_slides.html)
 
-# (Session 8) Additional topics
+### (Session 8) Additional topics
  - Extended worked example, discussion of participant examples, additional time for skipped topics, or additional details on topics.
  - [Final thoughts](modules/8.1_final_thoughts_slides.html)
  
-# Acknowledgements and legal stuff
+## Acknowledgements and legal stuff
 
 NIMBLE has been funded by:
 
@@ -91,3 +89,34 @@ NIMBLE has been funded by:
  - Berkeley Institute for Data Science support for Daniel Turek
 
 This workshop material was created by the NIMBLE development team and is licensed under a Creative Commons Attribution 3.0 Unported License. You are free to use, modify, and redistribute any of this material with attribution.
+
+\  
+
+\  
+
+\  
+
+\  
+
+\  
+
+\  
+
+\  
+
+\  
+
+\  
+
+\  
+
+\  
+
+\  
+
+\  
+
+\  
+
+\  
+
