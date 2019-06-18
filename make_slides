@@ -7,15 +7,26 @@
 library(knitr)
 library(rmarkdown)
 
-module <- commandArgs(trailingOnly = TRUE)
-source <- paste(module, ".Rmd", sep = "")
+cmdArgs <- commandArgs(trailingOnly = TRUE)
 
-if (file.exists(source)){
-    knit(source, envir = new.env())
-    system(paste("pandoc -s --webtex -t slidy ", paste(module, ".md", sep = ""), " -o ", paste(module, "_slides.html", sep = ""), " --self-contained"))
-    render(source, envir = new.env()) # for style that can hide code chunks dynamically
-    # purl(source) ## make separate .R file with just the code
-    # knit2html(source, envir = new.env())
-} else {
-    cat("Error: ", source, " does not exist.\n")
+if(length(cmdArgs) == 0) {
+    system('make clean')
+    cmdArgs <- list.files(pattern = '\\.Rmd$', recursive = TRUE)
 }
+
+cmdArgs <- gsub('\\.Rmd', '', cmdArgs)
+
+for(f in cmdArgs) {
+    filename <- paste0(f, '.Rmd')
+    if(!file.exists(filename)) {
+        message(paste0('could not find file: ', filename))
+        next
+    }
+    knit(filename, envir = new.env())
+    mdFile <- gsub('modules/', '', paste(f, ".md", sep = ""))
+    system(paste("pandoc -s --webtex -t slidy ", mdFile, " -o ", paste(f, "_slides.html", sep = ""), " --self-contained"))
+    render(filename, envir = new.env()) # for style that can hide code chunks dynamically
+    ## purl(source) ## make separate .R file with just the code
+    ## knit2html(source, envir = new.env())
+}
+

@@ -9,6 +9,7 @@ output: html_document
 # e.g. package and dataset loading
 library(methods)  # otherwise new() not being found - weird
 library(nimble)
+library(knitr)
 read_chunk('chunks_litters.R')
 ```
 
@@ -102,7 +103,7 @@ We'll briefly demonstrate using JAGS. A few things to keep in mind:
        - In some cases, that means that the default JAGS MCMC outperforms the default NIMBLE MCMC.
    - JAGS run-time computational speed sometimes beats NIMBLE's, particularly with conjugate samplers.
 
-```{r, jags-example, fig.cap='', fig.width=10, fig.height=7}
+```{r, jags-example1, fig.cap='', fig.width=10, fig.height=7}
 library(rjags)
 
 cat("model {
@@ -122,12 +123,31 @@ cat("model {
 set.seed(2)  ## note: some other seeds result in slice sampler being stuck
 inits <- littersInits
 inits$p <- matrix(0.5, G, N)
+```
+
+```{r, jags-example2, fig.cap='', fig.width=10, fig.height=7, eval = FALSE}
 model <- jags.model(file = file.path(tempdir(), 'tmp.bug'),
       data = list(G = G, N = N, n = n, r = r),
       n.adapt = nburn, n.chains = 1, inits = inits)
       
 samples <- jags.samples(model, variable.names = c('a','b'), n.iter = niter)
+```
 
+```{r, jags-example3, fig.cap='', fig.width=10, fig.height=7, echo = FALSE}
+e <- try(dfdfdf, silent = TRUE)
+
+while(inherits(e, 'try-error')) {
+    e <- try({
+        model <- jags.model(file = file.path(tempdir(), 'tmp.bug'),
+              data = list(G = G, N = N, n = n, r = r),
+              n.adapt = nburn, n.chains = 1, inits = inits)
+              
+        samples <- jags.samples(model, variable.names = c('a','b'), n.iter = niter)
+	}, silent = TRUE)
+}
+```
+
+```{r, jags-example4, fig.cap='', fig.width=10, fig.height=7}
 par(mfrow = c(2, 2), mai = c(.6, .5, .4, .1), mgp = c(1.8, 0.7, 0))
 ts.plot(samples[[1]][1, , 1], xlab = 'iteration',
         ylab = expression(a[1]), main = expression(a[1]))
@@ -139,6 +159,9 @@ ts.plot(samples[[2]][2, , 1], xlab = 'iteration',
         ylab = expression(b[2]), main = expression(b[2]))
 ```
 
+
+
+<!--
 # Using Stan
 
 We'll briefly demonstrate using Stan. A few things to keep in mind:
@@ -147,8 +170,10 @@ We'll briefly demonstrate using Stan. A few things to keep in mind:
         - Whether it is more effective relative to computational time likely depends on the problem. 
    - Stan's model declaration language is somewhat different from BUGS.
         - It's much more flexible than WinBUGS/JAGS and comparably flexible to NIMBLE.
+-->
 
-```{r, stan-example, fig.cap='', fig.width=10, fig.height=7}
+
+```{r, stan-example, fig.cap='', fig.width=10, fig.height=7, echo = FALSE, eval = FALSE}
 library(rstan)
 code <- "
 data {
@@ -198,5 +223,8 @@ ts.plot(out[['b']][ , 2], xlab = 'iteration',
         ylab = expression(b[2]), main = expression(b[2]))
 ```
 
-Hmmm, that's not working but in a different fashion than for NIMBLE's default MCMC or for JAGS... We'll try again with Stan on a marginalized version of the model later.
+<!--
+ Hmmm, that's not working but in a different fashion than for NIMBLE's default MCMC or for JAGS... We'll try again with Stan on a marginalized version of the model later.
+-->
+
 

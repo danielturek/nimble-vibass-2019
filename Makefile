@@ -4,7 +4,7 @@
 all: clean example alt_param bugs_language build_model compile_R constants customizing_mcmc data_nodes exercises indexing litters_example mcmc_concepts model_structure nimbleFunctions operating_model run_jags run_mcem run_mcmc user_dist user_function user_sampler vectorizing 
 
 clean:
-	rm -rf *.md *.html *.pdf cache/ figure/
+	rm -rf *.md *.html *slides.html *.pdf cache/ figure/ modules/*.md modules/*.html modules/*slides.html
 
 %.html: %.Rmd
 	./make_slides $(basename $(@))

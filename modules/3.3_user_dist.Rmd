@@ -146,11 +146,15 @@ That's not quite as good as the cross-level sampler, almost certainly because th
 
 Of course if you wanted samples from `p`, you'd need to write a separate R function (or a nimbleFunction) to do the post-hoc sampling given the posterior samples of `a` and `b`.  We'll do this as an example when we talk about nimbleFunction programming.
 
+
+<!--
 # Using Stan - marginalized model
 
 Let's see how Stan does.
+-->
 
-```{r, stan-example-marg, fig.cap='', fig.width=10, fig.height=7}
+
+```{r, stan-example-marg, fig.cap='', fig.width=10, fig.height=7, echo = FALSE, eval = FALSE}
 library(rstan)
 code <- "
 data {
@@ -194,4 +198,10 @@ ts.plot(out[['b']][ , 2], xlab = 'iteration',
         ylab = expression(b[2]), main = expression(b[2]))
 ```
 
+
+<!--
 So that seems to work reasonably well, but not clear that it's better than NIMBLE, particularly when accounting for the longer run-time. 
+-->
+
+
+
