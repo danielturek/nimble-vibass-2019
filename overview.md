@@ -1,5 +1,5 @@
 ---
-title: "VIBASS NIMBLE Workshop: Logistics"
+title: "VIBASS NIMBLE Workshop: Overview"
 subtitle: "Applied Bayesian Computation: The NIMBLE Platform for Hierarchical Modeling and MCMC"
 author: "Daniel Turek, Department of Mathematics & Statistics, Williams College"
 output: html_document
@@ -11,10 +11,19 @@ Please see the <a href="logistics_slides.html" target="_blank">logistics documen
 
 ## Workshop content: sessions
 
+
+
+### Day 1
+
  - Session 1: Introduction to NIMBLE
  - Session 2: MCMC in NIMBLE
  - Session 3: Writing models in NIMBLE
  - Session 4: Introduction to programming in NIMBLE with nimbleFunctions
+
+
+
+### Day 2
+
  - Session 5: Programming MCMC samplers
  - Session 6: Writing algorithms with Sequential Monte Carlo as an example
  - Session 7: Bayesian nonparametrics (BNP)

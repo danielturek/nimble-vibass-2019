@@ -9,7 +9,7 @@ output: html_document
 
 The Github site (<a href="https://github.com/danielturek/nimble-vibass-2019" target="_blank">https://github.com/danielturek/nimble-vibass-2019</a>) is the master repository for materials for the modules; you can also get the individual files from Github. 
 
-To get the materials look ahead to slide 6 for instructions. Alternatively, simply go to <a href="https://github.com/danielturek/nimble-vibass-2019" target="_blank">https://github.com/danielturek/nimble-vibass-2019</a> and click on the 'Download ZIP' button in the right side of the window or simply <a href="https://github.com/danielturek/nimble-vibass-2019/archive/master.zip" target="_blank">click here</a>.
+To get the materials look ahead to slide 7 for instructions. Alternatively, simply go to <a href="https://github.com/danielturek/nimble-vibass-2019" target="_blank">https://github.com/danielturek/nimble-vibass-2019</a> and click on the 'Download ZIP' button in the right side of the window or simply <a href="https://github.com/danielturek/nimble-vibass-2019/archive/master.zip" target="_blank">click here</a>.
 
 ## Asking questions and making comments
 
@@ -51,7 +51,7 @@ A few additional thoughts on my pedagogical philosophy here:
 
 We'll present most of the material from within RStudio, using R Markdown documents with embedded R code. R Markdown is an extension to the Markdown markup language that makes it easy to write HTML in a simple plain text format.  This allows us to both run the R/NIMBLE code directly as well as compile on-the-fly to an HTML file that can be used for presentation. All files will be available on <a href="https://github.com/danielturek/nimble-vibass-2019" target="_blank">GitHub</a>.
 
-Warning: in some cases the processing of the R code in the R Markdown is screwy and the slides have error messages that do not occur if you just run the code directly in R or RStudio. 
+Warning: in some cases the processing of the R code in the R Markdown is finicky, and the slides have error messages that do not occur if you just run the code directly in R or RStudio. 
 
 ## Getting the workshop materials
 
@@ -61,6 +61,7 @@ To download the files, you can do any of the following.
 
 Simply go to <a href="https://github.com/danielturek/nimble-vibass-2019" target="_blank">https://github.com/danielturek/nimble-vibass-2019</a> and click on the 'Download ZIP' button in the right side of the window or simply <a href="https://github.com/danielturek/nimble-vibass-2019/archive/master.zip" target="_blank">click here</a>.
 
+<!--
 #### Within RStudio
 
 Within RStudio go to File->New Project->Version Control->Git and enter:
@@ -75,6 +76,7 @@ Tools->Version Control->Pull Branches
 or from the Environment/History/Git window, click on the Git tab and then on the blue down arrow.
 
 Be warned that you probably do not want to make your own notes or changes to the files we are providing. Because if you do, and you then do a "Git Pull" to update the materials, you'll have to deal with the conflict between your local version and our version. You probably will want to make a personal copy of such files in another directory or by making copies of files with new names.
+-->
 
 #### From a terminal window (MacOS, Linux, or Windows Linux subsystem)
 
