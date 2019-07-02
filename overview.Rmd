@@ -41,7 +41,7 @@ Please see the <a href="logistics_slides.html" target="_blank">logistics documen
 
  - <a href="modules/2.1_mcmc_principles_slides.html" target="_blank">MCMC principles</a>
  - <a href="modules/2.2_customizing_mcmc_slides.html" target="_blank">Customizing an MCMC</a>
- - <a href="modules/2.3_compareMCMC_slides.html" target="_blank">NIMBLE's MCMC comparison tools</a>
+ - <a href="modules/2.3_compareMCMC_slides.html" target="_blank">MCMC comparison tools</a>
  - <a href="modules/2.4_customizing_mcmc_extended_slides.html" target="_blank">Extended example: the litters model</a>
  - <a href="modules/2.5_mcmc_exercises_slides.html" target="_blank">Exercise: customizing an MCMC</a>
 

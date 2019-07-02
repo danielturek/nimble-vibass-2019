@@ -52,73 +52,67 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
   <h1 class="title">Automated MCMC comparison</h1>
   <h1 class="subtitle">Valencia International Bayesian Analysis Summer School Workshop</h1>
 </div>
-<div id="automating-mcmc-comparisons-in-nimble" class="slide section level1">
-<h1>Automating MCMC comparisons in NIMBLE</h1>
+<div id="automating-mcmc-comparisons" class="slide section level1">
+<h1>Automating MCMC comparisons</h1>
 <ul>
-<li>NIMBLE provides tools to automatically compare MCMC efficiency across methods.</li>
-<li>Methods can include different NIMBLE MCMC configurations as well as JAGS, OpenBUGS/WinBUGS (not tested much) and Stan (separate code required).</li>
-<li>We will use <code>compareMCMCs()</code>, which calls <code>MCMCsuite()</code> internally.</li>
-<li><code>MCMCsuite()</code> can be used directly as well.</li>
+<li>A closely related package, <code>compareMCMCs</code>, provides tools to automatically compare MCMC efficiency across methods.</li>
+<li>Methods can include different NIMBLE MCMC configurations as well as JAGS</li>
+<li>Later versions of <code>compareMCMCs</code> will also support OpenBUGS, WinBUGS, and Stan.</li>
 </ul>
+<h4 id="installing-comparemcmcs-package">Installing <code>compareMCMCs</code> package</h4>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(devtools)
+
+devtools::<span class="kw">install_github</span>(<span class="st">&quot;nimble-dev/compareMCMCs&quot;</span>, <span class="dt">subdir =</span> <span class="st">&quot;compareMCMCs&quot;</span>)</code></pre></div>
+<h4 id="overview-of-comparemcmcs-package">Overview of <code>compareMCMCs</code> package</h4>
+<p>An introductory overview of using the <code>compareMCMCs</code> package is available at:</p>
+<p><a href="https://htmlpreview.github.io/?https://github.com/nimble-dev/compareMCMCs/blob/master/UserManual/compareMCMCs.html" class="uri">https://htmlpreview.github.io/?https://github.com/nimble-dev/compareMCMCs/blob/master/UserManual/compareMCMCs.html</a>.</p>
 </div>
 <div id="example-metropolis-hastings-vs-slice-sampling.-nimble-vs.-jags." class="slide section level1">
 <h1>Example: Metropolis-Hastings vs slice sampling. NIMBLE vs. JAGS.</h1>
 <ul>
-<li><code>compareMCMCs</code> and <code>MCMCsuite</code> need to build and compile the model themselves.
-<ul>
-<li>(This may become more flexible in the future.)</li>
-</ul></li>
-<li>These functions provide a variety of pre-defined MCMC configurations and a system for providing your own.</li>
-<li>I will illustrate using slice samplers instead of the default Metropolis-Hastings samplers for <code>a</code> and <code>b</code> in the litters model.</li>
+<li><code>compareMCMCs</code> provides the <code>doMCMCs</code> function for comparing different NIMBLE MCMC algorithms, and also JAGS.</li>
+<li>A variety of pre-defined NIMBLE MCMC configurations are provided, and also a system for defining your own.</li>
+<li>I will illustrate using slice samplers instead of the default Metropolis-Hastings samplers for <code>a</code> and <code>b</code> in the litters model, and also comparison with JAGS</li>
 </ul>
 <p>Here's how we set things up to provide a customized MCMC configuration as one of the comparisons.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">littersInfo &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">code =</span> littersCode,
                    <span class="dt">constants =</span> littersConsts,
                    <span class="dt">data =</span> littersData, <span class="dt">inits =</span> littersInits)
 
-## A configuration list for compareMCMCs
-MCMCdefs &lt;-<span class="st"> </span><span class="kw">list</span>(
-    <span class="dt">nimble_slice =</span> <span class="kw">quote</span>({
-        ## This code will be evaluated in an environment
-        ## where 'Rmodel' is the model.
-        nodes &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">'a[1]'</span>,<span class="st">'a[2]'</span>,<span class="st">'b[1]'</span>,<span class="st">'b[2]'</span>)
-        MCMCconf &lt;-<span class="st"> </span><span class="kw">configureMCMC</span>(Rmodel) ## get a default configuration
-        ## print default samplers for illustration
-        MCMCconf$<span class="kw">printSamplers</span>(nodes)
-        for(node in nodes) {
-                 MCMCconf$<span class="kw">removeSamplers</span>(node)
-                 MCMCconf$<span class="kw">addSampler</span>(<span class="dt">target =</span> node, <span class="dt">type =</span> <span class="st">&quot;slice&quot;</span>)
-        }
-        ## print modified samplers for illustration
-        MCMCconf$<span class="kw">printSamplers</span>(nodes)
-        MCMCconf
-    })
-)</code></pre></div>
+## A function to configure MCMC with only slice sampling
+configure_nimble_slice &lt;-<span class="st"> </span>function(model) {
+    <span class="kw">configureMCMC</span>(model, <span class="dt">onlySlice =</span> <span class="ot">TRUE</span>)
+}</code></pre></div>
 </div>
-<div id="running-mcmcsuite-and-comparemcmcs" class="slide section level1">
-<h1>Running MCMCsuite and compareMCMCs</h1>
-<p>You can either use <code>MCMCsuite()</code> or <code>compareMCMCs()</code>. The latter allows you to print out some nice html plots of the comparisons.</p>
-<p>(I'm not showing the output here as the functions are not really designed to interface with compiling an R Markdown document.)</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">littersComparisons &lt;-<span class="st"> </span><span class="kw">compareMCMCs</span>(
+<div id="running-domcmcs" class="slide section level1">
+<h1>Running <code>doMCMCs()</code></h1>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">littersComparisons &lt;-<span class="st"> </span><span class="kw">doMCMCs</span>(
     littersInfo,
     <span class="dt">MCMCs =</span> <span class="kw">c</span>(<span class="st">&quot;jags&quot;</span>, <span class="st">&quot;nimble&quot;</span>, <span class="st">&quot;nimble_slice&quot;</span>),
-    <span class="dt">MCMCdefs =</span> MCMCdefs,
-    <span class="dt">monitors =</span> <span class="kw">c</span>(<span class="st">&quot;a&quot;</span>, <span class="st">&quot;b&quot;</span>),
-    <span class="dt">niter =</span> <span class="dv">10000</span>,
-    <span class="dt">burnin =</span> <span class="dv">1000</span>,
-    <span class="dt">summary =</span> <span class="ot">FALSE</span>)
-
-## or here is the MCMCsuite call
-littersResults &lt;-<span class="st"> </span><span class="kw">MCMCsuite</span>(
-               littersCode,
-               <span class="dt">constants =</span> littersConsts,
-               <span class="dt">data =</span> littersData,
-               <span class="dt">inits =</span> littersInits,
-               <span class="dt">MCMCs =</span> <span class="kw">c</span>(<span class="st">&quot;jags&quot;</span>, <span class="st">&quot;nimble&quot;</span>, <span class="st">&quot;nimble_slice&quot;</span>),
-               <span class="dt">MCMCdefs =</span> MCMCdefs,
-               <span class="dt">monitors =</span> <span class="kw">c</span>(<span class="st">&quot;a&quot;</span>, <span class="st">&quot;b&quot;</span>),
-               <span class="dt">niter =</span> <span class="dv">10000</span>,
-               <span class="dt">burnin =</span> <span class="dv">1000</span>)</code></pre></div>
+    <span class="dt">nimbleMCMCdefs =</span> <span class="kw">list</span>(<span class="dt">nimble_slice =</span> <span class="st">&quot;configure_nimble_slice&quot;</span>),
+    <span class="dt">MCMCinfo =</span> <span class="kw">list</span>(<span class="dt">niter =</span> <span class="dv">10000</span>,
+                    <span class="dt">burnin =</span> <span class="dv">1000</span>))</code></pre></div>
+<pre><code>## defining model...</code></pre>
+<pre><code>## building model...</code></pre>
+<pre><code>## setting data and initial values...</code></pre>
+<pre><code>## running calculate on model (any error reports that follow may simply reflect missing values in model variables) ... 
+## checking model sizes and dimensions... This model is not fully initialized. This is not an error. To see which variables are not initialized, use model$initializeInfo(). For more information on model initialization, see help(modelInitialization).
+## model building finished.</code></pre>
+<pre><code>## Compiling model graph
+##    Resolving undeclared variables
+##    Allocating nodes
+## Graph information:
+##    Observed stochastic nodes: 32
+##    Unobserved stochastic nodes: 36
+##    Total graph size: 110
+## 
+## Initializing model
+## 
+## 
+## Deleting model</code></pre>
+<pre><code>## Warning in doMCMCs(littersInfo, MCMCs = c(&quot;jags&quot;, &quot;nimble&quot;, &quot;nimble_slice&quot;), : MCMC  jags  failed.</code></pre>
+<pre><code>## Warning in doMCMCs(littersInfo, MCMCs = c(&quot;jags&quot;, &quot;nimble&quot;,
+## &quot;nimble_slice&quot;), : There was a problem compiling or running nimble MCMCs.</code></pre>
 </div>
 <div id="viewing-the-comparisons" class="slide section level1">
 <h1>Viewing the comparisons</h1>

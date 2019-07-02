@@ -7,32 +7,46 @@ output:
     mathjax: default
 ---
 
+
+
 ```{r setup, include=FALSE} 
 library(methods) ## needed only when building documents outside of R
 library(nimble)
+library(compareMCMCs)
 ## library(mcmcplots)
 read_chunk('chunks_litters.R')
 source("chunks_litters.R")
 ```
 
-# Automating MCMC comparisons in NIMBLE
+# Automating MCMC comparisons
 
-- NIMBLE provides tools to automatically compare MCMC efficiency
+- A closely related package, `compareMCMCs`, provides tools to automatically compare MCMC efficiency
 across methods.
 - Methods can include different NIMBLE MCMC configurations as well as
-  JAGS, OpenBUGS/WinBUGS (not tested much) and Stan (separate code
-  required).
-- We will use `compareMCMCs()`, which calls `MCMCsuite()` internally.
-- `MCMCsuite()` can be used directly as well.
+  JAGS
+- Later versions of `compareMCMCs` will also support OpenBUGS, WinBUGS, and Stan.
+
+#### Installing `compareMCMCs` package
+
+```{r eval = FALSE}
+library(devtools)
+
+devtools::install_github("nimble-dev/compareMCMCs", subdir = "compareMCMCs")
+```
+
+#### Overview of `compareMCMCs` package
+
+An introductory overview of using the `compareMCMCs` package is available at:
+
+[https://htmlpreview.github.io/?https://github.com/nimble-dev/compareMCMCs/blob/master/UserManual/compareMCMCs.html](https://htmlpreview.github.io/?https://github.com/nimble-dev/compareMCMCs/blob/master/UserManual/compareMCMCs.html).
+
 
 # Example: Metropolis-Hastings vs slice sampling. NIMBLE vs. JAGS.
 
- - `compareMCMCs` and `MCMCsuite` need to build and compile the model themselves.
-     - (This may become more flexible in the future.)
- - These functions provide a variety of pre-defined MCMC configurations and a system
-for providing your own.
+ - `compareMCMCs` provides the `doMCMCs` function for comparing different NIMBLE MCMC algorithms, and also JAGS.
+ - A variety of pre-defined NIMBLE MCMC configurations are provided, and also a system for defining your own.
  - I will illustrate using slice samplers instead of the default
-Metropolis-Hastings samplers for `a` and `b` in the litters model.
+Metropolis-Hastings samplers for `a` and `b` in the litters model, and also comparison with JAGS
 
 ```{r, prep, echo=FALSE}
 # so attendees can run code below this without using code from other modules
@@ -46,54 +60,24 @@ littersInfo <- list(code = littersCode,
                    constants = littersConsts,
                    data = littersData, inits = littersInits)
 
-## A configuration list for compareMCMCs
-MCMCdefs <- list(
-    nimble_slice = quote({
-        ## This code will be evaluated in an environment
-        ## where 'Rmodel' is the model.
-        nodes <- c('a[1]','a[2]','b[1]','b[2]')
-        MCMCconf <- configureMCMC(Rmodel) ## get a default configuration
-        ## print default samplers for illustration
-        MCMCconf$printSamplers(nodes)
-        for(node in nodes) {
-                 MCMCconf$removeSamplers(node)
-                 MCMCconf$addSampler(target = node, type = "slice")
-        }
-        ## print modified samplers for illustration
-        MCMCconf$printSamplers(nodes)
-        MCMCconf
-    })
-)
+## A function to configure MCMC with only slice sampling
+configure_nimble_slice <- function(model) {
+    configureMCMC(model, onlySlice = TRUE)
+}
 ```
 
-# Running MCMCsuite and compareMCMCs
+# Running `doMCMCs()`
 
-You can either use `MCMCsuite()` or `compareMCMCs()`. The latter allows you to print out some nice html plots of the comparisons.
-
-(I'm not showing the output here as the functions are not really designed to interface with compiling an R Markdown document.)
-
-```{r, compareMCMC, eval=FALSE}
-littersComparisons <- compareMCMCs(
+```{r, compareMCMC, eval = FALSE}
+littersComparisons <- doMCMCs(
     littersInfo,
     MCMCs = c("jags", "nimble", "nimble_slice"),
-    MCMCdefs = MCMCdefs,
-    monitors = c("a", "b"),
-    niter = 10000,
-    burnin = 1000,
-    summary = FALSE)
-
-## or here is the MCMCsuite call
-littersResults <- MCMCsuite(
-               littersCode,
-               constants = littersConsts,
-               data = littersData,
-               inits = littersInits,
-               MCMCs = c("jags", "nimble", "nimble_slice"),
-               MCMCdefs = MCMCdefs,
-               monitors = c("a", "b"),
-               niter = 10000,
-               burnin = 1000)
+    nimbleMCMCdefs = list(nimble_slice = "configure_nimble_slice"),
+    MCMCinfo = list(niter = 10000,
+                    burnin = 1000))
 ```
+
+
 
 # Viewing the comparisons
 
