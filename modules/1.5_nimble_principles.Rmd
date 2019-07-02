@@ -38,5 +38,5 @@ As a result, researchers fall back to hand-coding their analyses or methods, or 
 
 # Reference
 
-See our [Journal of Computational and Graphical Statistics article](http://www.tandfonline.com/doi/abs/10.1080/10618600.2016.1172487) or [the arXiv preprint](http://arxiv.org/abs/1505.05093) for more information. 
+See our [Journal of Computational and Graphical Statistics article](http://www.tandfonline.com/doi/abs/10.1080/10618600.2016.1172487) for more information. 
 

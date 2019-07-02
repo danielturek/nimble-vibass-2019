@@ -163,17 +163,29 @@ littersInits &lt;-<span class="st"> </span><span class="kw">list</span>( <span c
 
 littersMargModel &lt;-<span class="st"> </span><span class="kw">nimbleModel</span>(littersMargCode, 
           <span class="dt">data =</span> littersData, <span class="dt">constants =</span> littersConsts, <span class="dt">inits =</span> littersInits)</code></pre></div>
+<pre><code>## defining model...</code></pre>
+<pre><code>## Registering the following user-provided distributions: dbetabin .
+## NIMBLE has registered dbetabin as a distribution based on its use in BUGS code. Note that if you make changes to the nimbleFunctions for the distribution, you must call 'deregisterDistributions' before using the distribution in BUGS code for those changes to take effect.</code></pre>
+<pre><code>## building model...</code></pre>
+<pre><code>## setting data and initial values...</code></pre>
+<pre><code>## running calculate on model (any error reports that follow may simply reflect missing values in model variables) ... 
+## checking model sizes and dimensions...
+## model building finished.</code></pre>
 </div>
 <div id="specializing-the-nimblefunction-to-the-model" class="slide section level1">
 <h1>Specializing the nimbleFunction to the model</h1>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">rObjective &lt;-<span class="st"> </span><span class="kw">objective</span>(littersMargModel)
 ## cObjective &lt;- compileNimble(rObjective, project = littersMargModel)  ## remember to compile model first
-cLittersMargModel &lt;-<span class="st"> </span><span class="kw">compileNimble</span>(littersMargModel)
-cObjective &lt;-<span class="st"> </span><span class="kw">compileNimble</span>(rObjective, <span class="dt">project =</span> littersMargModel)</code></pre></div>
+cLittersMargModel &lt;-<span class="st"> </span><span class="kw">compileNimble</span>(littersMargModel)</code></pre></div>
+<pre><code>## compiling... this may take a minute. Use 'showCompilerOutput = TRUE' to see C++ compilation details.</code></pre>
+<pre><code>## compilation finished.</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cObjective &lt;-<span class="st"> </span><span class="kw">compileNimble</span>(rObjective, <span class="dt">project =</span> littersMargModel)</code></pre></div>
+<pre><code>## compiling... this may take a minute. Use 'showCompilerOutput = TRUE' to see C++ compilation details.
+## compilation finished.</code></pre>
 <p>Now let's try using it.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">system.time</span>(optR &lt;-<span class="st"> </span><span class="kw">optim</span>(<span class="kw">log</span>(<span class="kw">rep</span>(<span class="dv">1</span>,<span class="dv">4</span>)), rObjective$run, <span class="dt">control =</span> <span class="kw">list</span>(<span class="dt">fnscale =</span> -<span class="dv">1</span>)))</code></pre></div>
 <pre><code>##    user  system elapsed 
-##   2.984   0.015   3.029</code></pre>
+##   2.765   0.021   2.794</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">system.time</span>(optC &lt;-<span class="st"> </span><span class="kw">optim</span>(<span class="kw">log</span>(<span class="kw">rep</span>(<span class="dv">1</span>,<span class="dv">4</span>)), cObjective$run, <span class="dt">control =</span> <span class="kw">list</span>(<span class="dt">fnscale =</span> -<span class="dv">1</span>)))</code></pre></div>
 <pre><code>##    user  system elapsed 
 ##   0.007   0.000   0.007</code></pre>
@@ -243,8 +255,10 @@ cObjective &lt;-<span class="st"> </span><span class="kw">compileNimble</span>(r
 )</code></pre></div>
 <p>(Of course for maximum marginal likelihood we'd generally expect that the entire model probability density would be calculated.)</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">rObjective &lt;-<span class="st"> </span><span class="kw">objective</span>(littersMargModel, <span class="kw">c</span>(<span class="st">'a'</span>, <span class="st">'b'</span>))  ## or c('a[1]','a[2]','b[1]','b[2]')
-cObjective &lt;-<span class="st"> </span><span class="kw">compileNimble</span>(rObjective, <span class="dt">project =</span> littersMargModel)
-optC &lt;-<span class="st"> </span><span class="kw">optim</span>(<span class="kw">log</span>(<span class="kw">rep</span>(<span class="dv">1</span>,<span class="dv">4</span>)), cObjective$run, <span class="dt">control =</span> <span class="kw">list</span>(<span class="dt">fnscale =</span> -<span class="dv">1</span>))
+cObjective &lt;-<span class="st"> </span><span class="kw">compileNimble</span>(rObjective, <span class="dt">project =</span> littersMargModel)</code></pre></div>
+<pre><code>## compiling... this may take a minute. Use 'showCompilerOutput = TRUE' to see C++ compilation details.</code></pre>
+<pre><code>## compilation finished.</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">optC &lt;-<span class="st"> </span><span class="kw">optim</span>(<span class="kw">log</span>(<span class="kw">rep</span>(<span class="dv">1</span>,<span class="dv">4</span>)), cObjective$run, <span class="dt">control =</span> <span class="kw">list</span>(<span class="dt">fnscale =</span> -<span class="dv">1</span>))
 optC</code></pre></div>
 <pre><code>## $par
 ## [1]  3.5802268  0.4638447  1.4091323 -0.5817455

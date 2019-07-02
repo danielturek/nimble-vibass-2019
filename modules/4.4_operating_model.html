@@ -162,7 +162,15 @@ littersInits &lt;- list( a = c(2, 2), b=c(2, 2) )
 ## create the NIMBLE model object
 littersModel &lt;- nimbleModel(littersCode, 
           data = littersData, constants = littersConsts, inits = littersInits)</code></pre>
+<pre><code>## defining model...</code></pre>
+<pre><code>## building model...</code></pre>
+<pre><code>## setting data and initial values...</code></pre>
+<pre><code>## running calculate on model (any error reports that follow may simply reflect missing values in model variables) ... 
+## checking model sizes and dimensions... This model is not fully initialized. This is not an error. To see which variables are not initialized, use model$initializeInfo(). For more information on model initialization, see help(modelInitialization).
+## model building finished.</code></pre>
 <pre class="r"><code>cLittersModel &lt;- compileNimble(littersModel)</code></pre>
+<pre><code>## compiling... this may take a minute. Use 'showCompilerOutput = TRUE' to see C++ compilation details.</code></pre>
+<pre><code>## compilation finished.</code></pre>
 </div>
 <div id="nodes-and-variables" class="section level1">
 <h1>Nodes and variables</h1>

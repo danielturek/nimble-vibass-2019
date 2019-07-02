@@ -188,9 +188,17 @@ rbetabin &lt;- nimbleFunction(
 })</code></pre>
 <p>Now we’ll try it out. Given the skewed, positive-valued distributions, we’ll make a tweak to the samplers to do a random walk on the log-scale.</p>
 <pre class="r"><code>littersMargModel &lt;- nimbleModel(littersMargCode, 
-          data = littersData, constants = littersConsts, inits = littersInits)
-cLittersMargModel &lt;- compileNimble(littersMargModel)
-littersMargConf &lt;- configureMCMC(littersMargModel, print = TRUE)</code></pre>
+          data = littersData, constants = littersConsts, inits = littersInits)</code></pre>
+<pre><code>## defining model...</code></pre>
+<pre><code>## building model...</code></pre>
+<pre><code>## setting data and initial values...</code></pre>
+<pre><code>## running calculate on model (any error reports that follow may simply reflect missing values in model variables) ... 
+## checking model sizes and dimensions...
+## model building finished.</code></pre>
+<pre class="r"><code>cLittersMargModel &lt;- compileNimble(littersMargModel)</code></pre>
+<pre><code>## compiling... this may take a minute. Use 'showCompilerOutput = TRUE' to see C++ compilation details.
+## compilation finished.</code></pre>
+<pre class="r"><code>littersMargConf &lt;- configureMCMC(littersMargModel, print = TRUE)</code></pre>
 <pre><code>## [1] RW sampler: a[1]
 ## [2] RW sampler: a[2]
 ## [3] RW sampler: b[1]
@@ -206,12 +214,15 @@ littersMargConf$printSamplers()</code></pre>
 ## [3] RW sampler: a[2],  log: TRUE
 ## [4] RW sampler: b[2],  log: TRUE</code></pre>
 <pre class="r"><code>littersMargMCMC &lt;- buildMCMC(littersMargConf)
-cLittersMargMCMC &lt;- compileNimble(littersMargMCMC, project = littersMargModel)
-niter &lt;- 5000
+cLittersMargMCMC &lt;- compileNimble(littersMargMCMC, project = littersMargModel)</code></pre>
+<pre><code>## compiling... this may take a minute. Use 'showCompilerOutput = TRUE' to see C++ compilation details.
+## compilation finished.</code></pre>
+<pre class="r"><code>niter &lt;- 5000
 nburn &lt;- 1000
 set.seed(1)
 samplesMarg &lt;- runMCMC(cLittersMargMCMC, niter = niter, nburnin = nburn,
         inits = littersInits, nchains = 1, samplesAsCodaMCMC = TRUE)</code></pre>
+<pre><code>## running chain 1...</code></pre>
 <pre><code>## |-------------|-------------|-------------|-------------|
 ## |-------------------------------------------------------|</code></pre>
 </div>

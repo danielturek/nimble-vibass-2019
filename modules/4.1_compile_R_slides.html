@@ -92,6 +92,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
            <span class="kw">return</span>(out)
 })
 cNimMath1 &lt;-<span class="st"> </span><span class="kw">compileNimble</span>(nimMath1)</code></pre></div>
+<pre><code>## compiling... this may take a minute. Use 'showCompilerOutput = TRUE' to see C++ compilation details.</code></pre>
+<pre><code>## compilation finished.</code></pre>
 <p>nimbleFunctions used in this way need a run function, type and dimension information for arguments and a <em>returnType()</em> line.</p>
 </div>
 <div id="vectorization-in-nimblefunctions" class="slide section level1">
@@ -104,6 +106,8 @@ cNimMath1 &lt;-<span class="st"> </span><span class="kw">compileNimble</span>(ni
            <span class="kw">return</span>(out)
 })
 cNimMath2 &lt;-<span class="st"> </span><span class="kw">compileNimble</span>(nimMath2)</code></pre></div>
+<pre><code>## compiling... this may take a minute. Use 'showCompilerOutput = TRUE' to see C++ compilation details.</code></pre>
+<pre><code>## compilation finished.</code></pre>
 <p>For discussion: what does it mean to use vectorization in Eigen and does it suffer from the same use of temporary variables as discussed above in the R context?</p>
 </div>
 <div id="bake-off" class="slide section level1">
@@ -116,9 +120,9 @@ cNimMath2 &lt;-<span class="st"> </span><span class="kw">compileNimble</span>(ni
                 <span class="dt">columns =</span> <span class="kw">c</span>(<span class="st">'test'</span>,<span class="st">'replications'</span>,<span class="st">'elapsed'</span>),
                <span class="dt">replications =</span> <span class="dv">10</span>)</code></pre></div>
 <pre><code>##                             test replications elapsed
-## 1 out0 &lt;- exp(cos(sin(x)) + x^3)           10   1.764
-## 2           out1 &lt;- cNimMath1(x)           10   0.835
-## 3           out2 &lt;- cNimMath2(x)           10   0.800</code></pre>
+## 1 out0 &lt;- exp(cos(sin(x)) + x^3)           10   0.973
+## 2           out1 &lt;- cNimMath1(x)           10   0.947
+## 3           out2 &lt;- cNimMath2(x)           10   0.865</code></pre>
 <p>We could also time uncompiled execution of the nimbleFunction but it will generally be even slower than directly coding in R. The main purpose of running a nimbleFunction in R is debugging. You can step through execution of an uncompiled nimbleFunction using R's debugging tools as usual.</p>
 </div>
 <div id="a-more-involved-example" class="slide section level1">
@@ -181,7 +185,7 @@ K &lt;-<span class="st"> </span><span class="kw">length</span>(alphas)
         props
 })</code></pre></div>
 <pre><code>##    user  system elapsed 
-##   4.523   0.136   4.701</code></pre>
+##   2.797   0.129   2.936</code></pre>
 </div>
 <div id="c-style-implementation-in-nimble" class="slide section level1">
 <h1>C-style implementation in NIMBLE</h1>
@@ -229,19 +233,23 @@ K &lt;-<span class="st"> </span><span class="kw">length</span>(alphas)
 </div>
 <div id="lets-play-the-feud" class="slide section level1">
 <h1>Let's play the Feud</h1>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cmprobit =<span class="st"> </span><span class="kw">compileNimble</span>(mprobit)
-cmprobitVec =<span class="st"> </span><span class="kw">compileNimble</span>(mprobitVec)
-<span class="kw">set.seed</span>(<span class="dv">1</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cmprobit =<span class="st"> </span><span class="kw">compileNimble</span>(mprobit)</code></pre></div>
+<pre><code>## compiling... this may take a minute. Use 'showCompilerOutput = TRUE' to see C++ compilation details.</code></pre>
+<pre><code>## compilation finished.</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cmprobitVec =<span class="st"> </span><span class="kw">compileNimble</span>(mprobitVec)</code></pre></div>
+<pre><code>## compiling... this may take a minute. Use 'showCompilerOutput = TRUE' to see C++ compilation details.
+## compilation finished.</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">1</span>)
 <span class="kw">system.time</span>(
 props2 &lt;-<span class="st"> </span><span class="kw">cmprobit</span>(alphas, M)
 )</code></pre></div>
 <pre><code>##    user  system elapsed 
-##   0.392   0.005   0.417</code></pre>
+##   0.374   0.003   0.381</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">system.time</span>(
 props3 &lt;-<span class="st"> </span><span class="kw">cmprobitVec</span>(alphas, M)
 )</code></pre></div>
 <pre><code>##    user  system elapsed 
-##   1.138   0.013   1.211</code></pre>
+##   1.103   0.008   1.132</code></pre>
 <p>Any speculation as to why the vectorized implementation is slower?</p>
 <p>So we get a nice six-fold speedup, even though all of the R code was vectorized. In the exercises, you can practice with an example of replacing an explicit for loop in R.</p>
 </div>

@@ -118,9 +118,18 @@ rbetabin &lt;-<span class="st"> </span><span class="kw">nimbleFunction</span>(
 <p>Now we'll try it out. Given the skewed, positive-valued distributions, we'll make a tweak to the samplers to do a random walk on the log-scale.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">littersMargModel &lt;-<span class="st"> </span><span class="kw">nimbleModel</span>(littersMargCode, 
           <span class="dt">data =</span> littersData, <span class="dt">constants =</span> littersConsts, <span class="dt">inits =</span> littersInits)</code></pre></div>
-<pre><code>## NIMBLE has registered dbetabin as a distribution based on its use in BUGS code. Note that if you make changes to the nimbleFunctions for the distribution, you must call 'deregisterDistributions' before using the distribution in BUGS code for those changes to take effect.</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cLittersMargModel &lt;-<span class="st"> </span><span class="kw">compileNimble</span>(littersMargModel)
-littersMargConf &lt;-<span class="st"> </span><span class="kw">configureMCMC</span>(littersMargModel, <span class="dt">print =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<pre><code>## defining model...</code></pre>
+<pre><code>## Registering the following user-provided distributions: dbetabin .
+## NIMBLE has registered dbetabin as a distribution based on its use in BUGS code. Note that if you make changes to the nimbleFunctions for the distribution, you must call 'deregisterDistributions' before using the distribution in BUGS code for those changes to take effect.</code></pre>
+<pre><code>## building model...</code></pre>
+<pre><code>## setting data and initial values...</code></pre>
+<pre><code>## running calculate on model (any error reports that follow may simply reflect missing values in model variables) ... 
+## checking model sizes and dimensions...
+## model building finished.</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cLittersMargModel &lt;-<span class="st"> </span><span class="kw">compileNimble</span>(littersMargModel)</code></pre></div>
+<pre><code>## compiling... this may take a minute. Use 'showCompilerOutput = TRUE' to see C++ compilation details.
+## compilation finished.</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">littersMargConf &lt;-<span class="st"> </span><span class="kw">configureMCMC</span>(littersMargModel, <span class="dt">print =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <pre><code>## [1] RW sampler: a[1]
 ## [2] RW sampler: a[2]
 ## [3] RW sampler: b[1]
@@ -136,12 +145,15 @@ littersMargConf$<span class="kw">printSamplers</span>()</code></pre></div>
 ## [3] RW sampler: a[2],  log: TRUE
 ## [4] RW sampler: b[2],  log: TRUE</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">littersMargMCMC &lt;-<span class="st"> </span><span class="kw">buildMCMC</span>(littersMargConf)
-cLittersMargMCMC &lt;-<span class="st"> </span><span class="kw">compileNimble</span>(littersMargMCMC, <span class="dt">project =</span> littersMargModel)
-niter &lt;-<span class="st"> </span><span class="dv">5000</span>
+cLittersMargMCMC &lt;-<span class="st"> </span><span class="kw">compileNimble</span>(littersMargMCMC, <span class="dt">project =</span> littersMargModel)</code></pre></div>
+<pre><code>## compiling... this may take a minute. Use 'showCompilerOutput = TRUE' to see C++ compilation details.
+## compilation finished.</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">niter &lt;-<span class="st"> </span><span class="dv">5000</span>
 nburn &lt;-<span class="st"> </span><span class="dv">1000</span>
 <span class="kw">set.seed</span>(<span class="dv">1</span>)
 samplesMarg &lt;-<span class="st"> </span><span class="kw">runMCMC</span>(cLittersMargMCMC, <span class="dt">niter =</span> niter, <span class="dt">nburnin =</span> nburn,
         <span class="dt">inits =</span> littersInits, <span class="dt">nchains =</span> <span class="dv">1</span>, <span class="dt">samplesAsCodaMCMC =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<pre><code>## running chain 1...</code></pre>
 <pre><code>## |-------------|-------------|-------------|-------------|
 ## |-------------------------------------------------------|</code></pre>
 </div>
