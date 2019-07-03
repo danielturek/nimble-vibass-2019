@@ -45,6 +45,10 @@ An introductory overview of using the `compareMCMCs` package is available at:
 
  - `compareMCMCs` provides the `doMCMCs` function for comparing different NIMBLE MCMC algorithms, and also JAGS.
  - A variety of pre-defined NIMBLE MCMC configurations are provided, and also a system for defining your own.
+    - `nimble_slice`
+    - `nimble_noConj`
+    - `nimble_RW`
+    - `autoBlock`
  - I will illustrate using slice samplers instead of the default
 Metropolis-Hastings samplers for `a` and `b` in the litters model, and also comparison with JAGS
 
@@ -53,26 +57,26 @@ Metropolis-Hastings samplers for `a` and `b` in the litters model, and also comp
 # if(!exists('littersModel') || !exists('cLittersModels')) source('chunks_litters.R')
 ```                   
 
+# Using `doMCMCs()`
+
 Here's how we set things up to provide a customized MCMC configuration as one of the comparisons.
 
 ```{r, comparisons}
 littersInfo <- list(code = littersCode,
                    constants = littersConsts,
                    data = littersData, inits = littersInits)
-
-## A function to configure MCMC with only slice sampling
-configure_nimble_slice <- function(model) {
-    configureMCMC(model, onlySlice = TRUE)
-}
 ```
 
-# Running `doMCMCs()`
+### Running `doMCMCs()`
 
 ```{r, compareMCMC, eval = FALSE}
 littersComparisons <- doMCMCs(
     littersInfo,
     MCMCs = c("jags", "nimble", "nimble_slice"),
-    nimbleMCMCdefs = list(nimble_slice = "configure_nimble_slice"),
+    nimbleMCMCdefs = list(nimble_slice =
+        function(model) {
+            configureMCMC(model, onlySlice = TRUE)
+        }),
     MCMCinfo = list(niter = 10000,
                     burnin = 1000))
 ```
@@ -84,7 +88,7 @@ littersComparisons <- doMCMCs(
 ```{r, comparison-results, eval=FALSE}
 make_MCMC_comparison_pages(littersComparisons,
                            dir = "litters_comparison_results",
-                           modelNames = "littersComparisons")
+                           modelName = "littersComparisons")
 ```
 
 The results are [here](litters_comparison_results/littersComparisons.html).

@@ -126,7 +126,9 @@ $(document).ready(function () {
 <ul>
 <li><a href="#automating-mcmc-comparisons">Automating MCMC comparisons</a></li>
 <li><a href="#example-metropolis-hastings-vs-slice-sampling.-nimble-vs.jags.">Example: Metropolis-Hastings vs slice sampling. NIMBLE vs. JAGS.</a></li>
+<li><a href="#using-domcmcs">Using <code>doMCMCs()</code></a><ul>
 <li><a href="#running-domcmcs">Running <code>doMCMCs()</code></a></li>
+</ul></li>
 <li><a href="#viewing-the-comparisons">Viewing the comparisons</a></li>
 </ul>
 </div>
@@ -154,54 +156,40 @@ devtools::install_github(&quot;nimble-dev/compareMCMCs&quot;, subdir = &quot;com
 <h1>Example: Metropolis-Hastings vs slice sampling. NIMBLE vs. JAGS.</h1>
 <ul>
 <li><code>compareMCMCs</code> provides the <code>doMCMCs</code> function for comparing different NIMBLE MCMC algorithms, and also JAGS.</li>
-<li>A variety of pre-defined NIMBLE MCMC configurations are provided, and also a system for defining your own.</li>
+<li>A variety of pre-defined NIMBLE MCMC configurations are provided, and also a system for defining your own.
+<ul>
+<li><code>nimble_slice</code></li>
+<li><code>nimble_noConj</code></li>
+<li><code>nimble_RW</code></li>
+<li><code>autoBlock</code></li>
+</ul></li>
 <li>I will illustrate using slice samplers instead of the default Metropolis-Hastings samplers for <code>a</code> and <code>b</code> in the litters model, and also comparison with JAGS</li>
 </ul>
+</div>
+<div id="using-domcmcs" class="section level1">
+<h1>Using <code>doMCMCs()</code></h1>
 <p>Here’s how we set things up to provide a customized MCMC configuration as one of the comparisons.</p>
 <pre class="r"><code>littersInfo &lt;- list(code = littersCode,
                    constants = littersConsts,
-                   data = littersData, inits = littersInits)
-
-## A function to configure MCMC with only slice sampling
-configure_nimble_slice &lt;- function(model) {
-    configureMCMC(model, onlySlice = TRUE)
-}</code></pre>
-</div>
-<div id="running-domcmcs" class="section level1">
-<h1>Running <code>doMCMCs()</code></h1>
+                   data = littersData, inits = littersInits)</code></pre>
+<div id="running-domcmcs" class="section level3">
+<h3>Running <code>doMCMCs()</code></h3>
 <pre class="r"><code>littersComparisons &lt;- doMCMCs(
     littersInfo,
     MCMCs = c(&quot;jags&quot;, &quot;nimble&quot;, &quot;nimble_slice&quot;),
-    nimbleMCMCdefs = list(nimble_slice = &quot;configure_nimble_slice&quot;),
+    nimbleMCMCdefs = list(nimble_slice =
+        function(model) {
+            configureMCMC(model, onlySlice = TRUE)
+        }),
     MCMCinfo = list(niter = 10000,
                     burnin = 1000))</code></pre>
-<pre><code>## defining model...</code></pre>
-<pre><code>## building model...</code></pre>
-<pre><code>## setting data and initial values...</code></pre>
-<pre><code>## running calculate on model (any error reports that follow may simply reflect missing values in model variables) ... 
-## checking model sizes and dimensions... This model is not fully initialized. This is not an error. To see which variables are not initialized, use model$initializeInfo(). For more information on model initialization, see help(modelInitialization).
-## model building finished.</code></pre>
-<pre><code>## Compiling model graph
-##    Resolving undeclared variables
-##    Allocating nodes
-## Graph information:
-##    Observed stochastic nodes: 32
-##    Unobserved stochastic nodes: 36
-##    Total graph size: 110
-## 
-## Initializing model
-## 
-## 
-## Deleting model</code></pre>
-<pre><code>## Warning in doMCMCs(littersInfo, MCMCs = c(&quot;jags&quot;, &quot;nimble&quot;, &quot;nimble_slice&quot;), : MCMC  jags  failed.</code></pre>
-<pre><code>## Warning in doMCMCs(littersInfo, MCMCs = c(&quot;jags&quot;, &quot;nimble&quot;,
-## &quot;nimble_slice&quot;), : There was a problem compiling or running nimble MCMCs.</code></pre>
+</div>
 </div>
 <div id="viewing-the-comparisons" class="section level1">
 <h1>Viewing the comparisons</h1>
 <pre class="r"><code>make_MCMC_comparison_pages(littersComparisons,
                            dir = &quot;litters_comparison_results&quot;,
-                           modelNames = &quot;littersComparisons&quot;)</code></pre>
+                           modelName = &quot;littersComparisons&quot;)</code></pre>
 <p>The results are <a href="litters_comparison_results/littersComparisons.html">here</a>.</p>
 </div>
 
