@@ -1,0 +1,14 @@
+---
+title: "Exercises: Bayesian nonparametrics"
+subtitle: "Valencia International Bayesian Analysis Summer School Workshop"
+output: html_document
+---
+
+# Exercises
+
+ - Run an MCMC for the stick-breaking version of the AFT model on the myeloma data. Verify that conjugacy is detected for the beta-distributed parameters of the stick-breaking representation.
+ - Set up both the CRP and stick-breaking representations for the Faithful dataset in R.
+     - Run MCMCs for both. 
+     - In general, the number of components will be much less than $n$. Try allowing only $m << n$ components in the dCRP representation and see if seems to work as well. This should give a major speedup in computational time.
+ - If you have a model in which a non-parametric density might be of interest, try to start coding up the BUGS code for it.
+

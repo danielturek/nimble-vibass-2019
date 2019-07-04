@@ -1,0 +1,55 @@
+---
+title: "Programming with models: reproducibility and NIMBLE"
+subtitle: "Valencia International Bayesian Analysis Summer School Workshop"
+output: html_document
+---
+
+
+# Why develop an algorithm in NIMBLE?
+
+ - You get flexible hierarchical modeling infrastructure "for free".
+ - The NIMBLE system allows you to program essentially arbitrary computations.
+ - You can combine your method with or build on top of ones already available in NIMBLE.
+ - You can distribute your method as a separate package that uses NIMBLE.
+
+
+# Why develop an algorithm in NIMBLE?
+
+ - You get flexible hierarchical modeling infrastructure "for free".
+    - query model structure
+    - generic calculate and simulate functions
+    - data structures for storing values from a model
+ - The NIMBLE system allows you to program essentially arbitrary computations.
+    - most R mathematical functionality
+    - linear algebra
+    - call out to arbitrary R and C/C++ code
+ - You can combine your method with or build on top of ones already available in NIMBLE.
+    - nimbleFunctions can call other nimbleFunctions
+ - You can distribute your method as a separate package that uses NIMBLE.
+
+# Reproducible research
+
+Algorithm/methods developers tend to write their own algorithms in R, Python, MATLAB, or C/C++ because they are implementing new computations and need language flexibility.
+
+Drawbacks:
+
+ - code may not be discoverable by a large audience
+ - users must become familiar with a new system
+ - code may not be carefully tested
+ - parts of the code may duplicate other work
+
+Applied statisticians tend to write their own model-specific code in R, Python, MATLAB, or C/C++ because available methods are not flexible enough (e.g., specialized MCMC samplers, specialized numerical implementation).
+
+Drawbacks:
+
+ - parts of the code may duplicate other work, requiring additional work of the analyst
+ - code may not be well-tested
+
+# Reproducible research and NIMBLE
+
+ - nimbleFunctions allow an algorithm to work on any (appropriate) hierarchical model, while providing language flexibility
+ - new MCMC samplers can be built and used only on parts of a model, without requiring development of an entire MCMC system
+ - specialized MCMC systems can be built on top of NIMBLE's MCMC engine
+
+ - new distributions and functions can be written for use with BUGS
+ - new samplers and "mini"-algorithms can be used in the context of a larger system
