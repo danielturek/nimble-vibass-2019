@@ -29,6 +29,9 @@ for(f in cmdArgs) {
     knit(filename, envir = new.env())
     mdFile <- gsub('modules/', '', paste(f, ".md", sep = ""))
     system(paste("pandoc -s --webtex -t slidy ", mdFile, " -o ", paste(f, "_slides.html", sep = ""), " --self-contained"))
+    ##system(paste("pandoc -s --webtex -t slidy --variable linkcolor=cyan --variable filecolor=cyan --variable urlcolor=cyan --variable toccolor=cyan --variable citecolor=cyan ", mdFile, " -o ", paste(f, "_slides.html", sep = ""), " --self-contained"))
+    ##system(paste("pandoc -s --webtex -t slidy --variable linkcolor=cyan --variable filecolor=cyan --variable urlcolor=cyan --variable toccolor=cyan --variable citecolor=cyan ", mdFile, " -o ", paste(f, "_slides.html", sep = ""), " --self-contained"))
+    ##system(paste("pandoc -s --webtex -t slidy --variable links-as-notes ", mdFile, " -o ", paste(f, "_slides.html", sep = ""), " --self-contained"))
     render(filename, envir = new.env()) # for style that can hide code chunks dynamically
     ## purl(source) ## make separate .R file with just the code
     ## knit2html(source, envir = new.env())
