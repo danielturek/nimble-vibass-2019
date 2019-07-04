@@ -120,9 +120,9 @@ cNimMath2 &lt;-<span class="st"> </span><span class="kw">compileNimble</span>(ni
                 <span class="dt">columns =</span> <span class="kw">c</span>(<span class="st">'test'</span>,<span class="st">'replications'</span>,<span class="st">'elapsed'</span>),
                <span class="dt">replications =</span> <span class="dv">10</span>)</code></pre></div>
 <pre><code>##                             test replications elapsed
-## 1 out0 &lt;- exp(cos(sin(x)) + x^3)           10   0.973
-## 2           out1 &lt;- cNimMath1(x)           10   0.947
-## 3           out2 &lt;- cNimMath2(x)           10   0.865</code></pre>
+## 1 out0 &lt;- exp(cos(sin(x)) + x^3)           10   1.083
+## 2           out1 &lt;- cNimMath1(x)           10   0.945
+## 3           out2 &lt;- cNimMath2(x)           10   0.875</code></pre>
 <p>We could also time uncompiled execution of the nimbleFunction but it will generally be even slower than directly coding in R. The main purpose of running a nimbleFunction in R is debugging. You can step through execution of an uncompiled nimbleFunction using R's debugging tools as usual.</p>
 </div>
 <div id="a-more-involved-example" class="slide section level1">
@@ -185,7 +185,7 @@ K &lt;-<span class="st"> </span><span class="kw">length</span>(alphas)
         props
 })</code></pre></div>
 <pre><code>##    user  system elapsed 
-##   2.797   0.129   2.936</code></pre>
+##   2.815   0.132   2.959</code></pre>
 </div>
 <div id="c-style-implementation-in-nimble" class="slide section level1">
 <h1>C-style implementation in NIMBLE</h1>
@@ -244,23 +244,25 @@ K &lt;-<span class="st"> </span><span class="kw">length</span>(alphas)
 props2 &lt;-<span class="st"> </span><span class="kw">cmprobit</span>(alphas, M)
 )</code></pre></div>
 <pre><code>##    user  system elapsed 
-##   0.374   0.003   0.381</code></pre>
+##   0.381   0.001   0.384</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">system.time</span>(
 props3 &lt;-<span class="st"> </span><span class="kw">cmprobitVec</span>(alphas, M)
 )</code></pre></div>
 <pre><code>##    user  system elapsed 
-##   1.103   0.008   1.132</code></pre>
+##   1.131   0.003   1.137</code></pre>
 <p>Any speculation as to why the vectorized implementation is slower?</p>
 <p>So we get a nice six-fold speedup, even though all of the R code was vectorized. In the exercises, you can practice with an example of replacing an explicit for loop in R.</p>
 </div>
 <div id="using-nimblefunctions-in-bugs-code-user-defined-functions" class="slide section level1">
 <h1>Using nimbleFunctions in BUGS code (user-defined functions)</h1>
 <p>You can write a nimbleFunction like the above examples and use them directly in your BUGS code to define a model.</p>
-<p>Examples in my own work (see the model in the BUGS examples module):</p>
+<p>Examples in my own work:</p>
 <ul>
-<li>writing a linearized exponential function, <img style="vertical-align:middle" src="data:image/png;base64,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" alt="1(x&lt;0) \exp(x) + 1(x \geq 0) (1 + x)" title="1(x&lt;0) \exp(x) + 1(x \geq 0) (1 + x)" />, to robustify an exponential transformation</li>
-<li>writing a b-spline function</li>
+<li>writing custom functions to vectorize calculations</li>
+<li>writing a function to limit (restict) calculations to a local regons, only</li>
+<li>writing a function to sum over discrete latent states</li>
 </ul>
+<p>For example, see <a href="https://link.springer.com/article/10.1007/s10651-016-0353-z" target="_blank" style="color: blue">Turek et. al. (2016)</a>.</p>
 </div>
 </body>
 </html>

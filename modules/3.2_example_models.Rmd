@@ -57,7 +57,7 @@ With `is_cens[i] = 0`, the dinterval probability is one only if `x[i] <= c[i]`.
 Here we have indexing indicating fixed membership in a group to allow ANOVA-like effects.
 
 ```{r, glmm-example, eval=FALSE}
-model {
+nimbleCode({
   for (i in 1:n){
     y[i] ~ dbin (p.bound[i], 1)
     p.bound[i] <- max(0, min(1, ilogit(b.0 + b.female*female[i] + b.black*black[i] +
@@ -91,7 +91,7 @@ model {
   sigma.age.edu ~ dunif (0, 100)
   sigma.state ~ dunif (0, 100)
   sigma.region ~ dunif (0, 100)
-}
+})
 ```
 
 
@@ -197,35 +197,71 @@ nimbleCode({
 
 # NIMBLE-based example from my research
 
-Here's a model that uses user-defined distributions and functions from my own research on paleoecology.
+Here's a model from my own research in environmental sciences, on the transmission of plant diseases:
 
-```{r, paleo-example, eval=FALSE}
-  sigma ~ dunif(0,50) 
+<a href="https://esajournals.onlinelibrary.wiley.com/doi/full/10.1002/ecs2.2494" target="_blank" style="color: blue">Zeilinger and Turek et. al. (2018)</a>
 
-  b[1] ~ dunif(0,bMax)
-  b[2] ~ dunif(0,bMax)
-  for(t in 3:T){
-      ## user-defined distribution, with time-series dependence, truncation
-      b[t] ~ T(dGenPareto(3*b[t-1] - 3*b[t-2] + b[t-3], sigma), 0, bMax)
-  }
-  
-  for(t in 1:T){
-    ## user-defined (spline) function
-    Zb[t,1:nKnots] <- bspline(b[t], knots[1:nKnots])
-  }
 
-  ## vectorized linear algebra and user-defined function
-  shape1[,] <- linexp(Zb[,] %*% beta1[,], J = J, I = I)
-  shape2[,] <- linexp(Zb[,] %*% beta2[,], J = J, I = I)
+```{r, vector-example, eval=FALSE}
+nimbleCode({
 
-  ## user-defined distribution with stick-breaking multinomial representation
-  for(j in 1:J){
-    Y[j, 1] ~ dbetabin(shape1[age_index[j], 1], shape2[age_index[j], 1], n[j])
-    for(i in 2:(I-1)){
-      Y[j, i] ~ dbetabin(shape1[age_index[j], i],
-                         shape2[age_index[j], i], n[j] - sum(Y[j,1:(i-1)]))
+    ## priors:
+    for(i in 1:11) {
+        b[i] ~ dnorm(0, sd=10000)
     }
-  }
+    p_obs_plant ~ dbeta(1, 1)   ## probability of xf detection in source plant
+    p_obs_vector ~ dbeta(1, 1)  ## probability of xf detection in vector
+    p_trans_plant_dsf ~ dbeta(1, 1)    ## probabilities of *any* xf transmission to plant measurement site
+    p_trans_plant_wt  ~ dbeta(1, 1)    ##
+    p_trans_vector_dsf ~ dbeta(1, 1)   ## probabilities of *any* xf transmission to vector
+    p_trans_vector_wt  ~ dbeta(1, 1)   ##
+    
+    ## biological model:
+    for(i in 1:N) {
+        ## transmission of xf to plant site:
+        z_trans_plant[i] ~ dbern(p_trans_plant_dsf*genotype_dsf[i] + p_trans_plant_wt*genotype_wt[i])
+        lambda_plant[i] <- z_trans_plant[i] * exp(b[1]*genotype_dsf[i] + b[2]*genotype_wt[i] + b[3]*distance[i]*genotype_dsf[i] + b[4]*distance[i]*genotype_wt[i])
+        ## transmission of xf to vector:
+        z_trans_vector[i] ~ dbern(p_trans_vector_dsf*genotype_dsf[i] + p_trans_vector_wt*genotype_wt[i])
+        lambda_vector[i] <- z_trans_vector[i] * (b[5]*genotype_dsf[i] + b[6]*genotype_wt[i] + b[7]*lambda_plant[i]*genotype_dsf[i] + b[8]*lambda_plant[i]*genotype_wt[i])
+    }
+    
+    ## only model observed (non-NA) values of xf_source_plant:
+    for(iObs in 1:N_obs_plant) {
+        z_obs_plant[obs_ind_plant[iObs]] ~ dbern(p_obs_plant)
+        xf_source_plant[obs_ind_plant[iObs]] ~ dpois(z_obs_plant[obs_ind_plant[iObs]] * lambda_plant[obs_ind_plant[iObs]])
+    }
+    
+    ## only model observed (non-NA) values of xf_vector:
+    for(iObs in 1:N_obs_vector) {
+        z_obs_vector[obs_ind_vector[iObs]] ~ dbern(p_obs_vector)
+        xf_vector[obs_ind_vector[iObs]] ~ dpois(z_obs_vector[obs_ind_vector[iObs]] * lambda_vector[obs_ind_vector[iObs]])
+    }
+    
+    ## only model observed (non-NA) values of infected:
+    for(iObs in 1:N_obs_infected) {
+        logit(p_infect[obs_ind_infected[iObs]]) <- b[9]*genotype_dsf[obs_ind_infected[iObs]] + b[10]*genotype_wt[obs_ind_infected[iObs]] + b[11]*lambda_vector[obs_ind_infected[iObs]]
+        infected[obs_ind_infected[iObs]] ~ dbern(p_infect[obs_ind_infected[iObs]])
+    }
+    
+    ## genotype DSF predictive nodes:
+    lambda_plant_dsf <- p_trans_plant_dsf * exp(b[1])
+    lambda_vector_dsf <- p_trans_vector_dsf * (b[5] + b[7]*lambda_plant_dsf)
+    logit(p_infect_dsf) <- b[9] + b[11]*lambda_vector_dsf
+    
+    ## genotype WT predictive nodes:
+    lambda_plant_wt <- p_trans_plant_wt * exp(b[2])
+    lambda_vector_wt <- p_trans_vector_wt * (b[6] + b[8]*lambda_plant_wt)
+    logit(p_infect_wt) <- b[10] + b[11]*lambda_vector_wt
+    
+    ## xf_source_plant and xf_vector predictions
+    for(i in 1:N) {
+        pred_lambda_plant[i] <- exp(b[1]*genotype_dsf[i] + b[2]*genotype_wt[i] + b[3]*distance[i]*genotype_dsf[i] + b[4]*distance[i]*genotype_wt[i])
+        pred_lambda_vector[i] <- b[5]*genotype_dsf[i] + b[6]*genotype_wt[i] + b[7]*pred_lambda_plant[i]*genotype_dsf[i] + b[8]*pred_lambda_plant[i]*genotype_wt[i]
+        pred_xf_source_plant[i] ~ dpois(pred_lambda_plant[i])
+        pred_xf_vector[i] ~ dpois(pred_lambda_vector[i])
+    }
+})
 ```
 
 # Open discussion of participant models and possible model constructs

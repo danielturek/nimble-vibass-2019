@@ -14,7 +14,7 @@ Numerical Inference for statistical Models using Bayesian and Likelihood Estimat
 - A system for programming algorithms to be used on hierarchical models
 - A partial compiler for math, flow control, and related syntax in R
 
-We have an extensive website (<a href="r-nimble.org)" target="_blank" style="color: blue">https://r-nimble.org</a> with fairly comprehensive User Manual, examples, and other information.
+We have an extensive website (<a href="http://r-nimble.org" target="_blank" style="color: blue">https://r-nimble.org</a>) with fairly comprehensive User Manual, examples, and other information.
 
 # NIMBLE components
 
@@ -50,21 +50,20 @@ Here are some of the features you can do in NIMBLE that we are most excited abou
 * various sequential Monte Carlo packages
   1. <a href="http://kingaa.github.io/pomp" target="_blank" style="color: blue">POMP</a>
   2. <a href="http://libbi.org" target="_blank" style="color: blue">LibBI</a>
-  3. <a href="https://alea.bordeaux.inria.fr/biips/doku.php?id=home" target="_blank" style="color: blue">BIIPS</a>
+  3. <a href="https://biips.github.io/" target="_blank" style="color: blue">BIIPS</a>
   4. <a href="https://cran.r-project.org/web/packages/SMC/index.html" target="_blank" style="color: blue">SMC</a>
 * various tools for a variety of algorithms in R, Python, Matlab, etc.
 
 # Getting help with NIMBLE
 
 * Post to the <a href="https://groups.google.com/forum/#!forum/nimble-users" target="_blank" style="color: blue">NIMBLE user group</a>
-* Email <a href="the NIMBLE development team" target="_blank" style="color: blue">nimble.stats@gmail.com</a>
+* Email the NIMBLE development team at: $\text{\LARGE{nimble.stats@gmail.com}}$
 * Follow announcements via the <a href="https://groups.google.com/forum/#!forum/nimble-announce" target="_blank" style="color: blue">NIMBLE announcements list</a>
 
-And you can feel free to email Chris Paciorek directly given your participation in this workshop. However I do encourage you to post to the user group as any of the NIMBLE developers or other users can then help you out.
+And you can feel free email me directly $\text{\LARGE{dbt1@williams.edu}}$) given your participation in this workshop. However I do encourage you to post to the user group as any of the NIMBLE developers or other users can then help you out.
 
 # Participating in NIMBLE
 
-* Email <a href="the NIMBLE development team" target="_blank" style="color: blue">nimble.stats@gmail.com</a> if you're interested in participating in the development of NIMBLE. 
-* We have an NSF grant for further software development of the NIMBLE core code, and **we're looking for a good programmer or postdoc**.
+* Email $\text{\LARGE{nimble.stats@gmail.com}}$ if you're interested in participating in the development of NIMBLE. 
 * Develop an algorithm using NIMBLE and either share it with us (e.g., by a Git pull request or more informally) or develop an R package that depends on NIMBLE.
 * We have funding to bring selected users to Berkeley for intensive collaboration; contact us if you have an interesting use for NIMBLE in mind and want to explore possibilities with us.

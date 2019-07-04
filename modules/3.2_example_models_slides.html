@@ -90,7 +90,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div id="glmm-regression-model" class="slide section level1">
 <h1>GLMM regression model</h1>
 <p>Here we have indexing indicating fixed membership in a group to allow ANOVA-like effects.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model {
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">nimbleCode</span>({
   for (i in <span class="dv">1</span>:n){
     y[i] ~<span class="st"> </span><span class="kw">dbin</span> (p.bound[i], <span class="dv">1</span>)
     p.bound[i] &lt;-<span class="st"> </span><span class="kw">max</span>(<span class="dv">0</span>, <span class="kw">min</span>(<span class="dv">1</span>, <span class="kw">ilogit</span>(b<span class="fl">.0</span> +<span class="st"> </span>b.female*female[i] +<span class="st"> </span>b.black*black[i] +
@@ -124,7 +124,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
   sigma.age.edu ~<span class="st"> </span><span class="kw">dunif</span> (<span class="dv">0</span>, <span class="dv">100</span>)
   sigma.state ~<span class="st"> </span><span class="kw">dunif</span> (<span class="dv">0</span>, <span class="dv">100</span>)
   sigma.region ~<span class="st"> </span><span class="kw">dunif</span> (<span class="dv">0</span>, <span class="dv">100</span>)
-}</code></pre></div>
+})</code></pre></div>
 </div>
 <div id="mixture-model" class="slide section level1">
 <h1>Mixture model</h1>
@@ -221,33 +221,67 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </div>
 <div id="nimble-based-example-from-my-research" class="slide section level1">
 <h1>NIMBLE-based example from my research</h1>
-<p>Here's a model that uses user-defined distributions and functions from my own research on paleoecology.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  sigma ~<span class="st"> </span><span class="kw">dunif</span>(<span class="dv">0</span>,<span class="dv">50</span>) 
+<p>Here's a model from my own research in environmental sciences, on the transmission of plant diseases:</p>
+<p><a href="https://esajournals.onlinelibrary.wiley.com/doi/full/10.1002/ecs2.2494" target="_blank" style="color: blue">Zeilinger and Turek et. al. (2018)</a></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">nimbleCode</span>({
 
-  b[<span class="dv">1</span>] ~<span class="st"> </span><span class="kw">dunif</span>(<span class="dv">0</span>,bMax)
-  b[<span class="dv">2</span>] ~<span class="st"> </span><span class="kw">dunif</span>(<span class="dv">0</span>,bMax)
-  for(t in <span class="dv">3</span>:T){
-      ## user-defined distribution, with time-series dependence, truncation
-      b[t] ~<span class="st"> </span><span class="kw">T</span>(<span class="kw">dGenPareto</span>(<span class="dv">3</span>*b[t<span class="dv">-1</span>] -<span class="st"> </span><span class="dv">3</span>*b[t<span class="dv">-2</span>] +<span class="st"> </span>b[t<span class="dv">-3</span>], sigma), <span class="dv">0</span>, bMax)
-  }
-  
-  for(t in <span class="dv">1</span>:T){
-    ## user-defined (spline) function
-    Zb[t,<span class="dv">1</span>:nKnots] &lt;-<span class="st"> </span><span class="kw">bspline</span>(b[t], knots[<span class="dv">1</span>:nKnots])
-  }
-
-  ## vectorized linear algebra and user-defined function
-  shape1[,] &lt;-<span class="st"> </span><span class="kw">linexp</span>(Zb[,] %*%<span class="st"> </span>beta1[,], <span class="dt">J =</span> J, <span class="dt">I =</span> I)
-  shape2[,] &lt;-<span class="st"> </span><span class="kw">linexp</span>(Zb[,] %*%<span class="st"> </span>beta2[,], <span class="dt">J =</span> J, <span class="dt">I =</span> I)
-
-  ## user-defined distribution with stick-breaking multinomial representation
-  for(j in <span class="dv">1</span>:J){
-    Y[j, <span class="dv">1</span>] ~<span class="st"> </span><span class="kw">dbetabin</span>(shape1[age_index[j], <span class="dv">1</span>], shape2[age_index[j], <span class="dv">1</span>], n[j])
-    for(i in <span class="dv">2</span>:(I<span class="dv">-1</span>)){
-      Y[j, i] ~<span class="st"> </span><span class="kw">dbetabin</span>(shape1[age_index[j], i],
-                         shape2[age_index[j], i], n[j] -<span class="st"> </span><span class="kw">sum</span>(Y[j,<span class="dv">1</span>:(i<span class="dv">-1</span>)]))
+    ## priors:
+    for(i in <span class="dv">1</span>:<span class="dv">11</span>) {
+        b[i] ~<span class="st"> </span><span class="kw">dnorm</span>(<span class="dv">0</span>, <span class="dt">sd=</span><span class="dv">10000</span>)
     }
-  }</code></pre></div>
+    p_obs_plant ~<span class="st"> </span><span class="kw">dbeta</span>(<span class="dv">1</span>, <span class="dv">1</span>)   ## probability of xf detection in source plant
+    p_obs_vector ~<span class="st"> </span><span class="kw">dbeta</span>(<span class="dv">1</span>, <span class="dv">1</span>)  ## probability of xf detection in vector
+    p_trans_plant_dsf ~<span class="st"> </span><span class="kw">dbeta</span>(<span class="dv">1</span>, <span class="dv">1</span>)    ## probabilities of *any* xf transmission to plant measurement site
+    p_trans_plant_wt  ~<span class="st"> </span><span class="kw">dbeta</span>(<span class="dv">1</span>, <span class="dv">1</span>)    ##
+    p_trans_vector_dsf ~<span class="st"> </span><span class="kw">dbeta</span>(<span class="dv">1</span>, <span class="dv">1</span>)   ## probabilities of *any* xf transmission to vector
+    p_trans_vector_wt  ~<span class="st"> </span><span class="kw">dbeta</span>(<span class="dv">1</span>, <span class="dv">1</span>)   ##
+    
+    ## biological model:
+    for(i in <span class="dv">1</span>:N) {
+        ## transmission of xf to plant site:
+        z_trans_plant[i] ~<span class="st"> </span><span class="kw">dbern</span>(p_trans_plant_dsf*genotype_dsf[i] +<span class="st"> </span>p_trans_plant_wt*genotype_wt[i])
+        lambda_plant[i] &lt;-<span class="st"> </span>z_trans_plant[i] *<span class="st"> </span><span class="kw">exp</span>(b[<span class="dv">1</span>]*genotype_dsf[i] +<span class="st"> </span>b[<span class="dv">2</span>]*genotype_wt[i] +<span class="st"> </span>b[<span class="dv">3</span>]*distance[i]*genotype_dsf[i] +<span class="st"> </span>b[<span class="dv">4</span>]*distance[i]*genotype_wt[i])
+        ## transmission of xf to vector:
+        z_trans_vector[i] ~<span class="st"> </span><span class="kw">dbern</span>(p_trans_vector_dsf*genotype_dsf[i] +<span class="st"> </span>p_trans_vector_wt*genotype_wt[i])
+        lambda_vector[i] &lt;-<span class="st"> </span>z_trans_vector[i] *<span class="st"> </span>(b[<span class="dv">5</span>]*genotype_dsf[i] +<span class="st"> </span>b[<span class="dv">6</span>]*genotype_wt[i] +<span class="st"> </span>b[<span class="dv">7</span>]*lambda_plant[i]*genotype_dsf[i] +<span class="st"> </span>b[<span class="dv">8</span>]*lambda_plant[i]*genotype_wt[i])
+    }
+    
+    ## only model observed (non-NA) values of xf_source_plant:
+    for(iObs in <span class="dv">1</span>:N_obs_plant) {
+        z_obs_plant[obs_ind_plant[iObs]] ~<span class="st"> </span><span class="kw">dbern</span>(p_obs_plant)
+        xf_source_plant[obs_ind_plant[iObs]] ~<span class="st"> </span><span class="kw">dpois</span>(z_obs_plant[obs_ind_plant[iObs]] *<span class="st"> </span>lambda_plant[obs_ind_plant[iObs]])
+    }
+    
+    ## only model observed (non-NA) values of xf_vector:
+    for(iObs in <span class="dv">1</span>:N_obs_vector) {
+        z_obs_vector[obs_ind_vector[iObs]] ~<span class="st"> </span><span class="kw">dbern</span>(p_obs_vector)
+        xf_vector[obs_ind_vector[iObs]] ~<span class="st"> </span><span class="kw">dpois</span>(z_obs_vector[obs_ind_vector[iObs]] *<span class="st"> </span>lambda_vector[obs_ind_vector[iObs]])
+    }
+    
+    ## only model observed (non-NA) values of infected:
+    for(iObs in <span class="dv">1</span>:N_obs_infected) {
+        <span class="kw">logit</span>(p_infect[obs_ind_infected[iObs]]) &lt;-<span class="st"> </span>b[<span class="dv">9</span>]*genotype_dsf[obs_ind_infected[iObs]] +<span class="st"> </span>b[<span class="dv">10</span>]*genotype_wt[obs_ind_infected[iObs]] +<span class="st"> </span>b[<span class="dv">11</span>]*lambda_vector[obs_ind_infected[iObs]]
+        infected[obs_ind_infected[iObs]] ~<span class="st"> </span><span class="kw">dbern</span>(p_infect[obs_ind_infected[iObs]])
+    }
+    
+    ## genotype DSF predictive nodes:
+    lambda_plant_dsf &lt;-<span class="st"> </span>p_trans_plant_dsf *<span class="st"> </span><span class="kw">exp</span>(b[<span class="dv">1</span>])
+    lambda_vector_dsf &lt;-<span class="st"> </span>p_trans_vector_dsf *<span class="st"> </span>(b[<span class="dv">5</span>] +<span class="st"> </span>b[<span class="dv">7</span>]*lambda_plant_dsf)
+    <span class="kw">logit</span>(p_infect_dsf) &lt;-<span class="st"> </span>b[<span class="dv">9</span>] +<span class="st"> </span>b[<span class="dv">11</span>]*lambda_vector_dsf
+    
+    ## genotype WT predictive nodes:
+    lambda_plant_wt &lt;-<span class="st"> </span>p_trans_plant_wt *<span class="st"> </span><span class="kw">exp</span>(b[<span class="dv">2</span>])
+    lambda_vector_wt &lt;-<span class="st"> </span>p_trans_vector_wt *<span class="st"> </span>(b[<span class="dv">6</span>] +<span class="st"> </span>b[<span class="dv">8</span>]*lambda_plant_wt)
+    <span class="kw">logit</span>(p_infect_wt) &lt;-<span class="st"> </span>b[<span class="dv">10</span>] +<span class="st"> </span>b[<span class="dv">11</span>]*lambda_vector_wt
+    
+    ## xf_source_plant and xf_vector predictions
+    for(i in <span class="dv">1</span>:N) {
+        pred_lambda_plant[i] &lt;-<span class="st"> </span><span class="kw">exp</span>(b[<span class="dv">1</span>]*genotype_dsf[i] +<span class="st"> </span>b[<span class="dv">2</span>]*genotype_wt[i] +<span class="st"> </span>b[<span class="dv">3</span>]*distance[i]*genotype_dsf[i] +<span class="st"> </span>b[<span class="dv">4</span>]*distance[i]*genotype_wt[i])
+        pred_lambda_vector[i] &lt;-<span class="st"> </span>b[<span class="dv">5</span>]*genotype_dsf[i] +<span class="st"> </span>b[<span class="dv">6</span>]*genotype_wt[i] +<span class="st"> </span>b[<span class="dv">7</span>]*pred_lambda_plant[i]*genotype_dsf[i] +<span class="st"> </span>b[<span class="dv">8</span>]*pred_lambda_plant[i]*genotype_wt[i]
+        pred_xf_source_plant[i] ~<span class="st"> </span><span class="kw">dpois</span>(pred_lambda_plant[i])
+        pred_xf_vector[i] ~<span class="st"> </span><span class="kw">dpois</span>(pred_lambda_vector[i])
+    }
+})</code></pre></div>
 </div>
 <div id="open-discussion-of-participant-models-and-possible-model-constructs" class="slide section level1">
 <h1>Open discussion of participant models and possible model constructs</h1>

@@ -226,7 +226,10 @@ So we get a nice six-fold speedup, even though all of the R code was vectorized.
 
 You can write a nimbleFunction like the above examples and use them directly in your BUGS code to define a model.
 
-Examples in my own work (see the model in the BUGS examples module):
+Examples in my own work:
 
- - writing a linearized exponential function, $1(x<0) \exp(x) + 1(x \geq 0) (1 + x)$, to robustify an exponential transformation
- - writing a b-spline function
+ - writing custom functions to vectorize calculations
+ - writing a function to limit (restict) calculations to a local regons, only
+ - writing a function to sum over discrete latent states
+
+For example, see <a href="https://link.springer.com/article/10.1007/s10651-016-0353-z" target="_blank" style="color: blue">Turek et. al. (2016)</a>.

@@ -191,9 +191,9 @@ benchmark(out0 &lt;- exp(cos(sin(x)) + x^3),
                 columns = c('test','replications','elapsed'),
                replications = 10)</code></pre>
 <pre><code>##                             test replications elapsed
-## 1 out0 &lt;- exp(cos(sin(x)) + x^3)           10   0.734
-## 2           out1 &lt;- cNimMath1(x)           10   0.873
-## 3           out2 &lt;- cNimMath2(x)           10   0.808</code></pre>
+## 1 out0 &lt;- exp(cos(sin(x)) + x^3)           10   0.645
+## 2           out1 &lt;- cNimMath1(x)           10   0.775
+## 3           out2 &lt;- cNimMath2(x)           10   0.716</code></pre>
 <p>We could also time uncompiled execution of the nimbleFunction but it will generally be even slower than directly coding in R. The main purpose of running a nimbleFunction in R is debugging. You can step through execution of an uncompiled nimbleFunction using R’s debugging tools as usual.</p>
 </div>
 <div id="a-more-involved-example" class="section level1">
@@ -247,7 +247,7 @@ system.time({
         props
 })</code></pre>
 <pre><code>##    user  system elapsed 
-##   3.401   0.205   3.658</code></pre>
+##   2.655   0.114   2.781</code></pre>
 </div>
 <div id="c-style-implementation-in-nimble" class="section level1">
 <h1>C-style implementation in NIMBLE</h1>
@@ -306,23 +306,25 @@ system.time(
 props2 &lt;- cmprobit(alphas, M)
 )</code></pre>
 <pre><code>##    user  system elapsed 
-##   0.382   0.002   0.388</code></pre>
+##   0.376   0.001   0.380</code></pre>
 <pre class="r"><code>system.time(
 props3 &lt;- cmprobitVec(alphas, M)
 )</code></pre>
 <pre><code>##    user  system elapsed 
-##   1.091   0.004   1.102</code></pre>
+##   1.126   0.004   1.134</code></pre>
 <p>Any speculation as to why the vectorized implementation is slower?</p>
 <p>So we get a nice six-fold speedup, even though all of the R code was vectorized. In the exercises, you can practice with an example of replacing an explicit for loop in R.</p>
 </div>
 <div id="using-nimblefunctions-in-bugs-code-user-defined-functions" class="section level1">
 <h1>Using nimbleFunctions in BUGS code (user-defined functions)</h1>
 <p>You can write a nimbleFunction like the above examples and use them directly in your BUGS code to define a model.</p>
-<p>Examples in my own work (see the model in the BUGS examples module):</p>
+<p>Examples in my own work:</p>
 <ul>
-<li>writing a linearized exponential function, <span class="math inline">\(1(x&lt;0) \exp(x) + 1(x \geq 0) (1 + x)\)</span>, to robustify an exponential transformation</li>
-<li>writing a b-spline function</li>
+<li>writing custom functions to vectorize calculations</li>
+<li>writing a function to limit (restict) calculations to a local regons, only</li>
+<li>writing a function to sum over discrete latent states</li>
 </ul>
+<p>For example, see <a href="https://link.springer.com/article/10.1007/s10651-016-0353-z" target="_blank" style="color: blue">Turek et. al. (2016)</a>.</p>
 </div>
 
 

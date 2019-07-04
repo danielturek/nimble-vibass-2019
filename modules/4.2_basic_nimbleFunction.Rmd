@@ -33,9 +33,9 @@ Thus, a nimbleFunction has two parts:
  - setup code: used to tailor the algorithm to a particular model structure. Often this involves determining dependencies amongst nodes in the model and setting up storage using *modelValues*
  - run code: the guts of the algorithm, written generically so it will apply to any (appropriate) model
 
-Setup code is written as a R function, using R code, usually including NIMBLE's special functions for querying the model structure (see the <a href="4.5_model_structure_slides.html" target="_blank" style="color: blue">module on querying model_structure</a>. 
+Setup code is written as a R function, using R code, usually including NIMBLE's special functions for querying the model structure (see the <a href="4.5_model_structure_slides.html" target="_blank" style="color: blue">module on querying model_structure</a>). 
 
-Run code is written using the NIMBLE *domain-specific language* (DSL). While this is formally a language distinct from R, you can just think of it as a subset of R, enhanced with some functions for operating on the model (see the <a href="4.4_operating_model_slides.html" target="_blank" style="color: blue">module on operating a model</a>. 
+Run code is written using the NIMBLE *domain-specific language* (DSL). While this is formally a language distinct from R, you can just think of it as a subset of R, enhanced with some functions for operating on the model (see the <a href="4.4_operating_model_slides.html" target="_blank" style="color: blue">module on operating a model</a>). 
 
 # Some syntax for nimbleFunctions
 
