@@ -126,8 +126,8 @@ $(document).ready(function () {
 <ul>
 <li><a href="#automating-mcmc-comparisons">Automating MCMC comparisons</a></li>
 <li><a href="#example-metropolis-hastings-vs-slice-sampling.-nimble-vs.jags.">Example: Metropolis-Hastings vs slice sampling. NIMBLE vs. JAGS.</a></li>
-<li><a href="#using-domcmcs">Using <code>doMCMCs()</code></a><ul>
-<li><a href="#running-domcmcs">Running <code>doMCMCs()</code></a></li>
+<li><a href="#using-the-comparemcmcs-function">Using the <code>compareMCMCs()</code> function</a><ul>
+<li><a href="#running-comparemcmcs">Running <code>compareMCMCs()</code></a></li>
 </ul></li>
 <li><a href="#viewing-the-comparisons">Viewing the comparisons</a></li>
 </ul>
@@ -155,7 +155,7 @@ devtools::install_github(&quot;nimble-dev/compareMCMCs&quot;, subdir = &quot;com
 <div id="example-metropolis-hastings-vs-slice-sampling.-nimble-vs.jags." class="section level1">
 <h1>Example: Metropolis-Hastings vs slice sampling. NIMBLE vs. JAGS.</h1>
 <ul>
-<li><code>compareMCMCs</code> provides the <code>doMCMCs</code> function for comparing different NIMBLE MCMC algorithms, and also JAGS.</li>
+<li>The <code>compareMCMCs</code> package provides a function of the same name: <code>compareMCMCs()</code> for comparing different NIMBLE MCMC algorithms, and also JAGS.</li>
 <li>A variety of pre-defined NIMBLE MCMC configurations are provided, and also a system for defining your own.
 <ul>
 <li><code>nimble_slice</code></li>
@@ -166,23 +166,24 @@ devtools::install_github(&quot;nimble-dev/compareMCMCs&quot;, subdir = &quot;com
 <li>I will illustrate using slice samplers instead of the default Metropolis-Hastings samplers for <code>a</code> and <code>b</code> in the litters model, and also comparison with JAGS</li>
 </ul>
 </div>
-<div id="using-domcmcs" class="section level1">
-<h1>Using <code>doMCMCs()</code></h1>
+<div id="using-the-comparemcmcs-function" class="section level1">
+<h1>Using the <code>compareMCMCs()</code> function</h1>
 <p>Here’s how we set things up to provide a customized MCMC configuration as one of the comparisons.</p>
 <pre class="r"><code>littersInfo &lt;- list(code = littersCode,
                    constants = littersConsts,
                    data = littersData, inits = littersInits)</code></pre>
-<div id="running-domcmcs" class="section level3">
-<h3>Running <code>doMCMCs()</code></h3>
-<pre class="r"><code>littersComparisons &lt;- doMCMCs(
+<div id="running-comparemcmcs" class="section level3">
+<h3>Running <code>compareMCMCs()</code></h3>
+<pre class="r"><code>littersComparisons &lt;- compareMCMCs(
     littersInfo,
     MCMCs = c(&quot;jags&quot;, &quot;nimble&quot;, &quot;nimble_slice&quot;),
     nimbleMCMCdefs = list(nimble_slice =
         function(model) {
             configureMCMC(model, onlySlice = TRUE)
         }),
-    MCMCinfo = list(niter = 10000,
-                    burnin = 1000))</code></pre>
+    MCMCcontrol = list(niter = 10000,
+                       burnin = 1000),
+    seed = 1)</code></pre>
 </div>
 </div>
 <div id="viewing-the-comparisons" class="section level1">
