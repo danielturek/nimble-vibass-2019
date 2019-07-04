@@ -128,8 +128,8 @@ $(document).ready(function () {
 <ul>
 <li><p>Most distributions and functions are supported</p>
 <ul>
-<li>For distributions, see <a href="http://r-nimble.org/manuals/NimbleUserManual.pdf#page=39">User Manual Section 5.2.4</a></li>
-<li>For functions, see <a href="http://r-nimble.org/manuals/NimbleUserManual.pdf#page=44">User Manual Section 5.2.5</a></li>
+<li>For distributions, see <a href="http://r-nimble.org/manuals/NimbleUserManual.pdf#page=39" target="_blank" style="color: blue">User Manual Section 5.2.4</a></li>
+<li>For functions, see <a href="http://r-nimble.org/manuals/NimbleUserManual.pdf#page=44" target="_blank" style="color: blue">User Manual Section 5.2.5</a></li>
 </ul></li>
 <li><p>Most syntax is supported</p>
 <ul>
@@ -229,23 +229,23 @@ littersModel$r</code></pre>
 ## [1,]     5     7     7
 ## [2,]     3     3     0</code></pre>
 <pre class="r"><code>littersModel$p</code></pre>
-<pre><code>##           [,1]      [,2]      [,3]      [,4]      [,5]      [,6]      [,7]
-## [1,] 0.4169409 0.2198220 0.3911433 0.6319771 0.5989908 0.7721442 0.1365930
-## [2,] 0.6080999 0.8654022 0.5122713 0.3272377 0.4349007 0.2196153 0.2136444
-##           [,8]      [,9]     [,10]     [,11]     [,12]     [,13]     [,14]
-## [1,] 0.8096947 0.6354774 0.3119455 0.4076946 0.7612834 0.5151623 0.1431248
-## [2,] 0.7930231 0.2213608 0.6216659 0.6206399 0.2701800 0.7514516 0.8555213
-##          [,15]     [,16]
-## [1,] 0.2746111 0.7232675
-## [2,] 0.7624185 0.8808651</code></pre>
+<pre><code>##           [,1]      [,2]      [,3]      [,4]      [,5]       [,6]
+## [1,] 0.1328591 0.4302385 0.4379260 0.5717157 0.2501318 0.02574012
+## [2,] 0.5183122 0.3868300 0.2733341 0.5454547 0.4414209 0.90076865
+##           [,7]      [,8]      [,9]       [,10]     [,11]     [,12]
+## [1,] 0.3350726 0.4654759 0.3175723 0.761320163 0.3625217 0.3970292
+## [2,] 0.7527493 0.2707354 0.2859643 0.007777807 0.5736837 0.3007614
+##          [,13]     [,14]     [,15]     [,16]
+## [1,] 0.2344650 0.1504505 0.5476094 0.8754889
+## [2,] 0.7566101 0.3908047 0.5974858 0.5831331</code></pre>
 <pre class="r"><code>littersModel$simulate('r', includeData = TRUE)
 littersModel$r</code></pre>
 <pre><code>##      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10] [,11] [,12] [,13]
-## [1,]    5    4    1    6    5    6    3   10    7     3     6     9     3
-## [2,]    9   10    7    2    6    3    1    7    3     4     8     2     9
+## [1,]    2    5    4    5    3    0    2    7    2     8     4     6     1
+## [2,]    7    5    2    5    4    9    8    4    2     0     5     3     5
 ##      [,14] [,15] [,16]
-## [1,]     2     4     6
-## [2,]     4     9     6</code></pre>
+## [1,]     2     4     8
+## [2,]     2     8     2</code></pre>
 <ul>
 <li>NIMBLE will usually disambiguate data when it is provided as constants.</li>
 </ul>

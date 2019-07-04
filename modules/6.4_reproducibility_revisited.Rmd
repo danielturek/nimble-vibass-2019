@@ -22,8 +22,8 @@ E.g., no need to build an entire MCMC engine if you need a bit of MCMC within a 
 
 Illustrations:
 
-   - [sampling marginalized parameters](4.6_full_nimbleFunction_slides.html)
-   - [particle MCMC](6.3_particle_mcmc_slides.html)
+   - <a href="4.6_full_nimbleFunction_slides.html" target="_blank" style="color: blue">sampling marginalized parameters</a>
+   - <a href="6.3_particle_mcmc_slides.html" target="_blank" style="color: blue">particle MCMC</a>
   
 Reproducibility goals:
 

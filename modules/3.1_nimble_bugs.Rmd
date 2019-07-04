@@ -14,8 +14,8 @@ source("chunks_litters.R")
 
 * Most distributions and functions are supported
 
-    - For distributions, see [User Manual Section 5.2.4](http://r-nimble.org/manuals/NimbleUserManual.pdf#page=39)
-    - For functions, see  [User Manual Section 5.2.5](http://r-nimble.org/manuals/NimbleUserManual.pdf#page=44)
+    - For distributions, see <a href="http://r-nimble.org/manuals/NimbleUserManual.pdf#page=39" target="_blank" style="color: blue">User Manual Section 5.2.4</a>
+    - For functions, see  <a href="http://r-nimble.org/manuals/NimbleUserManual.pdf#page=44" target="_blank" style="color: blue">User Manual Section 5.2.5</a>
 	
 * Most syntax is supported
 

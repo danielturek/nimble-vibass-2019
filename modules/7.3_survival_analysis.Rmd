@@ -42,7 +42,7 @@ so the effect of the covariates is to scale time, hence 'accelerated failure tim
 
 # Semiparametric AFT model
 
-To remove the parametric Weibull assumption, [one approach](https://www4.stat.ncsu.edu/~ghosal/papers/PMR.pdf) is to use a mixture of Weibull distributions, mixing over $\mu$:
+To remove the parametric Weibull assumption, <a href="https://www4.stat.ncsu.edu/~ghosal/papers/PMR.pdf" target="_blank" style="color: blue">one approach</a> is to use a mixture of Weibull distributions, mixing over $\mu$:
 
 $$ f(t) = \sum_k w_k \mbox{Weibull}(\alpha, \mu_k \exp(z^\top \delta)) $$
 
@@ -61,7 +61,7 @@ where that distribution has a Dirichlet process prior, $G(\cdot) \sim DP(\mbox{c
 
 # Multiple myeloma analysis with the semiparametric AFT model
 
-We'll carry out an analysis of the effect of alkylating agents on survival time (in months) for patients with multiple myeloma (see this [reference](https://www4.stat.ncsu.edu/~ghosal/papers/PMR.pdf) for details). The covariates are log blood urea nitrogen and hemoglobin.
+We'll carry out an analysis of the effect of alkylating agents on survival time (in months) for patients with multiple myeloma (see this <a href="https://www4.stat.ncsu.edu/~ghosal/papers/PMR.pdf" target="_blank" style="color: blue">reference</a> for details). The covariates are log blood urea nitrogen and hemoglobin.
 
 ```{r, aft-setup}
 library(emplik, quietly = TRUE, warn.conflicts = FALSE)
@@ -115,7 +115,7 @@ Now let's run the MCMC. A couple comments:
       - We can reduce model building and MCMC time substantially by capping the number of clusters.
       - Here we use 15.
       - NIMBLE will warn us if the MCMC ever tries to use more than that (in which case the formal DP model is technically not actually being used).
-  - Recall our discussion of censoring and implications for what are 'data' and 'parameters' in the [example models](3.2_example_models_slides.html).
+  - Recall our discussion of censoring and implications for what are 'data' and 'parameters' in the <a href="3.2_example_models_slides.html" target="_blank" style="color: blue">example models</a>.
       
 ```{r, aft-mcmc, fig.cap='', fig.width=8, fig.height=5}
 nSub = 15

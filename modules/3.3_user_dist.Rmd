@@ -15,7 +15,7 @@ read_chunk('chunks_litters.R')
 
 # Introduction
 
-NIMBLE provides a variety of distributions, as seen in [Section 5.2.4 of the NIMBLE manual](http://r-nimble.org/manuals/NimbleUserManual.pdf#page=39). 
+NIMBLE provides a variety of distributions, as seen in <a href="http://r-nimble.org/manuals/NimbleUserManual.pdf#page=39" target="_blank" style="color: blue">Section 5.2.4 of the NIMBLE manual</a>. 
 
 However, there are lots of other probability distributions out there that you might want to use. So NIMBLE allows you to code up your own distribution and then use it in BUGS code.
 

@@ -91,7 +91,7 @@ Our SMC algorithms are implemented using nimbleFunctions (of course!).
 
 Each time step has its own nimbleFunction, because we need fully model-generic calculations that can't assume any particular structure for a given time step (and at the moment NIMBLE can't easily store model dependencies for multiple nodes in a single data strucutre).
 
-We'll look directly at the code in [`filtering_bootstrap.R`](filtering_bootstrap.R).
+We'll look directly at the code in <a href="filtering_bootstrap.R" target="_blank" style="color: blue">`filtering_bootstrap.R`</a>.
 
 The overall filtering nimbleFunction simply iterates through each individual time step function and builds up the overall likelihood from the time step-specific pieces.
 

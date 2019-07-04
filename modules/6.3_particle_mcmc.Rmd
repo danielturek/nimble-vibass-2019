@@ -28,7 +28,7 @@ NIMBLE provides scalar and block random-walk Metropolis Hastings based on this a
 
 Simply specify 'RW_PF' or 'RW_PF_block' in *addSampler*, indicating the $x_{1:T}$ nodes as part of the control argument.
 
-We'll look directly at the PMCMC code in [`PMCMC_samplers.R`](PMCMC_samplers.R), which is simply the PMCMC samplers extracted from *MCMC_samplers.R* file in the nimble R package.
+We'll look directly at the PMCMC code in <a href="PMCMC_samplers.R" target="_blank" style="color: blue">`PMCMC_samplers.R`</a>, which is simply the PMCMC samplers extracted from *MCMC_samplers.R* file in the nimble R package.
 
 The setup code creates a filtering algorithm, and then the run code runs it under the proposed hyperparameter values and uses the likelihood approximation in the Metropolis-Hastings acceptance calculation.
 
