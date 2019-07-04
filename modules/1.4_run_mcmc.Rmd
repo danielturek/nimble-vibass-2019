@@ -94,19 +94,14 @@ The R and C MCMC samples are the same, so you can use the R MCMC for debugging. 
 Now let's look at the MCMC performance from one of the chains.
 
 ```{r output-mcmc, fig.height=6, fig.width=12, fig.cap=''}
-samples1 <- samples[[1]]
-par(mfrow = c(2, 2), mai = c(.6, .5, .4, .1), mgp = c(1.8, 0.7, 0))
-ts.plot(samples1[ , 'a[1]'], xlab = 'iteration',
-     ylab = expression(a[1]), main = expression(a[1]))
-ts.plot(samples1[ , 'b[1]'], xlab = 'iteration',
-     ylab = expression(b[1]), main = expression(b[1]))
-ts.plot(samples1[ , 'a[2]'], xlab = 'iteration',
-     ylab = expression(a[2]), main = expression(a[2]))
-ts.plot(samples1[ , 'b[2]'], xlab = 'iteration',
-     ylab = expression(b[2]), main = expression(b[2]))
+library(basicMCMCplots)
+
+basicMCMCplots::chainsPlot(samples,
+                           var = c("a", "b"),
+                           cex = 1.5)
 ```
 
-Not good. We'll explore different sampling strategies that fix the problems in the next module.
+Not the best. We'll explore different sampling strategies that fix the problems in the next module.
 
 # Using CODA
 
@@ -114,7 +109,11 @@ NIMBLE does not provide any MCMC diagnostics. (At least not yet; there's no reas
 
 ```{r coda}
 library(coda, warn.conflicts = FALSE)
+
+samples1 <- samples[[1]]
+
 crosscorr(samples1[ , c('a[1]', 'b[1]', 'a[2]', 'b[2]')])
+
 effectiveSize(samples1)  ## ESS
 ```
 
@@ -127,18 +126,13 @@ Considerations: you'll want to think about how to set up the over-dispersed star
 ```{r, gelman-rubin, fig.cap='', fig.height=6, fig.width=12}
 par(mfrow = c(1,1))
 gelman.diag(samples)
+
 ## and here's a graphical representation of the information
-par(mfrow = c(1, 2))
-ts.plot(samples[[1]][ , 'a[1]'], xlab = 'iteration',
-     ylab = expression(a[1]), main = expression(a[1]))
-sq <- seq_along(samples[[1]][ , 'a[1]'])
-for(i in 2:3)
-      lines(sq, samples[[i]][ , 'a[1]'], col = i)
-ts.plot(samples[[1]][ , 'b[1]'], xlab = 'iteration',
-     ylab = expression(b[1]), main = expression(a[1]))
-sq <- seq_along(samples[[1]][ , 'b[1]'])
-for(i in 2:3)
-      lines(sq, samples[[i]][ , 'b[1]'], col = i)
+basicMCMCplots::chainsPlot(samples,
+                           var = c("a", "b"),
+                           cex = 1.5,
+                           densityplot = FALSE,
+                           legend.location = 'topleft')
 ```
 
 # Other ways to run MCMC
