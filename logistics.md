@@ -7,13 +7,13 @@ output: html_document
 
 ## Where to find stuff
 
-The Github site (<a href="https://github.com/danielturek/nimble-vibass-2019" target="_blank">https://github.com/danielturek/nimble-vibass-2019</a>) is the master repository for materials for the modules; you can also get the individual files from Github. 
+The Github site (<a href="https://github.com/danielturek/nimble-vibass-2019" target="_blank" style="color: blue">https://github.com/danielturek/nimble-vibass-2019</a>) is the master repository for materials for the modules; you can also get the individual files from Github. 
 
-To get the materials look ahead to slide 7 for instructions. Alternatively, simply go to <a href="https://github.com/danielturek/nimble-vibass-2019" target="_blank">https://github.com/danielturek/nimble-vibass-2019</a> and click on the 'Download ZIP' button in the right side of the window or simply <a href="https://github.com/danielturek/nimble-vibass-2019/archive/master.zip" target="_blank">click here</a>.
+To get the materials look ahead to slide 7 for instructions. Alternatively, simply go to <a href="https://github.com/danielturek/nimble-vibass-2019" target="_blank" style="color: blue">https://github.com/danielturek/nimble-vibass-2019</a> and click on the 'Download ZIP' button in the right side of the window or simply <a href="https://github.com/danielturek/nimble-vibass-2019/archive/master.zip" target="_blank" style="color: blue">click here</a>.
 
 ## Asking questions and making comments
 
-Please ask questions and make comments as we go through the material. We will also have a shared document (Etherpad) at <a href="https://etherpad.net/p/nimble-vibass-2019" target="_blank">https://etherpad.net/p/nimble-vibass-2019</a> where you can more easily post longer code snippets or error messages.
+Please ask questions and make comments as we go through the material. We will also have a shared document (Etherpad) at <a href="https://etherpad.net/p/nimble-vibass-2019" target="_blank" style="color: blue">https://etherpad.net/p/nimble-vibass-2019</a> where you can more easily post longer code snippets or error messages.
 
 ## How we'll operate
 
@@ -49,7 +49,7 @@ A few additional thoughts on my pedagogical philosophy here:
 
 ## RStudio and R Markdown
 
-We'll present most of the material from within RStudio, using R Markdown documents with embedded R code. R Markdown is an extension to the Markdown markup language that makes it easy to write HTML in a simple plain text format.  This allows us to both run the R/NIMBLE code directly as well as compile on-the-fly to an HTML file that can be used for presentation. All files will be available on <a href="https://github.com/danielturek/nimble-vibass-2019" target="_blank">GitHub</a>.
+We'll present most of the material from within RStudio, using R Markdown documents with embedded R code. R Markdown is an extension to the Markdown markup language that makes it easy to write HTML in a simple plain text format.  This allows us to both run the R/NIMBLE code directly as well as compile on-the-fly to an HTML file that can be used for presentation. All files will be available on <a href="https://github.com/danielturek/nimble-vibass-2019" target="_blank" style="color: blue">GitHub</a>.
 
 Warning: in some cases the processing of the R code in the R Markdown is finicky, and the slides have error messages that do not occur if you just run the code directly in R or RStudio. 
 
@@ -59,7 +59,7 @@ To download the files, you can do any of the following.
 
 #### From a browser
 
-Simply go to <a href="https://github.com/danielturek/nimble-vibass-2019" target="_blank">https://github.com/danielturek/nimble-vibass-2019</a> and click on the 'Download ZIP' button in the right side of the window or simply <a href="https://github.com/danielturek/nimble-vibass-2019/archive/master.zip" target="_blank">click here</a>.
+Simply go to <a href="https://github.com/danielturek/nimble-vibass-2019" target="_blank" style="color: blue">https://github.com/danielturek/nimble-vibass-2019</a> and click on the 'Download ZIP' button in the right side of the window or simply <a href="https://github.com/danielturek/nimble-vibass-2019/archive/master.zip" target="_blank" style="color: blue">click here</a>.
 
 <!--
 #### Within RStudio
@@ -96,11 +96,11 @@ NIMBLE is on CRAN, so in general it will be straightforward to install, but you 
 
 In summary, here are the steps.
 
-1. Install compiler tools on your system. <a href="https://r-nimble.org/download" target="_blank">https://r-nimble.org/download</a> has more details on how to install *Rtools* on Windows and how to install the
+1. Install compiler tools on your system. <a href="https://r-nimble.org/download" target="_blank" style="color: blue">https://r-nimble.org/download</a> has more details on how to install *Rtools* on Windows and how to install the
 command line tools of *Xcode* on a Mac.
 2. Install the *nimble* package from CRAN. 
 
-More details can also be found in Section 4 of the <a href="http://r-nimble.org/manuals/NimbleUserManual.pdf" target="_blank">NIMBLE User Manual</a>.
+More details can also be found in Section 4 of the <a href="http://r-nimble.org/manuals/NimbleUserManual.pdf" target="_blank" style="color: blue">NIMBLE User Manual</a>.
 
 For some of the later examples we'll discuss, you'll need version 0.8.0 (new on CRAN as of June 2019).
 
