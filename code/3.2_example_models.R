@@ -1,0 +1,192 @@
+library(methods) ## needed only when building documents outside of R
+library(nimble)
+## nimbleCode({
+##     for(i in 1:n) {
+##         x[i] ~ dweib(alpha, lambda[i])
+##         is_cens[i] ~ dinterval(x[i], c[i])
+##         lambda[i] <- exp(eta + Z[i,1]*delta[1] + Z[i,2]*delta[2])
+##     }
+##     eta ~ dunif(b0, B0)
+##     alpha ~ dunif(a0, A0)
+##     for(j in 1:2)
+##         delta[j] ~ dflat()
+## })
+## nimbleCode({
+##   for (i in 1:n){
+##     y[i] ~ dbin (p.bound[i], 1)
+##     p.bound[i] <- max(0, min(1, ilogit(b.0 + b.female*female[i] + b.black*black[i] +
+##       b.female.black*female[i]*black[i] +
+##       b.age[age[i]] + b.edu[edu[i]] + b.age.edu[age[i],edu[i]] +
+##       b.state[state[i]])))
+##   }
+##   b.0 ~ dnorm (0, .0001)
+##   b.female ~ dnorm (0, .0001)
+##   b.black ~ dnorm (0, .0001)
+##   b.female.black ~ dnorm (0, .0001)
+## 
+##   for (j in 1:n.age){b.age[j] ~ dnorm(0, tau.age)}
+##   for (j in 1:n.edu){b.edu[j] ~ dnorm(0, tau.edu)}
+##   for (j in 1:n.age){for (k in 1:n.edu){
+##     b.age.edu[j,k] ~ dnorm(0, tau.age.edu)}}
+##   for (j in 1:n.state){
+##     b.state[j] ~ dnorm(b.state.hat[j], tau.state)
+##     b.state.hat[j] <- b.region[region[j]] + b.v.prev*v.prev[j]}
+##   b.v.prev ~ dnorm(0, .0001)
+##   for (j in 1:n.region){b.region[j] ~ dnorm (0, tau.region)}
+## 
+##   tau.age <- pow(sigma.age, -2)
+##   tau.edu <- pow(sigma.edu, -2)
+##   tau.age.edu <- pow(sigma.age.edu, -2)
+##   tau.state <- pow(sigma.state, -2)
+##   tau.region <- pow(sigma.region, -2)
+## 
+##   sigma.age ~ dunif (0, 100)
+##   sigma.edu ~ dunif (0, 100)
+##   sigma.age.edu ~ dunif (0, 100)
+##   sigma.state ~ dunif (0, 100)
+##   sigma.region ~ dunif (0, 100)
+## })
+## nimbleCode( {
+##     # Specify priors
+##     # zero-inflation/suitability
+##     phi ~ dunif(0,1)          # proportion of suitable sites (probability of being not a structural 0)
+##     theta <- 1-phi            # zero-inflation (proportion of unsuitable)
+##     ltheta <- logit(theta)
+## 
+##     # abundance
+##     beta0 ~ dnorm(0, 0.1)     # log(lambda) intercept
+##     for(k in 1:7){            # Regression params in lambda
+##       beta[k] ~ dnorm(0, 1)
+##     }
+##     tau.lam <- pow(sd.lam, -2)
+##     sd.lam ~ dunif(0, 2)      # site heterogeneity in lambda
+## 
+##     # detection
+##     for(j in 1:3){
+##       alpha0[j] <- logit(mean.p[j])
+##       mean.p[j] ~ dunif(0, 1) # p intercept for occasions 1-3
+##       }
+##     for(k in 1:13){           # Regression params in p
+##       alpha[k] ~ dnorm(0, 1)
+##       }
+##     tau.p.site <- pow(sd.p.site, -2)
+##     sd.p.site ~ dunif(0, 2)   # site heterogeneity in p
+##     tau.p.survey <- pow(sd.p.survey, -2)
+##     sd.p.survey ~ dunif(0, 2) # site-survey heterogeneity in p
+## 
+##     # ZIP model for abundance
+##     for (i in 1:nsite){
+##       a[i] ~ dbern(phi)
+##       eps.lam[i] ~ dnorm(0, tau.lam)       # Random site effects in log(abundance)
+##       loglam[i] <- beta0 + inprod(beta[1:7], lamDM[i, 1:7]) + eps.lam[i] * hlam.on
+##       loglam.lim[i] <- min(250, max(-250, loglam[i]))  # Stabilize log
+##       lam[i] <- exp(loglam.lim[i])
+##       mu.poisson[i] <- a[i] * lam[i]
+##       N[i] ~ dpois(mu.poisson[i])
+##     }
+## 
+##     # Measurement error model
+##     for (i in 1:nsite){
+##       eps.p.site[i] ~ dnorm(0, tau.p.site) # Random site effects in logit(p)
+##       for (j in 1:nrep){
+##         y[i,j] ~ dbin(p[i,j], N[i])
+##         p[i,j] <- 1 / (1 + exp(-lp.lim[i,j]))
+##         lp.lim[i,j] <- min(250, max(-250, lp[i,j]))  # Stabilize logit
+##         lp[i,j] <- alpha0[j] + alpha[1] * elev[i] + alpha[2] * elev2[i] +
+##           alpha[3] * date[i,j] + alpha[4] * date2[i,j] +
+##           alpha[5] * dur[i,j] + alpha[6] * dur2[i,j] +
+##           alpha[7] * elev[i] * date[i,j] + alpha[8] * elev2[i] * date[i,j] +
+##           alpha[9] * elev[i] * dur[i,j] + alpha[10] * elev[i] * dur2[i,j] +
+##           alpha[11] * elev2[i] * dur[i,j] + alpha[12] * date[i,j] * dur[i,j] +
+##           alpha[13] * date[i,j] * dur2[i,j] +
+##           eps.p.site[i] * hp.site.on + eps.p.survey[i,j] * hp.survey.on
+##           eps.p.survey[i,j] ~ dnorm(0, tau.p.survey) # Random site-survey effects
+##     }
+##     }
+## )
+## nimbleCode({
+##    for (i in 1:I) {
+##       cases[i]        ~ dpois(mu[i]);
+##       log(mu[i])     <- log(pyr[i]) + alpha[age[i]] + beta[year[i]]
+##    }
+## 
+##    betamean[1]    <- 0.0;
+##    betaprec[1]    <- tau*1.0E-6;
+##    betamean[2]    <- 0.0;
+##    betaprec[2]    <- tau*1.0E-6;
+##    for (k in 3:K){
+##       betamean[k]    <- 2*beta[k-1] - beta[k-2];
+##       betaprec[k]    <- tau
+##    }
+## 
+##    for (k in 1:K){
+##       beta[k]        ~ dnorm(betamean[k],betaprec[k]);
+##       logRR[k]      <- beta[k] - beta[5]
+##    }
+## 
+##    alpha[1]      <- 0.0;
+##    for (j in 2:Nage){
+##       alpha[j]       ~ dnorm(0,1.0E-6)
+##    }
+##    sigma ~ dunif(0,1);
+##    tau   <- 1/(sigma*sigma);
+## })
+## nimbleCode({
+## 
+##     ## priors:
+##     for(i in 1:11) {
+##         b[i] ~ dnorm(0, sd=10000)
+##     }
+##     p_obs_plant ~ dbeta(1, 1)   ## probability of xf detection in source plant
+##     p_obs_vector ~ dbeta(1, 1)  ## probability of xf detection in vector
+##     p_trans_plant_dsf ~ dbeta(1, 1)    ## probabilities of *any* xf transmission to plant measurement site
+##     p_trans_plant_wt  ~ dbeta(1, 1)    ##
+##     p_trans_vector_dsf ~ dbeta(1, 1)   ## probabilities of *any* xf transmission to vector
+##     p_trans_vector_wt  ~ dbeta(1, 1)   ##
+## 
+##     ## biological model:
+##     for(i in 1:N) {
+##         ## transmission of xf to plant site:
+##         z_trans_plant[i] ~ dbern(p_trans_plant_dsf*genotype_dsf[i] + p_trans_plant_wt*genotype_wt[i])
+##         lambda_plant[i] <- z_trans_plant[i] * exp(b[1]*genotype_dsf[i] + b[2]*genotype_wt[i] + b[3]*distance[i]*genotype_dsf[i] + b[4]*distance[i]*genotype_wt[i])
+##         ## transmission of xf to vector:
+##         z_trans_vector[i] ~ dbern(p_trans_vector_dsf*genotype_dsf[i] + p_trans_vector_wt*genotype_wt[i])
+##         lambda_vector[i] <- z_trans_vector[i] * (b[5]*genotype_dsf[i] + b[6]*genotype_wt[i] + b[7]*lambda_plant[i]*genotype_dsf[i] + b[8]*lambda_plant[i]*genotype_wt[i])
+##     }
+## 
+##     ## only model observed (non-NA) values of xf_source_plant:
+##     for(iObs in 1:N_obs_plant) {
+##         z_obs_plant[obs_ind_plant[iObs]] ~ dbern(p_obs_plant)
+##         xf_source_plant[obs_ind_plant[iObs]] ~ dpois(z_obs_plant[obs_ind_plant[iObs]] * lambda_plant[obs_ind_plant[iObs]])
+##     }
+## 
+##     ## only model observed (non-NA) values of xf_vector:
+##     for(iObs in 1:N_obs_vector) {
+##         z_obs_vector[obs_ind_vector[iObs]] ~ dbern(p_obs_vector)
+##         xf_vector[obs_ind_vector[iObs]] ~ dpois(z_obs_vector[obs_ind_vector[iObs]] * lambda_vector[obs_ind_vector[iObs]])
+##     }
+## 
+##     ## only model observed (non-NA) values of infected:
+##     for(iObs in 1:N_obs_infected) {
+##         logit(p_infect[obs_ind_infected[iObs]]) <- b[9]*genotype_dsf[obs_ind_infected[iObs]] + b[10]*genotype_wt[obs_ind_infected[iObs]] + b[11]*lambda_vector[obs_ind_infected[iObs]]
+##         infected[obs_ind_infected[iObs]] ~ dbern(p_infect[obs_ind_infected[iObs]])
+##     }
+## 
+##     ## genotype DSF predictive nodes:
+##     lambda_plant_dsf <- p_trans_plant_dsf * exp(b[1])
+##     lambda_vector_dsf <- p_trans_vector_dsf * (b[5] + b[7]*lambda_plant_dsf)
+##     logit(p_infect_dsf) <- b[9] + b[11]*lambda_vector_dsf
+## 
+##     ## genotype WT predictive nodes:
+##     lambda_plant_wt <- p_trans_plant_wt * exp(b[2])
+##     lambda_vector_wt <- p_trans_vector_wt * (b[6] + b[8]*lambda_plant_wt)
+##     logit(p_infect_wt) <- b[10] + b[11]*lambda_vector_wt
+## 
+##     ## xf_source_plant and xf_vector predictions
+##     for(i in 1:N) {
+##         pred_lambda_plant[i] <- exp(b[1]*genotype_dsf[i] + b[2]*genotype_wt[i] + b[3]*distance[i]*genotype_dsf[i] + b[4]*distance[i]*genotype_wt[i])
+##         pred_lambda_vector[i] <- b[5]*genotype_dsf[i] + b[6]*genotype_wt[i] + b[7]*pred_lambda_plant[i]*genotype_dsf[i] + b[8]*pred_lambda_plant[i]*genotype_wt[i]
+##         pred_xf_source_plant[i] ~ dpois(pred_lambda_plant[i])
+##         pred_xf_vector[i] ~ dpois(pred_lambda_vector[i])
+##     }
+## })

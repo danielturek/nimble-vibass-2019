@@ -13,7 +13,7 @@ if(length(cmdArgs) == 0) {
     system('make clean')
     cmdArgs <- c('overview.Rmd',
                  'logistics.Rmd',
-                 list.files(path = 'modules/', pattern = '\\.Rmd$')
+                 list.files(path = 'modules', pattern = '\\.Rmd$', full.names = TRUE)
                  )
 }
 
