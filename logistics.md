@@ -1,7 +1,6 @@
 ---
 title: "VIBASS NIMBLE Workshop: Logistics"
 subtitle: "Applied Bayesian Computation: The NIMBLE Platform for Hierarchical Modeling and MCMC"
-author: "Daniel Turek, Department of Mathematics & Statistics, Williams College"
 output: html_document
 ---
 
