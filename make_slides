@@ -11,7 +11,10 @@ cmdArgs <- commandArgs(trailingOnly = TRUE)
 
 if(length(cmdArgs) == 0) {
     system('make clean')
-    cmdArgs <- list.files(pattern = '\\.Rmd$', recursive = TRUE)
+    cmdArgs <- c('overview.Rmd',
+                 'logistics.Rmd',
+                 list.files(path = 'modules/', pattern = '\\.Rmd$')
+                 )
 }
 
 ## remove trailing period (.), if present
@@ -32,7 +35,8 @@ for(f in cmdArgs) {
     system(paste("pandoc -s --webtex -t slidy ", mdFile, " -o ", paste(f, "_slides.html", sep = ""), " --self-contained"))
     render(filename, envir = new.env()) # for style that can hide code chunks dynamically
     purl(filename, output = codeFile, documentation = 0) ## make separate .R file with just the code
-    if(readLines(codeFile) == '') {
+    if(length(readLines(codeFile)) == 1) {
+        message(paste0('removing code file: ', codeFile))
         system(paste0('rm ', codeFile))    ## remove empty code files
     }
 }
