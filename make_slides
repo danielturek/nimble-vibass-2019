@@ -37,3 +37,21 @@ for(f in cmdArgs) {
     ## knit2html(source, envir = new.env())
 }
 
+
+
+
+
+
+f <- 'overview'
+f <- 'logistics'
+f <- 'modules/1.2_bugs_language'
+
+rm -f ${mdfile}.R       ## remove existing .R file, if one exists
+/usr/local/bin/Rscript -e
+
+purl('${mdfile}.rmd', documentation = 0)
+
+purl(filename, documentation = 0)
+
+gsed -i "s/^## //" ${mdfile}.R     ## uncomment any R lines (generated from eval = FALSE code blocks)
+
