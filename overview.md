@@ -1,11 +1,8 @@
 ---
-title: "VIBASS NIMBLE Workshop: Overview"
-subtitle: "Applied Bayesian Computation: The NIMBLE Platform for Hierarchical Modeling and MCMC"
+title: "Applied Bayesian Computation: The NIMBLE Platform for Hierarchical Modeling and MCMC"
+subtitle: "Overview"
 author: "Daniel Turek, Department of Mathematics & Statistics, Williams College"
 output: html_document
-colorlinks: true
-urlcolor: yellow
-linkcolor: yellow
 ---
 
 

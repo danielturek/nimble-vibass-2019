@@ -60,7 +60,7 @@ Here are some of the features you can do in NIMBLE that we are most excited abou
 * Email the NIMBLE development team at: $\text{\LARGE{nimble.stats@gmail.com}}$
 * Follow announcements via the <a href="https://groups.google.com/forum/#!forum/nimble-announce" target="_blank" style="color: blue">NIMBLE announcements list</a>
 
-And you can feel free email me directly $\text{\LARGE{dbt1@williams.edu}}$) given your participation in this workshop. However I do encourage you to post to the user group as any of the NIMBLE developers or other users can then help you out.
+And you can feel free email me directly ($\text{\LARGE{dbt1@williams.edu}}$) given your participation in this workshop. However I do encourage you to post to the user group as any of the NIMBLE developers or other users can then help you out.
 
 # Participating in NIMBLE
 
