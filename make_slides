@@ -30,14 +30,19 @@ for(f in cmdArgs) {
         next
     }
     mdFile <- paste0('mdFiles/', gsub('modules/', '', f), '.md')
-    codeFile <- paste0('code/', gsub('modules/', '', f), '.R')
     knit(filename, envir = new.env(), output = mdFile)
     system(paste("pandoc -s --webtex -t slidy ", mdFile, " -o ", paste(f, "_slides.html", sep = ""), " --self-contained"))
     render(filename, envir = new.env()) # for style that can hide code chunks dynamically
-    purl(filename, output = codeFile) ## make separate .R file with just the code
-    if(length(readLines(codeFile)) == 1) {
-        message(paste0('removing code file: ', codeFile))
-        system(paste0('rm ', codeFile))    ## remove empty code files
-    }
+    ##codeFile <- paste0('code/', gsub('modules/', '', f), '.R')
+    ##purl(filename, output = codeFile) ## make separate .R file with just the code
+    ##if(length(readLines(codeFile)) == 1) {
+    ##    message(paste0('removing code file: ', codeFile))
+    ##    system(paste0('rm ', codeFile))    ## remove empty code files
+    ##} else {  ## remove leading '## ' from any lines...
+    ##    RfileLines <- readLines(codeFile)
+    ##    linesToModify <- which(grepl('^## ', RfileLines) & (!grepl('^## ----', RfileLines)))
+    ##    RfileLines[linesToModify] <- gsub('^## ', '', RfileLines[linesToModify])
+    ##    writeLines(RfileLines, codeFile)
+    ##}
 }
 
