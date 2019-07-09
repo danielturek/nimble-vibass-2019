@@ -1,6 +1,6 @@
 ---
-title: "VIBASS NIMBLE Workshop: Logistics"
-subtitle: "Applied Bayesian Computation: The NIMBLE Platform for Hierarchical Modeling and MCMC"
+title: "Applied Bayesian Computation: The NIMBLE Platform for Hierarchical Modeling and MCMC"
+subtitle: "Logistics"
 output: html_document
 ---
 
