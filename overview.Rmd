@@ -17,19 +17,19 @@ Please see the <a href="logistics_slides.html" target="_blank" style="color: blu
 
 ### Day 1
 
- - Session 1: Introduction to NIMBLE
- - Session 2: MCMC in NIMBLE
- - Session 3: Writing models in NIMBLE
- - Session 4: Introduction to programming in NIMBLE with nimbleFunctions
+ - Session 1: <a href="overview_slides.html#(4)" style="color: blue">Introduction to NIMBLE</a>
+ - Session 2: <a href="overview_slides.html#(5)" style="color: blue">MCMC in NIMBLE</a>
+ - Session 3: <a href="overview_slides.html#(6)" style="color: blue">Writing models in NIMBLE</a>
+ - Session 4: <a href="overview_slides.html#(7)" style="color: blue">Introduction to programming in NIMBLE with nimbleFunctions</a>
 
 
 
 ### Day 2
 
- - Session 5: Programming MCMC samplers
- - Session 6: Writing algorithms with Sequential Monte Carlo as an example
- - Session 7: Bayesian nonparametrics (BNP)
- - Session 8: Additional topics
+ - Session 5: <a href="overview_slides.html#(8)" style="color: blue">Programming MCMC samplers</a>
+ - Session 6: <a href="overview_slides.html#(9)" style="color: blue">Writing algorithms with Sequential Monte Carlo as an example</a>
+ - Session 7: <a href="overview_slides.html#(10)" style="color: blue">Bayesian nonparametrics (BNP)</a>
+ - Session 8: <a href="overview_slides.html#(11)" style="color: blue">Additional topics</a>
 
 ## (Session 1) Introduction to NIMBLE
 
