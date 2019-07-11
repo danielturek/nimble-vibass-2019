@@ -89,17 +89,6 @@ Please see the <a href="logistics_slides.html" target="_blank" style="color: blu
  - Extended worked example, discussion of participant examples, additional time for skipped topics, or additional details on topics.
  - <a href="modules/8.1_final_thoughts_slides.html" target="_blank" style="color: blue">Final thoughts</a>
  
-## Acknowledgements and legal stuff
-
-NIMBLE has been funded by:
-
- - NSF Advances in Biological Informatics (DBI-1147230)
- - NSF Software Infrastructure for Sustained Innovation (ACI-155048)
- - NSF DMS Collaborative Research (DMS-1622444)
- - Google Summer of Code 2015 (Nick Michaud) and 2017 (Colin Lewis-Beck)
- - Berkeley Institute for Data Science support for Daniel Turek
-
-This workshop material was created by the NIMBLE development team and is licensed under a Creative Commons Attribution 3.0 Unported License. You are free to use, modify, and redistribute any of this material with attribution.
 
 \  
 
