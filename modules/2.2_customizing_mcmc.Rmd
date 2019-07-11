@@ -49,8 +49,13 @@ nburn <- 1000
 set.seed(1)
 samples <- runMCMC(cLittersMCMC, niter = niter, nburnin = nburn,
         inits = littersInits, nchains = 1, samplesAsCodaMCMC = TRUE)
+```
 
-makePlot(samples)
+```{r plot-samples-litters, fig.height=6, fig.width=12, fig.cap=''}
+library(basicMCMCplots)
+basicMCMCplots::chainsPlot(samples,
+                           var = c("a", "b"),
+                           cex = 1.6)
 ```
 
 # Customizing samplers: examining the defaults
@@ -72,9 +77,12 @@ for(h in hypers) {
 littersConf$printSamplers()
 
 littersMCMC <- buildMCMC(littersConf)
-## we need 'resetFunctions' because we are rebuilding the MCMC for an existing model for
-## which we've already done some compilation
-cLittersMCMC <- compileNimble(littersMCMC, project = littersModel, resetFunctions = TRUE)
+
+## we need 'resetFunctions' because we are rebuilding the MCMC
+## for an existing model for which we've already done some compilation
+
+cLittersMCMC <- compileNimble(littersMCMC, project = littersModel,
+                              resetFunctions = TRUE)
 
 set.seed(1)
 samplesSlice <- runMCMC(cLittersMCMC, niter = niter, nburnin = nburn,
@@ -91,7 +99,11 @@ Caveat: the real question is the effective sample size per unit of computation t
 ```{r output-slice, fig.height=6, fig.width=12, fig.cap=''}
 library(coda, warn.conflicts = FALSE)
 effectiveSize(samplesSlice)
-makePlot(samplesSlice)
+
+library(basicMCMCplots)
+basicMCMCplots::chainsPlot(samplesSlice,
+                           var = c("a", "b"),
+                           cex = 1.6)
 ```
 
 # Using JAGS
@@ -130,7 +142,7 @@ model <- jags.model(file = file.path(tempdir(), 'tmp.bug'),
       data = list(G = G, N = N, n = n, r = r),
       n.adapt = nburn, n.chains = 1, inits = inits)
       
-samples <- jags.samples(model, variable.names = c('a','b'), n.iter = niter)
+samplesJags <- jags.samples(model, variable.names = c('a','b'), n.iter = niter)
 ```
 
 ```{r, jags-example3, fig.cap='', fig.width=10, fig.height=7, echo = FALSE}
@@ -142,22 +154,53 @@ while(inherits(e, 'try-error')) {
               data = list(G = G, N = N, n = n, r = r),
               n.adapt = nburn, n.chains = 1, inits = inits)
               
-        samples <- jags.samples(model, variable.names = c('a','b'), n.iter = niter)
+        samplesJags <- jags.samples(model, variable.names = c('a','b'), n.iter = niter)
 	}, silent = TRUE)
 }
 ```
 
-```{r, jags-example4, fig.cap='', fig.width=10, fig.height=7}
+```{r, jags-example4xx, fig.cap='', fig.width=10, fig.height=7, echo=FALSE, eval=FALSE}
 par(mfrow = c(2, 2), mai = c(.6, .5, .4, .1), mgp = c(1.8, 0.7, 0))
-ts.plot(samples[[1]][1, , 1], xlab = 'iteration',
+ts.plot(samplesJags[[1]][1, , 1], xlab = 'iteration',
         ylab = expression(a[1]), main = expression(a[1]))
-ts.plot(samples[[2]][1, , 1], xlab = 'iteration',
+ts.plot(samplesJags[[2]][1, , 1], xlab = 'iteration',
         ylab = expression(b[1]), main = expression(b[1]))
-ts.plot(samples[[1]][2, , 1], xlab = 'iteration',
+ts.plot(samplesJags[[1]][2, , 1], xlab = 'iteration',
         ylab = expression(a[2]), main = expression(a[2]))
-ts.plot(samples[[2]][2, , 1], xlab = 'iteration',
+ts.plot(samplesJags[[2]][2, , 1], xlab = 'iteration',
         ylab = expression(b[2]), main = expression(b[2]))
 ```
+
+```{r, jags-example4, fig.cap='', fig.width=10, fig.height=7}
+samplesJagsArray <- cbind(
+    `a[1]` = samplesJags[[1]][1, , 1],
+    `a[2]` = samplesJags[[1]][2, , 1],
+    `b[1]` = samplesJags[[2]][1, , 1],
+    `b[2]` = samplesJags[[2]][2, , 1]
+)
+
+basicMCMCplots::chainsPlot(samplesJagsArray,
+                           cex = 1.6)
+```
+
+# Comparing results using chainsPlot
+
+The `basicMCMCplots` library also let's us compare across chains
+
+
+```{r fig.cap='', fig.width=10, fig.height=7}
+samplesList <- list(
+    nimble = samples,
+    nimbleSlice = samplesSlice,
+    JAGS = samplesJagsArray
+)
+
+basicMCMCplots::chainsPlot(samplesList,
+                           var = c("a", "b"))
+```
+
+
+
 
 
 
