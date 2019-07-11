@@ -118,7 +118,7 @@ That is NIMBLE's *cross-level sampler*. Here's what it does:
 Comments: 
   - this amounts to a joint update of the hyperparameters and their dependent nodes
   - equivalent to analytically integrating over the dependent nodes
-  - this is the *one-block* sampler in Knorr-Held and Rue (2002)
+  - this is the *one-block* sampler in <a href="https://onlinelibrary.wiley.com/doi/abs/10.1111/1467-9469.00308" target="_blank" style="color: blue">Knorr-Held and Rue (2002)</a>
 
 # Applying the cross-level sampler
 

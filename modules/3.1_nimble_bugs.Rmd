@@ -155,12 +155,9 @@ m2$getNodeNames()
 One is not necessarily better than the other.  It depends on the model
 and the MCMC configuration.  (More on those topics later.)
 
-Vectorized declarations do not work for distributions.
+Vectorized declarations do not work for univariate distributions (e.g., Normal, beta, or gamma distributions)
 
-Discussion topic for breaks:
-
-- Would vectorized distribution declarations be helpful?
-- How should they be defined?
+However, vectorized declarations for multivariate distributions certainly exist
 
 
 # Definition-time if-then-else

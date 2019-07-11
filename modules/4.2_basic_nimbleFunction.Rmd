@@ -54,7 +54,7 @@ Here are some of the functions you may use in the run function of a nimbleFuncti
  - *nimbleList* data structures.
 
 
-Chapter 10 of the NIMBLE User Manual describes the syntax for *run* code in detail, including lots of neat functionality such as using nested nimbleFunctions and having multiple run-time functions (i.e., class methods) as part of a nimbleFunction. We'll see more of that in future modules.
+Chapter 10 of the <a href="http://r-nimble.org/manuals/NimbleUserManual.pdf" target="_blank" style="color: blue">NIMBLE User Manual</a> describes the syntax for *run* code in detail, including lots of neat functionality such as using nested nimbleFunctions and having multiple run-time functions (i.e., class methods) as part of a nimbleFunction. We'll see more of that in future modules.
 
 nimbleFunctions use **pass-by-reference** not R style **pass-by-value**, so be careful about modifying an object and then using it elsewhere.
   

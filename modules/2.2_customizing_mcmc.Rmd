@@ -161,6 +161,22 @@ ts.plot(samples[[2]][2, , 1], xlab = 'iteration',
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <!--
 # Using Stan
 

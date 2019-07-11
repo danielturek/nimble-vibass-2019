@@ -59,8 +59,10 @@ Let's construct our (generic) nimbleFunction:
 ```{r nf-marginal}
 margSampler <- nimbleFunction(
             setup = function(fullModel, samplesMarg, target) {
-                  ## samplesMarg is a matrix of samples from the marginalized model
-                  ## target contains the nodes that have been integrated over that we want to sample from
+                  ## samplesMarg is a matrix of samples from the
+		  ## marginalized model
+                  ## target contains the nodes that have been integrated
+		  ## over that we want to sample from
 
                   ## setup MCMC only for integrated-over nodes
                   conf <- configureMCMC(fullModel, nodes = target, monitors = target)
@@ -71,29 +73,34 @@ margSampler <- nimbleFunction(
                   if(length(samplers) != length(grep("conjugate", samplers)))
                      stop("Not all samplers are conjugate")
 
-                  ## note: haven't thought through if this is ok for multiple levels of marginalization...
-
                   ## check samples have all the nodes in marginalized model
-                      allNodes <- fullModel$getNodeNames(stochOnly = TRUE, includeData = FALSE)
-                      targetNodes <- fullModel$expandNodeNames(target)
-                      margNodes <- allNodes[!allNodes %in% targetNodes]
-                      neededVars <- fullModel$getVarNames(nodes = margNodes)
-                      margMCMCvars <- fullModel$getVarNames(nodes = dimnames(samplesMarg)[[2]])
-                      if(any(!neededVars %in% margMCMCvars))
-                         stop("Some needed variables not present in samplesMarg for marginalized model")
+                  allNodes <- fullModel$getNodeNames(stochOnly = TRUE,
+		                                     includeData = FALSE)
+                  targetNodes <- fullModel$expandNodeNames(target)
+                  margNodes <- allNodes[!allNodes %in% targetNodes]
+                  neededVars <- fullModel$getVarNames(nodes = margNodes)
+                  margMCMCvars <- fullModel$getVarNames(nodes = dimnames(samplesMarg)[[2]])
+                  if(any(!neededVars %in% margMCMCvars))
+                     stop("Some needed variables not present in samplesMarg for marginalized model")
                   
                   ## create MCMC object and modelValues for full model
                   mcmc <- buildMCMC(conf)
-                  mvSamplesConf  <- conf$getMvSamplesConf(1)  ## modelValues 'configuration' ('1' is the first primary set of samples)
-                  newMV <- modelValues(mvSamplesConf, m = 1)  ## default storage (m=1 row) for new samples
+                  
+                  ## modelValues 'configuration'
+                  ## ('1' is the first primary set of samples)
+                  mvSamplesConf  <- conf$getMvSamplesConf(1)
+                  
+                  ## default storage (m=1 row) for new samples
+                  newMV <- modelValues(mvSamplesConf, m = 1)
             },
             run = function(samplesMarg = double(2)) {
                   ## dynamically determine how many samples we will get
-                  ## ('samplesMarg' might have been updated since setup code was run)
+                  ## 'samplesMarg' perhaps updated since setup was run
                   nIts <- dim(samplesMarg)[1]
                   resize(newMV, nIts)
 
-                  ## sample integrated-over nodes once per thinned iteration of original MCMC
+                  ## sample integrated-over nodes once
+                  ## per thinned iteration of original MCMC
                   for(i in 1:nIts) {
                       values(fullModel, margMCMCvars) <<- samplesMarg[i, ]
                       mcmc$run(1, reset = FALSE, progressBar = FALSE)

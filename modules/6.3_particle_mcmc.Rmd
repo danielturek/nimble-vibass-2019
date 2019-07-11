@@ -59,7 +59,7 @@ samples <- runMCMC(cMCMC, niter = 5000)
 
 # Stochastic volatility, particle MCMC results
 
-It looks like the MCMC worked somewhat well.
+It looks like the MCMC worked reasonably well.
 
 ```{r, sv-pmcmc-results, fig.width=12, fig.height=8, fig.cap=''}
 par(mfrow = c(2, 3))

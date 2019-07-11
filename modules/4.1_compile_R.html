@@ -155,7 +155,7 @@ $(document).ready(function () {
            returnType(double(1))
            n &lt;- length(x)
            # some functions, like numeric, mimic R
-       # but also may have additional/different features
+           # but also may have additional/different features
            out &lt;- numeric(n, init = FALSE)
            # core computation
            for( i in 1:n) 
@@ -163,6 +163,8 @@ $(document).ready(function () {
            return(out)
 })
 cNimMath1 &lt;- compileNimble(nimMath1)</code></pre>
+<pre><code>## compiling... this may take a minute. Use 'showCompilerOutput = TRUE' to see C++ compilation details.</code></pre>
+<pre><code>## compilation finished.</code></pre>
 <p>nimbleFunctions used in this way need a run function, type and dimension information for arguments and a <em>returnType()</em> line.</p>
 </div>
 <div id="vectorization-in-nimblefunctions" class="section level1">
@@ -175,6 +177,8 @@ cNimMath1 &lt;- compileNimble(nimMath1)</code></pre>
            return(out)
 })
 cNimMath2 &lt;- compileNimble(nimMath2)</code></pre>
+<pre><code>## compiling... this may take a minute. Use 'showCompilerOutput = TRUE' to see C++ compilation details.</code></pre>
+<pre><code>## compilation finished.</code></pre>
 <p>For discussion: what does it mean to use vectorization in Eigen and does it suffer from the same use of temporary variables as discussed above in the R context?</p>
 </div>
 <div id="bake-off" class="section level1">
@@ -187,9 +191,9 @@ benchmark(out0 &lt;- exp(cos(sin(x)) + x^3),
                 columns = c('test','replications','elapsed'),
                replications = 10)</code></pre>
 <pre><code>##                             test replications elapsed
-## 1 out0 &lt;- exp(cos(sin(x)) + x^3)           10   0.698
-## 2           out1 &lt;- cNimMath1(x)           10   0.809
-## 3           out2 &lt;- cNimMath2(x)           10   0.733</code></pre>
+## 1 out0 &lt;- exp(cos(sin(x)) + x^3)           10   0.686
+## 2           out1 &lt;- cNimMath1(x)           10   0.814
+## 3           out2 &lt;- cNimMath2(x)           10   0.749</code></pre>
 <p>We could also time uncompiled execution of the nimbleFunction but it will generally be even slower than directly coding in R. The main purpose of running a nimbleFunction in R is debugging. You can step through execution of an uncompiled nimbleFunction using R’s debugging tools as usual.</p>
 </div>
 <div id="a-more-involved-example" class="section level1">
@@ -201,7 +205,7 @@ Y &amp; = &amp;  I(W &gt; 0) \\
 W &amp; \sim  &amp; N(X\beta , 1) \\
 \end{array}
 \]</span></p>
-<p>Suppose we know <span class="math inline">\(\beta\)</span>. In order to determine <span class="math inline">\(p\)</span> we could use Monte Carlo simulation to estimate this integral: <span class="math inline">\(P(Y = 1) = \int_{-\infty}^0 f(w) dw\)</span>.</p>
+<p>Suppose we know <span class="math inline">\(\beta\)</span>. In order to determine <span class="math inline">\(p\)</span> we could use Monte Carlo simulation to estimate this integral: <span class="math inline">\(P(Y = 1) = \int_{0}^{\infty} f(w) dw\)</span>.</p>
 <p>Now for probit regression, we could just use standard methods to compute normal pdf integrals (e.g., as implemented in <code>pnorm()</code>. But for the multinomial extension we discuss next, we need Monte Carlo simulation.</p>
 </div>
 <div id="multinomial-probit-regression" class="section level1">
@@ -243,7 +247,7 @@ system.time({
         props
 })</code></pre>
 <pre><code>##    user  system elapsed 
-##   3.558   0.146   3.774</code></pre>
+##   2.845   0.154   3.058</code></pre>
 </div>
 <div id="c-style-implementation-in-nimble" class="section level1">
 <h1>C-style implementation in NIMBLE</h1>
@@ -289,21 +293,25 @@ system.time({
          }
 )</code></pre>
 </div>
-<div id="lets-play-the-feud" class="section level1">
-<h1>Let’s play the Feud</h1>
-<pre class="r"><code>cmprobit = compileNimble(mprobit)
-cmprobitVec = compileNimble(mprobitVec)
-set.seed(1)
+<div id="lets-compare" class="section level1">
+<h1>Let’s compare</h1>
+<pre class="r"><code>cmprobit = compileNimble(mprobit)</code></pre>
+<pre><code>## compiling... this may take a minute. Use 'showCompilerOutput = TRUE' to see C++ compilation details.</code></pre>
+<pre><code>## compilation finished.</code></pre>
+<pre class="r"><code>cmprobitVec = compileNimble(mprobitVec)</code></pre>
+<pre><code>## compiling... this may take a minute. Use 'showCompilerOutput = TRUE' to see C++ compilation details.
+## compilation finished.</code></pre>
+<pre class="r"><code>set.seed(1)
 system.time(
 props2 &lt;- cmprobit(alphas, M)
 )</code></pre>
 <pre><code>##    user  system elapsed 
-##   0.413   0.003   0.420</code></pre>
+##   0.376   0.007   0.396</code></pre>
 <pre class="r"><code>system.time(
 props3 &lt;- cmprobitVec(alphas, M)
 )</code></pre>
 <pre><code>##    user  system elapsed 
-##   1.109   0.014   1.178</code></pre>
+##   1.097   0.010   1.118</code></pre>
 <p>Any speculation as to why the vectorized implementation is slower?</p>
 <p>So we get a nice six-fold speedup, even though all of the R code was vectorized. In the exercises, you can practice with an example of replacing an explicit for loop in R.</p>
 </div>

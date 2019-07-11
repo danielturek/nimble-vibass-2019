@@ -166,8 +166,8 @@ $(document).ready(function () {
 <li>vectorized model declarations that are efficient with block sampling</li>
 </ul>
 </div>
-<div id="marginalization-and-data-augmentation" class="section level1">
-<h1>Marginalization and data augmentation</h1>
+<div id="marginalization" class="section level1">
+<h1>Marginalization</h1>
 <ul>
 <li>Marginalized models:
 <ul>
@@ -184,24 +184,20 @@ $(document).ready(function () {
 <li>Can induce complicated dependence</li>
 </ul></li>
 </ul></li>
-<li>Data augmentation:
-<ul>
-<li>Examples:
-<ul>
-<li>Chib and Albert probit regression ‘trick’</li>
-<li>t distribution as mixture of normal distributions (see Gelman et al. Bayesian Data Analysis for sampling tips)</li>
-</ul></li>
-<li>Advantages
-<ul>
-<li>May allow for conjugate or other useful samplers; particular helpful for multivariate blocks</li>
-</ul></li>
-<li>Disadvantages
-<ul>
-<li>More computation; sometimes greatly increases dimensionality</li>
-<li>More ‘levels’ increases dependence across levels; moves parameters ‘further’ from data</li>
-</ul></li>
-</ul></li>
 </ul>
+<!--
+# Marginalization and data augmentation
+
+- Data augmentation:
+    - Examples:
+        - Chib and Albert probit regression 'trick'
+        - t distribution as mixture of normal distributions (see Gelman et al. Bayesian Data Analysis for sampling tips)
+    - Advantages
+        - May allow for conjugate or other useful samplers; particular helpful for multivariate blocks
+    - Disadvantages
+        - More computation; sometimes greatly increases dimensionality
+        - More 'levels' increases dependence across levels; moves parameters 'further' from data
+-->
 </div>
 <div id="some-strategies-for-improving-mcmc-in-nimble" class="section level1">
 <h1>Some strategies for improving MCMC (in NIMBLE)</h1>

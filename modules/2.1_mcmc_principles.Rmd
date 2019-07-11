@@ -37,7 +37,7 @@ NIMBLE allows:
   - arbitrary blocking and
   - vectorized model declarations that are efficient with block sampling
 
-# Marginalization and data augmentation
+# Marginalization
 
 - Marginalized models:
     - Example: litters model
@@ -49,6 +49,9 @@ NIMBLE allows:
         - Requires some mathematical/probability understanding
         - Can induce complicated dependence
 
+<!--
+# Marginalization and data augmentation
+
 - Data augmentation:
     - Examples:
         - Chib and Albert probit regression 'trick'
@@ -58,6 +61,7 @@ NIMBLE allows:
     - Disadvantages
         - More computation; sometimes greatly increases dimensionality
         - More 'levels' increases dependence across levels; moves parameters 'further' from data
+-->
 
 # Some strategies for improving MCMC (in NIMBLE)
 

@@ -229,23 +229,23 @@ littersModel$r</code></pre>
 ## [1,]     5     7     7
 ## [2,]     3     3     0</code></pre>
 <pre class="r"><code>littersModel$p</code></pre>
-<pre><code>##           [,1]      [,2]      [,3]      [,4]      [,5]      [,6]      [,7]
-## [1,] 0.3425149 0.8852408 0.1550791 0.8293184 0.5463299 0.5074412 0.2858661
-## [2,] 0.6036600 0.5817669 0.3437252 0.5279092 0.3874378 0.4745456 0.2352962
-##           [,8]      [,9]      [,10]     [,11]     [,12]     [,13]
-## [1,] 0.2646427 0.3196754 0.06759402 0.4363000 0.1967569 0.1889441
-## [2,] 0.5458692 0.4956281 0.52213085 0.4497379 0.7172385 0.7354949
-##          [,14]     [,15]     [,16]
-## [1,] 0.4195047 0.6553596 0.1498687
-## [2,] 0.4737699 0.3380918 0.4810673</code></pre>
+<pre><code>##           [,1]      [,2]       [,3]      [,4]      [,5]       [,6]
+## [1,] 0.2668169 0.5921065 0.46193062 0.7227923 0.5352930 0.05781471
+## [2,] 0.7331295 0.5394608 0.08954588 0.6408580 0.6810145 0.27443895
+##           [,7]      [,8]      [,9]     [,10]     [,11]     [,12]
+## [1,] 0.7165670 0.7720641 0.5636168 0.5164726 0.7800654 0.1980212
+## [2,] 0.6813818 0.3169857 0.3266094 0.6751440 0.5537403 0.5688931
+##           [,13]     [,14]     [,15]     [,16]
+## [1,] 0.70146620 0.2002875 0.4358067 0.4370257
+## [2,] 0.09619224 0.7595200 0.7352350 0.4355425</code></pre>
 <pre class="r"><code>littersModel$simulate('r', includeData = TRUE)
 littersModel$r</code></pre>
 <pre><code>##      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10] [,11] [,12] [,13]
-## [1,]    6   12    2    8    6    4    1    4    4     0     1     3     2
-## [2,]    8    3    6    3    8    5    2    4    5     3     5     6     7
+## [1,]    5    9    2    8    7    0    7    8    7     3     9     1     4
+## [2,]   11    4    0    7    5    3    7    2    3     3     6     5     0
 ##      [,14] [,15] [,16]
-## [1,]     3     6     1
-## [2,]     2     6     3</code></pre>
+## [1,]     2     6     3
+## [2,]     5     7     4</code></pre>
 <ul>
 <li>NIMBLE will usually disambiguate data when it is provided as constants.</li>
 </ul>
@@ -296,12 +296,8 @@ m1$getNodeNames()</code></pre>
 m2$getNodeNames()</code></pre>
 <pre><code>## [1] &quot;predicted[1:5]&quot;</code></pre>
 <p>One is not necessarily better than the other. It depends on the model and the MCMC configuration. (More on those topics later.)</p>
-<p>Vectorized declarations do not work for distributions.</p>
-<p>Discussion topic for breaks:</p>
-<ul>
-<li>Would vectorized distribution declarations be helpful?</li>
-<li>How should they be defined?</li>
-</ul>
+<p>Vectorized declarations do not work for univariate distributions (e.g., Normal, beta, or gamma distributions)</p>
+<p>However, vectorized declarations for multivariate distributions certainly exist</p>
 </div>
 <div id="definition-time-if-then-else" class="section level1">
 <h1>Definition-time if-then-else</h1>

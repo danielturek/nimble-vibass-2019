@@ -51,7 +51,7 @@ nimMath1 <- nimbleFunction(
            returnType(double(1))
            n <- length(x)
            # some functions, like numeric, mimic R
-	   # but also may have additional/different features
+           # but also may have additional/different features
            out <- numeric(n, init = FALSE)
            # core computation
            for( i in 1:n) 
@@ -107,7 +107,7 @@ W & \sim  & N(X\beta , 1) \\
 $$
 
 Suppose we know $\beta$. In order to determine $p$ we could use Monte Carlo simulation to estimate this integral:
-$P(Y = 1) = \int_{-\infty}^0 f(w) dw$.
+$P(Y = 1) = \int_{0}^{\infty} f(w) dw$.
 
 Now for probit regression, we could just use standard methods to compute normal pdf integrals (e.g., as implemented in `pnorm()`. But for the multinomial extension we discuss next, we need Monte Carlo simulation.
 
@@ -204,7 +204,7 @@ mprobitVec <- nimbleFunction(
 )
 ```
 
-# Let's play the Feud
+# Let's compare
 
 ```{r, probit-bake-off}
 cmprobit = compileNimble(mprobit)
