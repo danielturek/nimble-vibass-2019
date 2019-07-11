@@ -108,7 +108,7 @@ littersCode &lt;-<span class="st"> </span><span class="kw">nimbleCode</span>({
      for (j in <span class="dv">1</span>:N) {
         <span class="co"># likelihood (data model)</span>
         r[i,j] ~<span class="st"> </span><span class="kw">dbin</span>(p[i,j], n[i,j])
-    <span class="co"># latent process (random effects)</span>
+        <span class="co"># latent process (random effects)</span>
         p[i,j] ~<span class="st"> </span><span class="kw">dbeta</span>(a[i], b[i]) 
      }
      <span class="co"># prior for hyperparameters</span>

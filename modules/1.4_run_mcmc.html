@@ -238,13 +238,16 @@ cLittersMCMC &lt;- compileNimble(littersMCMC, project = littersModel)</code></pr
 <p>Now let’s run the MCMC. We don’t recommend running the R version of the MCMC for very many iterations - it’s really slow - in part because iterating in R is slow and in part because iterating with a model in NIMBLE requires even more overhead.</p>
 <pre class="r"><code>niter &lt;- 1000
 nburn &lt;- 100
+
 set.seed(1)
+
 inits &lt;- function() {
       a &lt;- runif(G, 1, 20)
       b &lt;- runif(G, 1, 20)
       p &lt;- rbind(rbeta(N, a[1], b[1]), rbeta(N, a[2], b[2]))
       return(list(a = a, b = b, p = p))
-}             
+}
+
 print(system.time(samples &lt;- runMCMC(cLittersMCMC, niter = niter, nburnin = nburn,
                           inits = inits, nchains = 3, samplesAsCodaMCMC = TRUE)))</code></pre>
 <pre><code>## running chain 1...</code></pre>
@@ -257,7 +260,7 @@ print(system.time(samples &lt;- runMCMC(cLittersMCMC, niter = niter, nburnin = n
 <pre><code>## |-------------|-------------|-------------|-------------|
 ## |-------------------------------------------------------|
 ##    user  system elapsed 
-##   0.197   0.002   0.201</code></pre>
+##   0.188   0.002   0.191</code></pre>
 </div>
 <div id="working-with-mcmc-output" class="section level1">
 <h1>Working with MCMC output</h1>

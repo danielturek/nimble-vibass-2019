@@ -167,13 +167,16 @@ cLittersMCMC &lt;-<span class="st"> </span><span class="kw">compileNimble</span>
 <p>Now let's run the MCMC. We don't recommend running the R version of the MCMC for very many iterations - it's really slow - in part because iterating in R is slow and in part because iterating with a model in NIMBLE requires even more overhead.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">niter &lt;-<span class="st"> </span><span class="dv">1000</span>
 nburn &lt;-<span class="st"> </span><span class="dv">100</span>
+
 <span class="kw">set.seed</span>(<span class="dv">1</span>)
+
 inits &lt;-<span class="st"> </span>function() {
       a &lt;-<span class="st"> </span><span class="kw">runif</span>(G, <span class="dv">1</span>, <span class="dv">20</span>)
       b &lt;-<span class="st"> </span><span class="kw">runif</span>(G, <span class="dv">1</span>, <span class="dv">20</span>)
       p &lt;-<span class="st"> </span><span class="kw">rbind</span>(<span class="kw">rbeta</span>(N, a[<span class="dv">1</span>], b[<span class="dv">1</span>]), <span class="kw">rbeta</span>(N, a[<span class="dv">2</span>], b[<span class="dv">2</span>]))
       <span class="kw">return</span>(<span class="kw">list</span>(<span class="dt">a =</span> a, <span class="dt">b =</span> b, <span class="dt">p =</span> p))
-}             
+}
+
 <span class="kw">print</span>(<span class="kw">system.time</span>(samples &lt;-<span class="st"> </span><span class="kw">runMCMC</span>(cLittersMCMC, <span class="dt">niter =</span> niter, <span class="dt">nburnin =</span> nburn,
                           <span class="dt">inits =</span> inits, <span class="dt">nchains =</span> <span class="dv">3</span>, <span class="dt">samplesAsCodaMCMC =</span> <span class="ot">TRUE</span>)))</code></pre></div>
 <pre><code>## running chain 1...</code></pre>
@@ -186,7 +189,7 @@ inits &lt;-<span class="st"> </span>function() {
 <pre><code>## |-------------|-------------|-------------|-------------|
 ## |-------------------------------------------------------|
 ##    user  system elapsed 
-##   0.173   0.003   0.178</code></pre>
+##   0.160   0.001   0.162</code></pre>
 </div>
 <div id="working-with-mcmc-output" class="slide section level1">
 <h1>Working with MCMC output</h1>

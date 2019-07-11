@@ -48,10 +48,10 @@ Here are some of the features you can do in NIMBLE that we are most excited abou
   2. <a href="http://mc-stan.org" target="_blank" style="color: blue">Stan</a>
   3. <a href="https://pymcmc.readthedocs.org/en/latest/" target="_blank" style="color: blue">PyMC</a>
 * various sequential Monte Carlo packages
-  1. <a href="http://kingaa.github.io/pomp" target="_blank" style="color: blue">POMP</a>
-  2. <a href="http://libbi.org" target="_blank" style="color: blue">LibBI</a>
-  3. <a href="https://biips.github.io/" target="_blank" style="color: blue">BIIPS</a>
-  4. <a href="https://cran.r-project.org/web/packages/SMC/index.html" target="_blank" style="color: blue">SMC</a>
+  1. <a href="http://kingaa.github.io/pomp" target="_blank" style="color: blue">POMP</a>: Partially-Observed Markov Processes (standalone)
+  2. <a href="http://libbi.org" target="_blank" style="color: blue">LibBI</a>: PMCMC and SMC for state-space models (standalone)
+  3. <a href="https://biips.github.io/" target="_blank" style="color: blue">BIIPS</a>: Bayesian Inference with Interacting Particle Systems (standalone, but simular to BUGS/JAGS)
+  4. <a href="https://cran.r-project.org/web/packages/SMC/index.html" target="_blank" style="color: blue">SMC</a>: Sequential Monte Carlo (R package)
 * various tools for a variety of algorithms in R, Python, Matlab, etc.
 
 # Getting help with NIMBLE

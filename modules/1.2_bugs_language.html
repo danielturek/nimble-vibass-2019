@@ -185,7 +185,7 @@ littersCode &lt;- nimbleCode({
      for (j in 1:N) {
         # likelihood (data model)
         r[i,j] ~ dbin(p[i,j], n[i,j])
-    # latent process (random effects)
+        # latent process (random effects)
         p[i,j] ~ dbeta(a[i], b[i]) 
      }
      # prior for hyperparameters
