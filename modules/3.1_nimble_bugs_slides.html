@@ -156,23 +156,23 @@ littersModel$r</code></pre></div>
 ## [1,]     5     7     7
 ## [2,]     3     3     0</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">littersModel$p</code></pre></div>
-<pre><code>##           [,1]      [,2]      [,3]      [,4]       [,5]      [,6]
-## [1,] 0.5420321 0.3644498 0.5441792 0.7311122 0.09479928 0.6702858
-## [2,] 0.5972480 0.7019501 0.2690107 0.7768334 0.60810728 0.3347469
-##           [,7]      [,8]      [,9]     [,10]     [,11]     [,12]     [,13]
-## [1,] 0.5910918 0.7073701 0.9110387 0.7036580 0.5363149 0.4393385 0.9350626
-## [2,] 0.5646447 0.2188891 0.7471024 0.9195242 0.7796410 0.8764180 0.4088320
-##          [,14]     [,15]     [,16]
-## [1,] 0.8024718 0.4117536 0.4914922
-## [2,] 0.7577301 0.5477235 0.5178999</code></pre>
+<pre><code>##           [,1]      [,2]      [,3]      [,4]      [,5]      [,6]      [,7]
+## [1,] 0.4365114 0.4381776 0.7282845 0.7270420 0.4364597 0.5177719 0.1875271
+## [2,] 0.8591625 0.3853253 0.5187517 0.2792156 0.1529206 0.5726751 0.3699717
+##           [,8]      [,9]     [,10]     [,11]     [,12]     [,13]     [,14]
+## [1,] 0.4836953 0.4829838 0.7743280 0.6596776 0.6882521 0.3513767 0.8076914
+## [2,] 0.4668724 0.3614991 0.5731367 0.6693713 0.1872760 0.9589700 0.4741984
+##          [,15]     [,16]
+## [1,] 0.6858645 0.3190823
+## [2,] 0.7450803 0.5252250</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">littersModel$<span class="kw">simulate</span>(<span class="st">'r'</span>, <span class="dt">includeData =</span> <span class="ot">TRUE</span>)
 littersModel$r</code></pre></div>
 <pre><code>##      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10] [,11] [,12] [,13]
-## [1,]    9    4    6    8    2    4    8    9    9     8     4     7     5
-## [2,]    8    8    3    7    5    2    3    2    8     3     7     7     3
+## [1,]    4    5    6    7    3    1    3    4    2    10     8    10     3
+## [2,]   10    3    6    2    1    6    4    4    4     5     7     1     9
 ##      [,14] [,15] [,16]
-## [1,]     6     4     3
-## [2,]     5     4     2</code></pre>
+## [1,]     6     5     5
+## [2,]     3     7     3</code></pre>
 <ul>
 <li>NIMBLE will usually disambiguate data when it is provided as constants.</li>
 </ul>
@@ -224,7 +224,7 @@ m2$<span class="kw">getNodeNames</span>()</code></pre></div>
 <pre><code>## [1] &quot;predicted[1:5]&quot;</code></pre>
 <p>One is not necessarily better than the other. It depends on the model and the MCMC configuration. (More on those topics later.)</p>
 <p>Vectorized declarations do not work for univariate distributions (e.g., Normal, beta, or gamma distributions)</p>
-<p>However, vectorized declarations for multivariate distributions certainly exist</p>
+<p>However, vectorized declarations are necessary for declaring multivariate distributions</p>
 </div>
 <div id="definition-time-if-then-else" class="slide section level1">
 <h1>Definition-time if-then-else</h1>

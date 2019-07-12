@@ -157,7 +157,7 @@ and the MCMC configuration.  (More on those topics later.)
 
 Vectorized declarations do not work for univariate distributions (e.g., Normal, beta, or gamma distributions)
 
-However, vectorized declarations for multivariate distributions certainly exist
+However, vectorized declarations are necessary for declaring multivariate distributions
 
 
 # Definition-time if-then-else
