@@ -18,7 +18,7 @@ With the ability to define deterministic variables, modify elements of arrays, a
 
 # Survival analysis
 
-Here's a parametric accelerated failure time model. We'll see a nonparametric accelerated failure time model later.
+Here's a parametric accelerated failure time (AFT) model. We'll see a nonparametric AFT model later.
 
 ```{r, aft-example, eval=FALSE}
 nimbleCode({

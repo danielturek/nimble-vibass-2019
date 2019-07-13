@@ -59,7 +59,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </div>
 <div id="survival-analysis" class="slide section level1">
 <h1>Survival analysis</h1>
-<p>Here's a parametric accelerated failure time model. We'll see a nonparametric accelerated failure time model later.</p>
+<p>Here's a parametric accelerated failure time (AFT) model. We'll see a nonparametric AFT model later.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">nimbleCode</span>({
     for(i in <span class="dv">1</span>:n) {
         x[i] ~<span class="st"> </span><span class="kw">dweib</span>(alpha, lambda[i])

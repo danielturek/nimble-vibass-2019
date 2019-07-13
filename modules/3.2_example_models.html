@@ -130,7 +130,7 @@ $(document).ready(function () {
 </div>
 <div id="survival-analysis" class="section level1">
 <h1>Survival analysis</h1>
-<p>Here’s a parametric accelerated failure time model. We’ll see a nonparametric accelerated failure time model later.</p>
+<p>Here’s a parametric accelerated failure time (AFT) model. We’ll see a nonparametric AFT model later.</p>
 <pre class="r"><code>nimbleCode({
     for(i in 1:n) {
         x[i] ~ dweib(alpha, lambda[i])
