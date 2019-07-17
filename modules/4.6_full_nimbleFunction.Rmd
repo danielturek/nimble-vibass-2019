@@ -60,9 +60,9 @@ Let's construct our (generic) nimbleFunction:
 margSampler <- nimbleFunction(
             setup = function(fullModel, samplesMarg, target) {
                   ## samplesMarg is a matrix of samples from the
-		  ## marginalized model
+                  ## marginalized model
                   ## target contains the nodes that have been integrated
-		  ## over that we want to sample from
+                  ## over that we want to sample from
 
                   ## setup MCMC only for integrated-over nodes
                   conf <- configureMCMC(fullModel, nodes = target, monitors = target)
@@ -112,7 +112,7 @@ margSampler <- nimbleFunction(
 
 # Example: litters model
                 
-```{r, prep}
+```{r, prep, echo = FALSE}
 # so attendees can run code below this without using code from other modules
 if(!exists('littersModel') || !exists('cLittersModel')) source('chunks_litters.R')
 if(!exists('littersMargModel') || !exists('cLittersMargModel')) source('chunks_litters_marginal.R')
@@ -120,17 +120,25 @@ if(!exists('littersMargModel') || !exists('cLittersMargModel')) source('chunks_l
 
 ```{r, run-predictive, fig.width=5, fig.height=5, fig.cap=''}
 littersMargModel <- nimbleModel(littersMargCode, 
-          data = littersData, constants = littersConsts, inits = littersInits)
+                                data = littersData,
+                                constants = littersConsts,
+                                inits = littersInits)
 cLittersMargModel <- compileNimble(littersMargModel)
 thin = 10
-littersMargConf <- configureMCMC(littersMargModel, print = TRUE, thin = thin)
+littersMargConf <- configureMCMC(littersMargModel,
+                                 print = TRUE,
+                                 thin = thin)
 littersMargMCMC <- buildMCMC(littersMargConf)
 
 littersModel <- nimbleModel(littersCode, 
-          data = littersData, constants = littersConsts, inits = littersInits)
+                            data = littersData,
+                            constants = littersConsts,
+                            inits = littersInits)
 
 ## We can set up the new sampler without actually running the MCMC
-rMargSampler <- margSampler(littersModel, as.matrix(littersMargMCMC$mvSamples), 'p')
+rMargSampler <- margSampler(littersModel,
+                            as.matrix(littersMargMCMC$mvSamples),
+                            'p')
 
 cLittersModel <- compileNimble(littersModel)
 cLittersMargMCMC <- compileNimble(littersMargMCMC, project = littersMargModel)

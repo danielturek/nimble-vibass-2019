@@ -77,9 +77,7 @@ nimMath2 <- nimbleFunction(
 cNimMath2 <- compileNimble(nimMath2)
 ```
 
-For discussion: what does it mean to use vectorization in Eigen and does it suffer from the same use of temporary variables as discussed above in the R context?
-
-# Bake-off
+# Comparison
 
 ```{r, nf-bake-off}
 x <- rnorm(1e6)
@@ -134,7 +132,9 @@ The proportion of times each category had the  largest $W_k$ is an estimate of t
 
 For our example, we want to do this computation for large $M$ (to reduce Monte Carlo error). 
 
+<!--
 Note that in a real application, we would likely want to do this for multiple observations with an $n$ by $K$ matrix of $\alpha = X \beta$ values, resulting in an $n$ by $K$ matrix of proportions. But here we'll just consider a single $\alpha$.
+-->
 
 # R implementation
 

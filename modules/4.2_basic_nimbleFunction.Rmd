@@ -63,7 +63,7 @@ nimbleFunctions use **pass-by-reference** not R style **pass-by-value**, so be c
 
 Let's consider how we would optimize the parameters in a model using a nimbleFunction. Basically, we'll just construct an objective function that we can then pass to R's *optim* function to do the actual numerical optimization. (NIMBLE also has an `optim()` that you can use within a nimbleFunction.)
 
-This amounts to setting things up to find the posterior mode of a model; this is generally a reasonable thing to do only for models with a small number of parameters and without hierarchical structure. That sounds restrictive, but if you can marginalize of latent process values, then we're doing empirical Bayes.
+This amounts to setting things up to find the posterior mode of a model; this is generally a reasonable thing to do only for models with a small number of parameters and without hierarchical structure. That sounds restrictive, but if you can marginalize over latent process values, then we're doing empirical Bayes.
 
 # A nimbleFunction for the litters marginalized model
 
@@ -111,16 +111,22 @@ assign('rbetabin', rbetabin, .GlobalEnv)
 
 ```{r, litters-specialized}
 rObjective <- objective(littersMargModel)
-## cObjective <- compileNimble(rObjective, project = littersMargModel)  ## remember to compile model first
+
+## remember to compile model first:
 cLittersMargModel <- compileNimble(littersMargModel)
+
 cObjective <- compileNimble(rObjective, project = littersMargModel)
 ```
 
 Now let's try using it.
 
 ```{r, litters-optimize}
-system.time(optR <- optim(log(rep(1,4)), rObjective$run, control = list(fnscale = -1)))
-system.time(optC <- optim(log(rep(1,4)), cObjective$run, control = list(fnscale = -1)))
+system.time(optR <- optim(log(rep(1,4)),
+                          rObjective$run,
+                          control = list(fnscale = -1)))
+system.time(optC <- optim(log(rep(1,4)),
+                          cObjective$run,
+                          control = list(fnscale = -1)))
 optR
 optC
 exp(optC$par)

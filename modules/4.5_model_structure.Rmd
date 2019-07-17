@@ -51,9 +51,8 @@ HGB <- myeloma[ , 4]
 logBUN <- (logBUN - mean(logBUN)) / sd(logBUN)
 HGB <- (HGB - mean(HGB)) / sd(HGB)
 
-nSub = 15
 constants = list(b0 = -10, B0 = 10, a0 = 0.1, A0 = 10, p = 2, n = n,
-                 c = cens_time, Z = cbind(logBUN, HGB), nSub = nSub,
+                 c = cens_time, Z = cbind(logBUN, HGB),
                  mu = rep(0, 2), Sigma = diag(2))
 data = list(is_cens = as.numeric(alive), x = time)
 xInit <- rep(NA, n)

@@ -179,10 +179,9 @@ cNimMath1 &lt;- compileNimble(nimMath1)</code></pre>
 cNimMath2 &lt;- compileNimble(nimMath2)</code></pre>
 <pre><code>## compiling... this may take a minute. Use 'showCompilerOutput = TRUE' to see C++ compilation details.</code></pre>
 <pre><code>## compilation finished.</code></pre>
-<p>For discussion: what does it mean to use vectorization in Eigen and does it suffer from the same use of temporary variables as discussed above in the R context?</p>
 </div>
-<div id="bake-off" class="section level1">
-<h1>Bake-off</h1>
+<div id="comparison" class="section level1">
+<h1>Comparison</h1>
 <pre class="r"><code>x &lt;- rnorm(1e6)
 library(rbenchmark)
 benchmark(out0 &lt;- exp(cos(sin(x)) + x^3),
@@ -191,9 +190,9 @@ benchmark(out0 &lt;- exp(cos(sin(x)) + x^3),
                 columns = c('test','replications','elapsed'),
                replications = 10)</code></pre>
 <pre><code>##                             test replications elapsed
-## 1 out0 &lt;- exp(cos(sin(x)) + x^3)           10   0.686
-## 2           out1 &lt;- cNimMath1(x)           10   0.814
-## 3           out2 &lt;- cNimMath2(x)           10   0.749</code></pre>
+## 1 out0 &lt;- exp(cos(sin(x)) + x^3)           10   0.653
+## 2           out1 &lt;- cNimMath1(x)           10   0.791
+## 3           out2 &lt;- cNimMath2(x)           10   0.740</code></pre>
 <p>We could also time uncompiled execution of the nimbleFunction but it will generally be even slower than directly coding in R. The main purpose of running a nimbleFunction in R is debugging. You can step through execution of an uncompiled nimbleFunction using R’s debugging tools as usual.</p>
 </div>
 <div id="a-more-involved-example" class="section level1">
@@ -227,7 +226,9 @@ W_k \sim N(X\beta_k, 1)
 </ul>
 <p>The proportion of times each category had the largest <span class="math inline">\(W_k\)</span> is an estimate of the multinomial proportions of interest.</p>
 <p>For our example, we want to do this computation for large <span class="math inline">\(M\)</span> (to reduce Monte Carlo error).</p>
-<p>Note that in a real application, we would likely want to do this for multiple observations with an <span class="math inline">\(n\)</span> by <span class="math inline">\(K\)</span> matrix of <span class="math inline">\(\alpha = X \beta\)</span> values, resulting in an <span class="math inline">\(n\)</span> by <span class="math inline">\(K\)</span> matrix of proportions. But here we’ll just consider a single <span class="math inline">\(\alpha\)</span>.</p>
+<!--
+Note that in a real application, we would likely want to do this for multiple observations with an $n$ by $K$ matrix of $\alpha = X \beta$ values, resulting in an $n$ by $K$ matrix of proportions. But here we'll just consider a single $\alpha$.
+-->
 </div>
 <div id="r-implementation" class="section level1">
 <h1>R implementation</h1>
@@ -247,7 +248,7 @@ system.time({
         props
 })</code></pre>
 <pre><code>##    user  system elapsed 
-##   2.845   0.154   3.058</code></pre>
+##   2.617   0.123   2.758</code></pre>
 </div>
 <div id="c-style-implementation-in-nimble" class="section level1">
 <h1>C-style implementation in NIMBLE</h1>
@@ -306,12 +307,12 @@ system.time(
 props2 &lt;- cmprobit(alphas, M)
 )</code></pre>
 <pre><code>##    user  system elapsed 
-##   0.376   0.007   0.396</code></pre>
+##   0.366   0.002   0.369</code></pre>
 <pre class="r"><code>system.time(
 props3 &lt;- cmprobitVec(alphas, M)
 )</code></pre>
 <pre><code>##    user  system elapsed 
-##   1.097   0.010   1.118</code></pre>
+##   1.081   0.005   1.091</code></pre>
 <p>Any speculation as to why the vectorized implementation is slower?</p>
 <p>So we get a nice six-fold speedup, even though all of the R code was vectorized. In the exercises, you can practice with an example of replacing an explicit for loop in R.</p>
 </div>

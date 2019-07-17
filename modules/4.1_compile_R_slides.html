@@ -108,10 +108,9 @@ cNimMath1 &lt;-<span class="st"> </span><span class="kw">compileNimble</span>(ni
 cNimMath2 &lt;-<span class="st"> </span><span class="kw">compileNimble</span>(nimMath2)</code></pre></div>
 <pre><code>## compiling... this may take a minute. Use 'showCompilerOutput = TRUE' to see C++ compilation details.</code></pre>
 <pre><code>## compilation finished.</code></pre>
-<p>For discussion: what does it mean to use vectorization in Eigen and does it suffer from the same use of temporary variables as discussed above in the R context?</p>
 </div>
-<div id="bake-off" class="slide section level1">
-<h1>Bake-off</h1>
+<div id="comparison" class="slide section level1">
+<h1>Comparison</h1>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="fl">1e6</span>)
 <span class="kw">library</span>(rbenchmark)
 <span class="kw">benchmark</span>(out0 &lt;-<span class="st"> </span><span class="kw">exp</span>(<span class="kw">cos</span>(<span class="kw">sin</span>(x)) +<span class="st"> </span>x^<span class="dv">3</span>),
@@ -120,9 +119,9 @@ cNimMath2 &lt;-<span class="st"> </span><span class="kw">compileNimble</span>(ni
                 <span class="dt">columns =</span> <span class="kw">c</span>(<span class="st">'test'</span>,<span class="st">'replications'</span>,<span class="st">'elapsed'</span>),
                <span class="dt">replications =</span> <span class="dv">10</span>)</code></pre></div>
 <pre><code>##                             test replications elapsed
-## 1 out0 &lt;- exp(cos(sin(x)) + x^3)           10   1.053
-## 2           out1 &lt;- cNimMath1(x)           10   0.972
-## 3           out2 &lt;- cNimMath2(x)           10   0.912</code></pre>
+## 1 out0 &lt;- exp(cos(sin(x)) + x^3)           10   0.972
+## 2           out1 &lt;- cNimMath1(x)           10   0.954
+## 3           out2 &lt;- cNimMath2(x)           10   0.901</code></pre>
 <p>We could also time uncompiled execution of the nimbleFunction but it will generally be even slower than directly coding in R. The main purpose of running a nimbleFunction in R is debugging. You can step through execution of an uncompiled nimbleFunction using R's debugging tools as usual.</p>
 </div>
 <div id="a-more-involved-example" class="slide section level1">
@@ -165,7 +164,9 @@ W_k \sim N(X\beta_k, 1)
 </ul>
 <p>The proportion of times each category had the largest <img style="vertical-align:middle" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABsAAAASCAIAAAAluTLKAAAABmJLR0QA/wD/AP+gvaeTAAACmklEQVQ4jaWTMUhyURTHz/t89vRRyVtq8Fbg1tZgPkMoIhHDIArawkUUGtrMqaklaHUycHF4OtcSIQ5h+IQiEYfIKXhQQ3RBy6f59HzD8zOxl/R9338693/P+Z177uUyiFiv1+GPOI4bGxtrt9vNZrNvWq1WlmU7nU6j0dAdk8nE8zwYiW21WkdHR1dXV51OZ2lpKRAI+P1+WZYlSSoWi5OTk6Iobm1tud3uarUaj8dlWSaEeL3e/f19QyIgIiJ6vd6NjQ0cUK1Wc7lcu7u7g+b7+/v29naj0cDv9Uvn8jxPKR3sJMvyx8fHUPt4PB6LxaxWq/HpAACgRySEvL299V1N087OzjiOYximbz4+PiqKIoriCNwnkWGYwWJJkhYXF00m0+CjJRKJg4OD0bhPoi5VVQGAUprP54PB4Nzc3MvLi74ly7IgCLOzsz8l6qnZbBYATk9PI5HIUF4mk9nb2/taX6lUjo+Pw+HwMHF6ehoAELFarT4/PzudTgDo30M6nRZFcXx8/CvRbrerqqooivHUAJBMJqPRqB7bbLZms/nw8JDP53d2dgxnFAShXq/Pz88bE3O5HM/zdrtdX87MzGialkgkNjc3WZY1JALA/f292+0GgIuLi8vLyx5xZWUFAO7u7mKx2FABpdTn832HUxSFUrq8vJxMJimlJycnvc4WiwUAQqGQHvRlNpsPDw+/wwHA9fW1IAiFQmF9fb3b7fI83yOyLOtwOILB4GD2wsJCrVZzOBwjiMViEQBub29dLhchhBACI37oT+T3+yVJOj8/X11dRcSbm5vht/4rPT09vb6+rq2tqao6MTGBiKVS6b+I5XKZEDI1NeXxeGw2WyqV8vl8DCL+MxERNU0zm80A0G63u90ux3G/AU8igQaeqjowAAAAAElFTkSuQmCC" alt="W_k" title="W_k" /> is an estimate of the multinomial proportions of interest.</p>
 <p>For our example, we want to do this computation for large <img style="vertical-align:middle" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAAOCAIAAABCerDeAAAABmJLR0QA/wD/AP+gvaeTAAAB40lEQVQokW2TLcvCUBTHz17cnS+gQdBgkdlUBgYV8QWLfgWbqCBoFQSbQbCYFsQv4DewCBYRhc0krBlE2ISxoIIMx9j2hIHsEU/639/ld84J92K2bQMAAFiWpWmakwOBAPwqTdMsywIAiqLID1UUheM4nucfj8d0Oq3X61/a6XTqdrs0TRcKhWw2C/b/arfb+Xx+Pp9/cdM0+/1+NpudTCYOwd1d3+83juPhcPhyuXwNnM/nDMMYhlEqlRxCuq+3220ymQQASZLcXFEUWZa9Xi9N07lczoH/Zu52u0qlEgqFns+nm89ms+FwKIpiLBZDCP0wZVlmWZZl2dvt9oHL5TKTyRAEcb1enY2+zfv9TlEUjuMIIcuyDMMAAFVVT6dTo9EQBEHX9XK5/MM8HA6pVAoAarUaQRDr9RoAOI7r9XoYhu33e4RQtVr9YfI877T0eDwIIVVVV6tVIpGIx+MAIIqiE36YkiSxLAsAPp8vGAyez+fNZtNsNgFA0zRJkpyNvk1RFE3T/NBoNLrf7zudjnMUBOH9fheLRbdJ6ro+Ho+Px6Ou66PRaDAYhMPhSCTCMEw6nb5er4vFwnkY6/X6crm0Wi3HxGzbfr1en05+vx/DMNM0MQzDcdz9DQCAJEmapp38B1nt8rm6HTyXAAAAAElFTkSuQmCC" alt="M" title="M" /> (to reduce Monte Carlo error).</p>
-<p>Note that in a real application, we would likely want to do this for multiple observations with an <img style="vertical-align:middle" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAKCAIAAADtkjPUAAAABmJLR0QA/wD/AP+gvaeTAAABEUlEQVQYlU2PMauCUBzFzxN1iGppEWcRwQbBpaUadBACP0hfxqWtiGgOoW/g5uAUiIO7uSk6XK5w6f+G+4J3pvPjnOGcHyICwBjTNE3TNACccyHEfD4HAEAFkGXZ/X5vmiZJkjRNh2GYpqlt2+v1ulgsQETH41EIsdvtgiAoy5KIPp9PGIan04mIFM75crnsuo5zfjgcXNcFQESMsdlsBglE9Hw+fd9vmkZiURSe571eLyJS5Jw8z1erlWmaEh+Ph2EY6/X6bymAqqocx8FXRVHs9/txHM/nswKg7/v3++37vozruu66Lo7jy+Wy3W4VAGVZqqoaRZFs2LZtWdbtdtN1fbPZQH5jjNE/CSHGcZT+FyWcqEVsd4HNAAAAAElFTkSuQmCC" alt="n" title="n" /> by <img style="vertical-align:middle" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAOCAIAAACpTQvdAAAABmJLR0QA/wD/AP+gvaeTAAABiElEQVQokXWSP6zBUBTG722fSHUooy4mo0EiFptErAxGc6MRiUGiVjEYGGq22U1YNRJqlk7sFSHV+HNJtfcNN+9GX/im833n+yVnOBBjDAAAAHied7/fwZ8ghDzPk/l6vdIQUsA0TVVV1+v1+XzOZDLhcLjdbpOVLMu6rouimE6nAfarUChks1nXdWmCEKpWq71ej1gfgBBKpVKSJNFkt9vVajVd12nyA96kaZrruslkktjpdDqbzVqtVjQapR0fsFgsMMa5XM5xnE6nw3Fcv98PBALvHebdbDYbQRAYhqnX6+Px2Lbtf20fYFmWaZrBYFBV1UajIYqipmmWZX0Flsvl6/VKJBLdbjcWi5VKJYTQaDT6CqxWKwihJEnkjGKxGAqFJpOJ4zifAcMwBEGIx+PERiKRfD5/OBzm8/kH4HQ67fd72iYql8ssyw6HQx/wfD4VRWk2m4/Hw7ZtRVEulwsA4Hg8DgYDz/O2222lUjEMgwAQY0x/i4jnefJjt9uNhhzHsSwLAPgFSPzyqHrCqRAAAAAASUVORK5CYII=" alt="K" title="K" /> matrix of <img style="vertical-align:middle" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADsAAAASCAIAAABq5DEaAAAABmJLR0QA/wD/AP+gvaeTAAAEH0lEQVRIic2VXSh7fxzHv4czm22GSaI8pOGCTGtLaFpTQpLkwqIoLhiadqMUQy7k0uMmrLYLbQqpraZmiQ3zfENbeUijloew2dPZzvld7Nf+fhvTv9//L++7z+f7+p7zOqdP3y+EYRj42UEQxOVyEQgEHA4HAIC/7cXPz88DAwPX19dutxuHw1VXV7e3twMAJiYmVCoVBEHJyckdHR0sFuv9ruXl5a2traioKIvFUllZ2dTUBLDvzczMTEFBgUgkCnSsVmtZWZlKpfL5fEHw4uKiTCZDURTDsJubm6KiIovF8t3GTqezuLiYy+UiCIJhGIIg/f39JpMplDw8PBwZGQmUj4+PLBbr5OQk4tumwh8CgcDhcJ6entbW1hAE6erq4nK52dnZoaRcLu/s7AyUer2eRCJlZWX9MccXFxdqtTopKamiooJCofxP0jweb319fWVlxWg0VlVVcTicUObh4SEyMjIuLu729hZBEAiCZmdnBQIBkUj8bYyiqFAofHx8bGxsvLy8bGhoEIvFaWlp+/v7NBotPj7ej3m93snJyfBCMTExra2tYYC8vLycnJyzs7PKysqampoPmY2NDQaDcXp6yufzURTF4/H19fW1tbUAgAi/rkAgsNlscrm8oqKCz+fHxsaOjo4CAGQyGZFIfP8sx1dxOp3hPwkAkJKSgqKo2Wz+DNjd3a2qqqLT6Xq9fmdnZ2pqSqFQ3N/fA//pNj09vb29vbS0FNiQn5+vVqvNZjOVSsXj8YE+DMN9fX1fCoXP9PQ0iUSiUqlarbavry8qKiqUcbvdcXFxgTI3NxdFUZVK1dLSEgEA0Gg0ycnJNBotQBAIBK/Xu7Cw0NbW9pd+QdHpdB6PRyQSlZSU2O12pVIZyjw9PUVHR4f2f//j19fXu7s7NpsdtOz1ejMyMlJTU4OaY2Nj4Z0oFEpXV9dnukajsbe3FwDQ3d2t0WhWVlaampqCMK1Wy2Aw3neMRqPL5SotLQUARERHR5PJZBj+49BwOBwwDPvvpKAQv8qHvwcAsLm5KZfLBQKBv0xMTKTT6VdXVwcHB0GkwWB4P4oAgMXFxfT09MLCQgAAjMPhysvLz8/PMQyDIMjtdkskEqvVimGYw+EQi8VCoTCwE4bhnp6eD4XCxOfzzc/PS6XS1dVVAoEQ6GdlZe3v78/NzTGZzPe8zWbT6XR1dXUQBAEAFAqFyWSanZ31r0L+G2V4eNhiseDx+MjISB6Px2Qyu7u7EQRhs9nNzc3/VvF9jo+PpVLp29sbAIBEIo2Pj/v7Eonk6OjI6/VCEEQkEgcHB6lUKgDg5eVlaGiIxWIZDAYIgux2e2ZmZk9PD5lM/sf4b4T+8yiVSp/Px+PxPgO++5b+Mnt7e+Xl5WGAH2fs8XgSEhLCAD9uKtxud9BBEZRf1cTw0lLDc0MAAAAASUVORK5CYII=" alt="\alpha = X \beta" title="\alpha = X \beta" /> values, resulting in an <img style="vertical-align:middle" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAKCAIAAADtkjPUAAAABmJLR0QA/wD/AP+gvaeTAAABEUlEQVQYlU2PMauCUBzFzxN1iGppEWcRwQbBpaUadBACP0hfxqWtiGgOoW/g5uAUiIO7uSk6XK5w6f+G+4J3pvPjnOGcHyICwBjTNE3TNACccyHEfD4HAEAFkGXZ/X5vmiZJkjRNh2GYpqlt2+v1ulgsQETH41EIsdvtgiAoy5KIPp9PGIan04mIFM75crnsuo5zfjgcXNcFQESMsdlsBglE9Hw+fd9vmkZiURSe571eLyJS5Jw8z1erlWmaEh+Ph2EY6/X6bymAqqocx8FXRVHs9/txHM/nswKg7/v3++37vozruu66Lo7jy+Wy3W4VAGVZqqoaRZFs2LZtWdbtdtN1fbPZQH5jjNE/CSHGcZT+FyWcqEVsd4HNAAAAAElFTkSuQmCC" alt="n" title="n" /> by <img style="vertical-align:middle" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAOCAIAAACpTQvdAAAABmJLR0QA/wD/AP+gvaeTAAABiElEQVQokXWSP6zBUBTG722fSHUooy4mo0EiFptErAxGc6MRiUGiVjEYGGq22U1YNRJqlk7sFSHV+HNJtfcNN+9GX/im833n+yVnOBBjDAAAAHied7/fwZ8ghDzPk/l6vdIQUsA0TVVV1+v1+XzOZDLhcLjdbpOVLMu6rouimE6nAfarUChks1nXdWmCEKpWq71ej1gfgBBKpVKSJNFkt9vVajVd12nyA96kaZrruslkktjpdDqbzVqtVjQapR0fsFgsMMa5XM5xnE6nw3Fcv98PBALvHebdbDYbQRAYhqnX6+Px2Lbtf20fYFmWaZrBYFBV1UajIYqipmmWZX0Flsvl6/VKJBLdbjcWi5VKJYTQaDT6CqxWKwihJEnkjGKxGAqFJpOJ4zifAcMwBEGIx+PERiKRfD5/OBzm8/kH4HQ67fd72iYql8ssyw6HQx/wfD4VRWk2m4/Hw7ZtRVEulwsA4Hg8DgYDz/O2222lUjEMgwAQY0x/i4jnefJjt9uNhhzHsSwLAPgFSPzyqHrCqRAAAAAASUVORK5CYII=" alt="K" title="K" /> matrix of proportions. But here we'll just consider a single <img style="vertical-align:middle" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAKCAIAAADtkjPUAAAABmJLR0QA/wD/AP+gvaeTAAABA0lEQVQYlVWQMaqDQBCGZyQiSsSANglYGVJY7AXEwhuksbcMlskVcoZgIbZ2S8o0OYQXsLKXhXWREHZeIU/e+6rh/2f+gR+JCH7RWiulTNO0LGsVN+vUtu3z+TwcDkKI/X5/v98RcZomICIiaprmfD6P40hEWussy6qqIqKyLA0AeL1ej8fjer3udjsAQMTj8fh+v7uuC8PQAIC6rj3PS9N0/RgEgRCCc57nuaGUGobhdDrBf6SUrutGUWQgIiIu+X9xHOd2uwGAYds2Y0xKuXqc877vl0vOORKRlPJyufi+b1nWPM9JkiRJUhRFHMeMMVwaW/YQcbvdLkmfz+f7/TqO8wO6LnMIdskdDQAAAABJRU5ErkJggg==" alt="\alpha" title="\alpha" />.</p>
+<!--
+Note that in a real application, we would likely want to do this for multiple observations with an $n$ by $K$ matrix of $\alpha = X \beta$ values, resulting in an $n$ by $K$ matrix of proportions. But here we'll just consider a single $\alpha$.
+-->
 </div>
 <div id="r-implementation" class="slide section level1">
 <h1>R implementation</h1>
@@ -185,7 +186,7 @@ K &lt;-<span class="st"> </span><span class="kw">length</span>(alphas)
         props
 })</code></pre></div>
 <pre><code>##    user  system elapsed 
-##   2.973   0.175   3.234</code></pre>
+##   2.918   0.150   3.116</code></pre>
 </div>
 <div id="c-style-implementation-in-nimble" class="slide section level1">
 <h1>C-style implementation in NIMBLE</h1>
@@ -244,12 +245,12 @@ K &lt;-<span class="st"> </span><span class="kw">length</span>(alphas)
 props2 &lt;-<span class="st"> </span><span class="kw">cmprobit</span>(alphas, M)
 )</code></pre></div>
 <pre><code>##    user  system elapsed 
-##   0.392   0.004   0.402</code></pre>
+##   0.384   0.003   0.388</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">system.time</span>(
 props3 &lt;-<span class="st"> </span><span class="kw">cmprobitVec</span>(alphas, M)
 )</code></pre></div>
 <pre><code>##    user  system elapsed 
-##   1.092   0.012   1.116</code></pre>
+##   1.089   0.006   1.101</code></pre>
 <p>Any speculation as to why the vectorized implementation is slower?</p>
 <p>So we get a nice six-fold speedup, even though all of the R code was vectorized. In the exercises, you can practice with an example of replacing an explicit for loop in R.</p>
 </div>
