@@ -77,9 +77,11 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
     },
 
     <span class="dt">run =</span> function() {
-        <span class="co"># this assumes logProb values are up-to-date, which is how all samplers should be set up</span>
+        ## this assumes logProb values are up-to-date,
+        ## which is how all samplers should be set up
         logProbCurrent &lt;-<span class="st"> </span>model$<span class="kw">getLogProb</span>(calcNodes)
-        <span class="co"># 'target', 'model' is available because it was a setup code argument</span>
+        ## 'target', 'model' is available because it was a
+        ## setup code argument
         currentValue &lt;-<span class="st"> </span>model[[target]]
         <span class="co"># 'scale', 'calcNodes' available because created in setup code</span>
         propValue &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">1</span>, <span class="dt">mean =</span> currentValue, <span class="dt">sd =</span> scale)
@@ -87,7 +89,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
         model$<span class="kw">calculate</span>(calcNodes)
         logMHR &lt;-<span class="st"> </span>model$<span class="kw">getLogProb</span>(calcNodes) -<span class="st"> </span>logProbCurrent
         jump &lt;-<span class="st"> </span><span class="kw">decide</span>(logMHR)
-        <span class="co"># make sure state of model is up-to-date and mvSaved has current iteration</span>
+        ## make sure state of model is up-to-date and mvSaved
+        ## has current iteration
         if(jump) <span class="kw">nimCopy</span>(<span class="dt">from =</span> model, <span class="dt">to =</span> mvSaved, <span class="dt">row =</span> <span class="dv">1</span>, 
                          <span class="dt">nodes =</span> calcNodes, <span class="dt">logProb =</span> <span class="ot">TRUE</span>)
         else     <span class="kw">nimCopy</span>(<span class="dt">from =</span> mvSaved, <span class="dt">to =</span> model, <span class="dt">row =</span> <span class="dv">1</span>, 
@@ -115,8 +118,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
         timesRan      &lt;-<span class="st"> </span><span class="dv">0</span>
         timesAccepted &lt;-<span class="st"> </span><span class="dv">0</span>
         timesAdapted  &lt;-<span class="st"> </span><span class="dv">0</span>
-        scaleHistory  &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>)   ## scaleHistory
-        acceptanceHistory  &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>)   ## scaleHistory
+        scaleHistory  &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>)
+        acceptanceHistory  &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>)
         if(<span class="kw">nimbleOptions</span>(<span class="st">'saveMCMChistory'</span>)) {
             saveMCMChistory &lt;-<span class="st"> </span><span class="ot">TRUE</span>
         } else saveMCMChistory &lt;-<span class="st"> </span><span class="ot">FALSE</span>
@@ -142,7 +145,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
         if(adaptive)     <span class="kw">adaptiveProcedure</span>(jump)
     },
 
-    ## additional methods, callable by nimbleFunction$method_name, or by method_name within a given nimbleFunction's run function or methods
+    ## additional methods, callable by nimbleFunction$method_name,
+    ## or by method_name within a given nimbleFunction's run function or methods
     <span class="dt">methods =</span> <span class="kw">list</span>(
         
         <span class="dt">adaptiveProcedure =</span> function(<span class="dt">jump =</span> <span class="kw">logical</span>()) {
@@ -167,7 +171,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
             }
         },
         
-        <span class="dt">getScaleHistory =</span> function() {  ## scaleHistory
+        <span class="dt">getScaleHistory =</span> function() {
             <span class="kw">returnType</span>(<span class="kw">double</span>(<span class="dv">1</span>))
             if(saveMCMChistory) {
                 <span class="kw">return</span>(scaleHistory)
@@ -177,7 +181,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
             }
         },          
 
-        <span class="dt">getAcceptanceHistory =</span> function() {  ## scaleHistory
+        <span class="dt">getAcceptanceHistory =</span> function() {
             <span class="kw">returnType</span>(<span class="kw">double</span>(<span class="dv">1</span>))
             if(saveMCMChistory) {
                 <span class="kw">return</span>(acceptanceHistory)
@@ -193,7 +197,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
             timesAccepted &lt;&lt;-<span class="st"> </span><span class="dv">0</span>
             timesAdapted  &lt;&lt;-<span class="st"> </span><span class="dv">0</span>
             if(saveMCMChistory) {
-                scaleHistory  &lt;&lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>)    ## scaleHistory
+                scaleHistory  &lt;&lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>)
                 acceptanceHistory  &lt;&lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>)
             }
             gamma1 &lt;&lt;-<span class="st"> </span><span class="dv">0</span>

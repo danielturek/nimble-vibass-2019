@@ -148,9 +148,11 @@ $(document).ready(function () {
     },
 
     run = function() {
-        # this assumes logProb values are up-to-date, which is how all samplers should be set up
+        ## this assumes logProb values are up-to-date,
+        ## which is how all samplers should be set up
         logProbCurrent &lt;- model$getLogProb(calcNodes)
-        # 'target', 'model' is available because it was a setup code argument
+        ## 'target', 'model' is available because it was a
+        ## setup code argument
         currentValue &lt;- model[[target]]
         # 'scale', 'calcNodes' available because created in setup code
         propValue &lt;- rnorm(1, mean = currentValue, sd = scale)
@@ -158,7 +160,8 @@ $(document).ready(function () {
         model$calculate(calcNodes)
         logMHR &lt;- model$getLogProb(calcNodes) - logProbCurrent
         jump &lt;- decide(logMHR)
-        # make sure state of model is up-to-date and mvSaved has current iteration
+        ## make sure state of model is up-to-date and mvSaved
+        ## has current iteration
         if(jump) nimCopy(from = model, to = mvSaved, row = 1, 
                          nodes = calcNodes, logProb = TRUE)
         else     nimCopy(from = mvSaved, to = model, row = 1, 
@@ -186,8 +189,8 @@ $(document).ready(function () {
         timesRan      &lt;- 0
         timesAccepted &lt;- 0
         timesAdapted  &lt;- 0
-        scaleHistory  &lt;- c(0, 0)   ## scaleHistory
-        acceptanceHistory  &lt;- c(0, 0)   ## scaleHistory
+        scaleHistory  &lt;- c(0, 0)
+        acceptanceHistory  &lt;- c(0, 0)
         if(nimbleOptions('saveMCMChistory')) {
             saveMCMChistory &lt;- TRUE
         } else saveMCMChistory &lt;- FALSE
@@ -213,7 +216,8 @@ $(document).ready(function () {
         if(adaptive)     adaptiveProcedure(jump)
     },
 
-    ## additional methods, callable by nimbleFunction$method_name, or by method_name within a given nimbleFunction's run function or methods
+    ## additional methods, callable by nimbleFunction$method_name,
+    ## or by method_name within a given nimbleFunction's run function or methods
     methods = list(
         
         adaptiveProcedure = function(jump = logical()) {
@@ -238,7 +242,7 @@ $(document).ready(function () {
             }
         },
         
-        getScaleHistory = function() {  ## scaleHistory
+        getScaleHistory = function() {
             returnType(double(1))
             if(saveMCMChistory) {
                 return(scaleHistory)
@@ -248,7 +252,7 @@ $(document).ready(function () {
             }
         },          
 
-        getAcceptanceHistory = function() {  ## scaleHistory
+        getAcceptanceHistory = function() {
             returnType(double(1))
             if(saveMCMChistory) {
                 return(acceptanceHistory)
@@ -264,7 +268,7 @@ $(document).ready(function () {
             timesAccepted &lt;&lt;- 0
             timesAdapted  &lt;&lt;- 0
             if(saveMCMChistory) {
-                scaleHistory  &lt;&lt;- c(0, 0)    ## scaleHistory
+                scaleHistory  &lt;&lt;- c(0, 0)
                 acceptanceHistory  &lt;&lt;- c(0, 0)
             }
             gamma1 &lt;&lt;- 0
