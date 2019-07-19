@@ -126,7 +126,7 @@ $(document).ready(function () {
 <div id="sequential-monte-carlo" class="section level1">
 <h1>Sequential Monte Carlo</h1>
 <p>Sequential Monte Carlo is a family of algorithms for iteratively sampling from a posterior distribution generally in state-space style models:</p>
-<p><span class="math display">\[ y_t \sim g_t(y_t | x_t, \theta)\]</span> <span class="math display">\[ x_t \sim f_t(x_t | x_{t-1}, \theta) \]</span></p>
+<p><span class="math display">\[ x_t \sim f_t(x_t | x_{t-1}, \theta) \]</span> <span class="math display">\[ y_t \sim g_t(y_t | x_t, \theta)\]</span></p>
 <p>Some goals in analyzing such models include:</p>
 <ul>
 <li>filtering (online estimation): determining <span class="math inline">\(p(x_T | y_{1:T}, \theta)\)</span></li>
