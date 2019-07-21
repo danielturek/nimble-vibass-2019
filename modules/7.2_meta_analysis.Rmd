@@ -20,9 +20,9 @@ Here we'll consider a real example, doing a meta-analysis. We'll start with a st
 
 # Meta analysis example
 
-As most of you will probably know, meta analysis seeks to combine results across multiple studies of the same phenomenon to increase power. It's often applied to clinical trials.
+Meta analysis seeks to combine results across multiple studies of the same phenomenon to increase power. It's often applied to clinical trials.
 
-The example is of the side effects of a very popular drug for diabetes called Avandia. The question is whether Avandia use increases the risk of myocardial infarction (heart attack). There are 48 studies (the 49th study in the data file is different in some ways and excluded here), each with treatment and control arms.
+The example is of the side effects of a very popular drug for diabetes called Avandia. The question is whether Avandia use increases the risk of myocardial infraction (heart attack). There are 48 studies (the 49th study in the data file is different in some ways and excluded here), each with treatment and control arms.
 
 ```{r, avandia-view}
 dat <- read.csv('avandia.csv')

@@ -18,7 +18,7 @@ Here we'll consider another real example, doing a semiparametric accelerated fai
 
 # Accelerated failure time model
 
-(Note I'm changing notation: for this example, $\alpha$ will be the first parameter of the Weibull distribution and *conc* will be the DP/CRP concentration parameter.)
+(Note changing notation: for this example, $\alpha$ will be the first parameter of the Weibull distribution and *conc* will be the DP/CRP concentration parameter.)
 
 A parametric Weibull AFT model is $T \sim \mbox{Weibull}(\alpha, \lambda)$.
 
@@ -34,11 +34,9 @@ $$ \lambda = \mu \exp(z^\top \delta) $$
 
 Note that the survival function is
 
-$$ S(t) = \exp(-\mu \exp(z^\top \delta) t^\alpha) = \exp(-\mu (\exp(z^\top \delta/\alpha) t)^\alpha $$
+$$ S(t) = \exp(-\mu \exp(z^\top \delta) t^\alpha) = \exp(-\mu (\exp(z^\top \delta/\alpha) t)^\alpha) $$
 
-so the effect of the covariates is to scale time, hence 'accelerated failure time'. I.e., changing the covariate value can be seen as scaling the time that results in an equivalent probability of survival.
-
-(Think one dog-year equals seven human-years.)
+so the effect of the covariates is to scale time, hence 'accelerated failure time', i.e., changing the covariate value can be seen as scaling the time that results in an equivalent probability of survival.
 
 # Semiparametric AFT model
 
@@ -52,16 +50,18 @@ We can express this as:
 
 $$ T_i \sim \mbox{Weibull}(\alpha, \mu_i \exp(Z^\top \delta)) $$
 
-with IID $\mu_i$ from unknown distribution, $G(\cdot)$
+with IID $\mu_i$ from unknown distribution, $G(\cdot)$,
 
+<!--
 $$ \mu_i \sim H(\cdot) $$
+-->
 
 where that distribution has a Dirichlet process prior, $G(\cdot) \sim DP(\mbox{conc}, G_0(\cdot))$ with base measure $G_0(\cdot)$. 
 
 
 # Multiple myeloma analysis with the semiparametric AFT model
 
-We'll carry out an analysis of the effect of alkylating agents on survival time (in months) for patients with multiple myeloma (see this <a href="https://www4.stat.ncsu.edu/~ghosal/papers/PMR.pdf" target="_blank" style="color: blue">reference</a> for details). The covariates are log blood urea nitrogen and hemoglobin.
+We'll carry out an analysis of the effect of alkylating agents on survival time (in months) for patients with multiple myeloma. The covariates are log blood urea nitrogen and hemoglobin.
 
 ```{r, aft-setup}
 library(emplik, quietly = TRUE, warn.conflicts = FALSE)
