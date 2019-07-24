@@ -42,7 +42,6 @@ I encourage you to:
 - Keep your eyes open! -- We'll illustrate a lot of syntax and concepts by example
 - Try to guess what the syntax means in cases we haven't yet seen that syntax
 - Play with it and try variations and try to break it and see what happens
-- Post a comment on the Etherpad if something interesting happens as you experiment
 - Ask questions as we go
 
 
