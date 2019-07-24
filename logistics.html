@@ -123,10 +123,39 @@ $(document).ready(function () {
 </div>
 
 
-<div id="where-to-find-stuff" class="section level2">
-<h2>Where to find stuff</h2>
+<div id="getting-the-workshop-materials" class="section level2">
+<h2>Getting the Workshop Materials</h2>
 <p>The Github site (<a href="https://github.com/danielturek/nimble-vibass-2019" target="_blank" style="color: blue">https://github.com/danielturek/nimble-vibass-2019</a>) is the master repository for materials for the modules; you can also get the individual files from Github.</p>
-<p>To get the materials look ahead to slide 7 for instructions. Alternatively, simply go to <a href="https://github.com/danielturek/nimble-vibass-2019" target="_blank" style="color: blue">https://github.com/danielturek/nimble-vibass-2019</a> and click on the ‘Download ZIP’ button in the right side of the window or simply <a href="https://github.com/danielturek/nimble-vibass-2019/archive/master.zip" target="_blank" style="color: blue">click here</a>.</p>
+<p>To get the materials look ahead for detailed instructions. Alternatively, simply go to <a href="https://github.com/danielturek/nimble-vibass-2019" target="_blank" style="color: blue">https://github.com/danielturek/nimble-vibass-2019</a> and click on the ‘Download ZIP’ button in the right side of the window or simply <a href="https://github.com/danielturek/nimble-vibass-2019/archive/master.zip" target="_blank" style="color: blue">click here</a>.</p>
+<div id="from-a-terminal-window-macos-linux-or-windows-linux-subsystem" class="section level4">
+<h4>From a terminal window (MacOS, Linux, or Windows Linux subsystem)</h4>
+<p>Run the following commands:</p>
+<ul>
+<li><code>cd /directory/where/you/want/repository/located</code></li>
+<li><code>git clone https://github.com/danielturek/nimble-vibass-2019</code></li>
+</ul>
+<p>Then to update from the repository to get any changes we’ve made:</p>
+<ul>
+<li><code>cd /directory/where/you/put/the/repository/nimble-vibass-2019</code></li>
+<li><code>git pull</code></li>
+</ul>
+</div>
+</div>
+<div id="rstudio-and-r-markdown" class="section level2">
+<h2>RStudio and R Markdown</h2>
+<p>We’ll present most of the material from within RStudio, using R Markdown documents with embedded R code. R Markdown is an extension to the Markdown markup language that makes it easy to write HTML in a simple plain text format. This allows us to both run the R/NIMBLE code directly as well as compile on-the-fly to an HTML file that can be used for presentation. All files will be available on <a href="https://github.com/danielturek/nimble-vibass-2019" target="_blank" style="color: blue">GitHub</a>.</p>
+</div>
+<div id="installing-nimble" class="section level2">
+<h2>Installing NIMBLE</h2>
+<p>NIMBLE is on CRAN, so in general it will be straightforward to install, but you do need a compiler and related tools on your system.</p>
+<p>In summary, here are the steps.</p>
+<ol style="list-style-type: decimal">
+<li>Install compiler tools on your system. <a href="https://r-nimble.org/download" target="_blank" style="color: blue">https://r-nimble.org/download</a> has more details on how to install <em>Rtools</em> on Windows and how to install the command line tools of <em>Xcode</em> on a Mac.</li>
+<li>Install the <em>nimble</em> package from CRAN.</li>
+</ol>
+<p>More details can also be found in Section 4 of the <a href="http://r-nimble.org/manuals/NimbleUserManual.pdf" target="_blank" style="color: blue">NIMBLE User Manual</a>.</p>
+<p>For some of the later examples we’ll discuss, you’ll need version 0.8.0 (new on CRAN as of June 2019).</p>
+<p>There are a couple other things that we’ll demo that have bug fixes as of version 0.8.0, so it’s best to install that version.</p>
 <!--
 ## Asking questions and making comments
 
@@ -143,7 +172,6 @@ Please ask questions and make comments as we go through the material. We will al
 <li>The HTML slides generated from that R Markdown, e.g., <code>foo_slides.html</code></li>
 <li>The slides as a single HTML file, e.g., <code>foo.html</code></li>
 </ul>
-<p>If you’re curious, you can regenerate the html files using the <code>make_slides</code> script, which can be run in a shell as <code>make_slides foo</code>.</p>
 </div>
 <div id="suggestions-on-how-to-get-the-most-out-of-the-workshop" class="section level2">
 <h2>Suggestions on how to get the most out of the workshop</h2>
@@ -161,60 +189,6 @@ Please ask questions and make comments as we go through the material. We will al
 <li>My aim is not to show you how to use specific statistical methods or analysis techniques. My goal is to get you up to speed generally in MCMC, programming algorithms, and NIMBLE.</li>
 <li>It can be hard to absorb everything in such a concentrated situation. Hopefully the material presented will be useful to you over the longer-term as you do more computation and work with NIMBLE.</li>
 </ul>
-</div>
-<div id="rstudio-and-r-markdown" class="section level2">
-<h2>RStudio and R Markdown</h2>
-<p>We’ll present most of the material from within RStudio, using R Markdown documents with embedded R code. R Markdown is an extension to the Markdown markup language that makes it easy to write HTML in a simple plain text format. This allows us to both run the R/NIMBLE code directly as well as compile on-the-fly to an HTML file that can be used for presentation. All files will be available on <a href="https://github.com/danielturek/nimble-vibass-2019" target="_blank" style="color: blue">GitHub</a>.</p>
-<p>Warning: in some cases the processing of the R code in the R Markdown is finicky, and the slides have error messages that do not occur if you just run the code directly in R or RStudio.</p>
-</div>
-<div id="getting-the-workshop-materials" class="section level2">
-<h2>Getting the workshop materials</h2>
-<p>To download the files, you can do any of the following.</p>
-<div id="from-a-browser" class="section level4">
-<h4>From a browser</h4>
-<p>Simply go to <a href="https://github.com/danielturek/nimble-vibass-2019" target="_blank" style="color: blue">https://github.com/danielturek/nimble-vibass-2019</a> and click on the ‘Download ZIP’ button in the right side of the window or simply <a href="https://github.com/danielturek/nimble-vibass-2019/archive/master.zip" target="_blank" style="color: blue">click here</a>.</p>
-<!--
-#### Within RStudio
-
-Within RStudio go to File->New Project->Version Control->Git and enter:
-
-- "Repository URL": https://github.com/danielturek/nimble-vibass-2019
-- "Project Directory Name": nimble-vibass-2019 (or something else of your choosing)
-- "Directory": ~/Desktop (or somewhere of your choosing)
-
-Then to update from the repository to get any changes we've made, you can select (from within RStudio):
-Tools->Version Control->Pull Branches
-
-or from the Environment/History/Git window, click on the Git tab and then on the blue down arrow.
-
-Be warned that you probably do not want to make your own notes or changes to the files we are providing. Because if you do, and you then do a "Git Pull" to update the materials, you'll have to deal with the conflict between your local version and our version. You probably will want to make a personal copy of such files in another directory or by making copies of files with new names.
--->
-</div>
-<div id="from-a-terminal-window-macos-linux-or-windows-linux-subsystem" class="section level4">
-<h4>From a terminal window (MacOS, Linux, or Windows Linux subsystem)</h4>
-<p>Run the following commands:</p>
-<ul>
-<li><code>cd /directory/where/you/want/repository/located</code></li>
-<li><code>git clone https://github.com/danielturek/nimble-vibass-2019</code></li>
-</ul>
-<p>Then to update from the repository to get any changes we’ve made:</p>
-<ul>
-<li><code>cd /directory/where/you/put/the/repository/nimble-vibass-2019</code></li>
-<li><code>git pull</code></li>
-</ul>
-</div>
-</div>
-<div id="installing-nimble" class="section level2">
-<h2>Installing NIMBLE</h2>
-<p>NIMBLE is on CRAN, so in general it will be straightforward to install, but you do need a compiler and related tools on your system.</p>
-<p>In summary, here are the steps.</p>
-<ol style="list-style-type: decimal">
-<li>Install compiler tools on your system. <a href="https://r-nimble.org/download" target="_blank" style="color: blue">https://r-nimble.org/download</a> has more details on how to install <em>Rtools</em> on Windows and how to install the command line tools of <em>Xcode</em> on a Mac.</li>
-<li>Install the <em>nimble</em> package from CRAN.</li>
-</ol>
-<p>More details can also be found in Section 4 of the <a href="http://r-nimble.org/manuals/NimbleUserManual.pdf" target="_blank" style="color: blue">NIMBLE User Manual</a>.</p>
-<p>For some of the later examples we’ll discuss, you’ll need version 0.8.0 (new on CRAN as of June 2019).</p>
-<p>There are a couple other things that we’ll demo that have bug fixes as of version 0.8.0, so it’s best to install that version.</p>
 <p> </p>
 <p> </p>
 <p> </p>

@@ -15,7 +15,7 @@ Please see the <a href="logistics_slides.html" target="_blank" style="color: blu
 
 
 
-### Day 1
+### Part 1
 
  - Session 1: <a href="overview_slides.html#(4)" style="color: blue">Introduction to NIMBLE</a>
  - Session 2: <a href="overview_slides.html#(5)" style="color: blue">MCMC in NIMBLE</a>
@@ -24,7 +24,7 @@ Please see the <a href="logistics_slides.html" target="_blank" style="color: blu
 
 
 
-### Day 2
+### Part 2
 
  - Session 5: <a href="overview_slides.html#(8)" style="color: blue">Programming MCMC samplers</a>
  - Session 6: <a href="overview_slides.html#(9)" style="color: blue">Writing algorithms with Sequential Monte Carlo as an example</a>
