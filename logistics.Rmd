@@ -10,9 +10,15 @@ The Github site (<a href="https://github.com/danielturek/nimble-vibass-2019" tar
 
 To get the materials look ahead to slide 7 for instructions. Alternatively, simply go to <a href="https://github.com/danielturek/nimble-vibass-2019" target="_blank" style="color: blue">https://github.com/danielturek/nimble-vibass-2019</a> and click on the 'Download ZIP' button in the right side of the window or simply <a href="https://github.com/danielturek/nimble-vibass-2019/archive/master.zip" target="_blank" style="color: blue">click here</a>.
 
+
+
+<!--
 ## Asking questions and making comments
 
 Please ask questions and make comments as we go through the material. We will also have a shared document (Etherpad) at <a href="https://etherpad.net/p/nimble-vibass-2019" target="_blank" style="color: blue">https://etherpad.net/p/nimble-vibass-2019</a> where you can more easily post longer code snippets or error messages.
+-->
+
+
 
 ## How we'll operate
 
