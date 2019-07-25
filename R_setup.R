@@ -6,3 +6,7 @@ library(basicMCMCplots)
 library(coda)
 library(nimble)
 source('chunks_litters.R')
+
+install_github('nimble-dev/compareMCMCs', subdir = 'compareMCMCs')
+
+

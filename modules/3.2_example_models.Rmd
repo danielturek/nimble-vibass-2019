@@ -60,10 +60,10 @@ Here we have indexing indicating fixed membership in a group to allow ANOVA-like
 nimbleCode({
   for (i in 1:n){
     y[i] ~ dbin (p.bound[i], 1)
-    p.bound[i] <- max(0, min(1, ilogit(b.0 + b.female*female[i] + b.black*black[i] +
+    p.bound[i] <- ilogit(b.0 + b.female*female[i] + b.black*black[i] +
       b.female.black*female[i]*black[i] +
       b.age[age[i]] + b.edu[edu[i]] + b.age.edu[age[i],edu[i]] +
-      b.state[state[i]])))
+      b.state[state[i]])
   }
   b.0 ~ dnorm (0, .0001)
   b.female ~ dnorm (0, .0001)

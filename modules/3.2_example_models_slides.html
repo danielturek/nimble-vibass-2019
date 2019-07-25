@@ -93,10 +93,10 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">nimbleCode</span>({
   for (i in <span class="dv">1</span>:n){
     y[i] ~<span class="st"> </span><span class="kw">dbin</span> (p.bound[i], <span class="dv">1</span>)
-    p.bound[i] &lt;-<span class="st"> </span><span class="kw">max</span>(<span class="dv">0</span>, <span class="kw">min</span>(<span class="dv">1</span>, <span class="kw">ilogit</span>(b<span class="fl">.0</span> +<span class="st"> </span>b.female*female[i] +<span class="st"> </span>b.black*black[i] +
+    p.bound[i] &lt;-<span class="st"> </span><span class="kw">ilogit</span>(b<span class="fl">.0</span> +<span class="st"> </span>b.female*female[i] +<span class="st"> </span>b.black*black[i] +
 <span class="st">      </span>b.female.black*female[i]*black[i] +
 <span class="st">      </span>b.age[age[i]] +<span class="st"> </span>b.edu[edu[i]] +<span class="st"> </span>b.age.edu[age[i],edu[i]] +
-<span class="st">      </span>b.state[state[i]])))
+<span class="st">      </span>b.state[state[i]])
   }
   b<span class="fl">.0</span> ~<span class="st"> </span><span class="kw">dnorm</span> (<span class="dv">0</span>, .<span class="dv">0001</span>)
   b.female ~<span class="st"> </span><span class="kw">dnorm</span> (<span class="dv">0</span>, .<span class="dv">0001</span>)
